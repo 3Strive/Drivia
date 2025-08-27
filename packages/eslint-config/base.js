@@ -1,32 +1,47 @@
 import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import turboPlugin from "eslint-plugin-turbo";
-import tseslint from "typescript-eslint";
-import onlyWarn from "eslint-plugin-only-warn";
+import spellcheck from "eslint-plugin-spellcheck";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import unusedImports from "eslint-plugin-unused-imports";
+import jsdoc from "eslint-plugin-jsdoc";
+import prettier from "eslint-config-prettier";
+import importPlugin from "eslint-plugin-import";
 
-/**
- * A shared ESLint configuration for the repository.
- *
- * @type {import("eslint").Linter.Config[]}
- * */
-export const config = [
+export default [
   js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
+  prettier,
   {
     plugins: {
-      turbo: turboPlugin,
+      import: importPlugin,
+      "unused-imports": unusedImports,
+      "simple-import-sort": simpleImportSort,
+      spellcheck: spellcheck,
+      jsdoc: jsdoc,
     },
     rules: {
-      "turbo/no-undeclared-env-vars": "warn",
+      "no-unused-vars": "off",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        {
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
+        },
+      ],
+
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "import/first": "error",
+      "import/newline-after-import": "error",
+      "import/no-duplicates": "error",
+
+      complexity: ["warn", 15],
+      "max-depth": ["warn", 4],
+      "max-lines": ["error", 300],
+      "max-lines-per-function": ["warn", 100],
+      "max-nested-callbacks": ["warn", 3],
+      "max-params": ["warn", 10],
     },
-  },
-  {
-    plugins: {
-      onlyWarn,
-    },
-  },
-  {
-    ignores: ["dist/**"],
   },
 ];
