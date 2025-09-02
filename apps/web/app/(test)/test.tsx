@@ -1,7 +1,8 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+import { Button } from "@drivia/ui/button";
 import localFont from "next/font/local";
+import Image, { type ImageProps } from "next/image";
+
+import styles from "./page.module.css";
 
 type Props = Omit<ImageProps, "src"> & {
   srcLight: string;
@@ -13,8 +14,8 @@ const ThemeImage = (props: Props) => {
 
   return (
     <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
+      <Image {...rest} src={srcLight} alt="hle" className="imgLight" />
+      <Image {...rest} src={srcDark} alt="hle" className="imgDark" />
     </>
   );
 };

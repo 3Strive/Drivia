@@ -1,12 +1,15 @@
 {
-  "name": "@repo/eslint-config",
-  "version": "0.0.0",
+  "name": "@drivia/eslint-config",
+  "version": "1.0.0",
   "type": "module",
   "private": true,
   "exports": {
     "./base": "./base.js",
+    "./base.js": "./base.js",
     "./next-js": "./next.js",
-    "./react-internal": "./react-internal.js"
+    "./next-js.js": "./next.js",
+    "./react-internal": "./react-internal.js",
+    "./react-internal.js": "./react-internal.js"
   },
   "devDependencies": {
     "@eslint/js": "^9.28.0",

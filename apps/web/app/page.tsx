@@ -1,8 +1,6 @@
-import { useTheme } from "next-themes"
+// import { useTheme } from "next-themes";
 
-export function Home () {
-  const {setThemes} = useTheme();
-  return(
-    
-  )
+export function Home() {
+  // const {setThemes} = useTheme();
+  return <div>hello</div>;
 }
