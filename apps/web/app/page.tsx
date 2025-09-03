@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>hello</div>;
+'use client';
+
+export default function HomePage() {
+  return <div>Welcome to Drivia</div>;
 }
