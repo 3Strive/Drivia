@@ -7,7 +7,14 @@
     "moduleResolution": "nodenext",
     "target": "esnext",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "declarationDir": "dist",
+    "outDir": "dist"
   },
   "include": ["src", "turbo"]
 }
