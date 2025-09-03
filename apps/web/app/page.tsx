@@ -1,5 +1,5 @@
-import { Box } from '@chakra-ui/react';
+'use client';
 
-export default function Home() {
-  return <Box></Box>;
+export default function HomePage() {
+  return <div>Welcome to Drivia</div>;
 }

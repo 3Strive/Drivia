@@ -20,6 +20,8 @@
     "@chakra-ui/cli": "^3.26.0",
     "@types/json-schema": "^7.0.15",
     "@types/react": "^19.1.12",
+    "@typescript-eslint/parser": "^8.42.0",
+    "@typescript-eslint/typescript-estree": "^8.42.0",
     "cspell": "^9.2.1",
     "eslint": "^9.34.0",
     "eslint-config-next": "^15.5.2",

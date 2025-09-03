@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { ThemeProvider } from '@repo/ui/provider/theme-provider';
+import { ThemeProvider } from './components/theme-provider';
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistManRope.variable}`}>
         <ThemeProvider
           attribute="class"
