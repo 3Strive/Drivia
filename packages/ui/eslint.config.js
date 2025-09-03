@@ -1,5 +1,5 @@
-import react from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
+import react from 'eslint-plugin-react';
 
 export default [
   {
@@ -10,7 +10,7 @@ export default [
         ecmaVersion: 'latest',
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
-        // project: "./tsconfig.json"  // optional
+        project: './tsconfig.json',
       },
     },
     plugins: {
@@ -18,6 +18,7 @@ export default [
       react,
     },
     rules: {
+      // example rules
       'react/react-in-jsx-scope': 'off',
     },
   },
