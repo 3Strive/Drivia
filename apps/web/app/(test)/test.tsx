@@ -1,9 +1,9 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
-import localFont from "next/font/local";
+import Image, { type ImageProps } from 'next/image';
+import { Button } from '@repo/ui/button';
+import styles from './page.module.css';
+import localFont from 'next/font/local';
 
-type Props = Omit<ImageProps, "src"> & {
+type Props = Omit<ImageProps, 'src'> & {
   srcLight: string;
   srcDark: string;
 };
@@ -13,15 +13,15 @@ const ThemeImage = (props: Props) => {
 
   return (
     <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
+      <Image {...rest} src={srcLight} className="imgLight" alt="hello" />
+      <Image {...rest} src={srcDark} className="imgDark" alt="hello" />
     </>
   );
 };
 
 const geistManRope = localFont({
-  src: "./fonts/Manrope-VariableFont_wght.ttf",
-  variable: "--font-geist-mono",
+  src: './fonts/Manrope-VariableFont_wght.ttf',
+  variable: '--font-geist-mono',
 });
 export default function Home() {
   return (

@@ -1,8 +1,3 @@
-import { useTheme } from "next-themes"
-
-export function Home () {
-  const {setThemes} = useTheme();
-  return(
-    
-  )
+export function Home() {
+  return <></>;
 }
