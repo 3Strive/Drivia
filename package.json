@@ -18,6 +18,7 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "^3.26.0",
+    "@next/env": "^15.5.2",
     "@types/json-schema": "^7.0.15",
     "@types/react": "^18.3.24",
     "@typescript-eslint/parser": "^8.42.0",
