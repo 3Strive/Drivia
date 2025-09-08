@@ -3,6 +3,11 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
+    ignores: [
+      '**/.next/**', // ignore Next.js build output
+      '**/dist/**', // ignore dist folders
+      '**/node_modules/**', // always ignore deps
+    ],
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parser: tseslint.parser,

@@ -6,6 +6,10 @@
         "name": "next"
       }
     ],
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
