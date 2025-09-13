@@ -1,7 +1,9 @@
 <<<<<<< HEAD
+
 # Drivia
-A simplified ride hailing software
-=======
+
+# A simplified ride hailing software
+
 # Turborepo starter
 
 This Turborepo starter is maintained by the Turborepo core team.
@@ -22,9 +24,9 @@ This Turborepo includes the following packages/apps:
 
 - `docs`: a [Next.js](https://nextjs.org/) app
 - `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `@drivia/ui`: a stub React component library shared by both `web` and `docs` applications
+- `@drivia/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `@drivia/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
@@ -86,4 +88,4 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
 - [Configuration Options](https://turborepo.com/docs/reference/configuration)
 - [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
->>>>>>> 4f8755f (feature: first commit message for drivia)
+  > > > > > > > 4f8755f (feature: first commit message for drivia)

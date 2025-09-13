@@ -1,4 +1,4 @@
-import nestConfig from '@repo/eslint-config/nest-js';
+import nestConfig from '@drivia/eslint-config/nest-js';
 
 export default [
   ...nestConfig,
