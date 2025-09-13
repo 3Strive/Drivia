@@ -2,5 +2,15 @@
   "version": "0.2",
   "language": "en",
   "words": ["turborepo", "eslint", "prettier", "husky"],
-  "ignorePaths": ["node_modules", "dist", ".next"]
+  "ignorePaths": [
+    "node_modules",
+    "dist",
+    ".next",
+    "build",
+    "coverage",
+    "packages/*/dist",
+    "apps/*/dist",
+    "services/*/dist",
+    "services/*/node_modules"
+  ]
 }
