@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/react-library.json",
+  "extends": "@drivia/typescript-config/react-library.json",
   "exclude": ["node_modules", "dist"],
   "compilerOptions": {
     "jsx": "react-jsx",

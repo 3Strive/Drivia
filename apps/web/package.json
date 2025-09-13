@@ -13,7 +13,7 @@
   "dependencies": {
     "@chakra-ui/react": "^3.26.0",
     "@emotion/react": "^11.14.0",
-    "@repo/ui": "*",
+    "@drivia/ui": "*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.513.0",
@@ -23,8 +23,8 @@
     "react-dom": "18"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@drivia/eslint-config": "*",
+    "@drivia/typescript-config": "*",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^22.15.3",
     "@types/react": "^18.3.24",
