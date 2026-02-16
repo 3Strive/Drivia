@@ -42,12 +42,7 @@
   "engines": {
     "node": ">=22"
   },
-  "packageManager": "npm@9.8.1",
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "services/*"
-  ],
+  "packageManager": "pnpm@9.0.0",
   "dependencies": {
     "@chakra-ui/react": "^3.26.0",
     "@emotion/react": "^11.14.0",
