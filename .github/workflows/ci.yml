@@ -31,7 +31,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       # Generate Prisma Client (IMPORTANT)
-      - run: pnpm exec prisma generate
+      - run: pnpm exec prisma generate --schema=packages/db/prisma/schema.prisma
 
       - name: Run Lint
         run: pnpm run lint
@@ -41,4 +41,3 @@ jobs:
 
       - name: Run Prettier check
         run: pnpm run format
-
