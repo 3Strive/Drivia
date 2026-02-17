@@ -1,0 +1,4 @@
+packages/db/prisma/migrations
+packages/db/prisma/generated
+packages/db/prisma/*.js
+packages/db/prisma/*.d.ts
