@@ -31,7 +31,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       # Generate Prisma Client (IMPORTANT)
-      - run: pnpm exec prisma generate --schema=packages/db/prisma/schema.prisma
+      - run: cd packages/db && pnpm exec prisma generate
 
       - name: Run Lint
         run: pnpm run lint
