@@ -2,7 +2,6 @@
   "name": "db",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -18,6 +17,7 @@
     "format": "prisma format"
   },
   "dependencies": {
+    "@nestjs/common": "^11.0.1",
     "@prisma/client": "^5.0.0"
   },
   "devDependencies": {
