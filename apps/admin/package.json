@@ -11,14 +11,14 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "@drivia/ui": "*",
+    "@drivia/ui": "workspace:*",
     "next": "^15.5.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@drivia/eslint-config": "*",
-    "@drivia/typescript-config": "*",
+    "@drivia/eslint-config": "workspace:*",
+    "@drivia/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.1",

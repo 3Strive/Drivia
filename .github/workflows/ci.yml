@@ -13,19 +13,31 @@ jobs:
     strategy:
       matrix:
         node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v4
+
+      # Setup pnpm
+      - uses: pnpm/action-setup@v4
+
+      # Setup Node
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm ci
+          cache: 'pnpm'
+
+      # Install dependencies
+      - run: pnpm install --frozen-lockfile
+
+      # Generate Prisma Client (IMPORTANT)
+      - run: cd packages/db && pnpm exec prisma generate
+
       - name: Run Lint
-        run: npm run lint
+        run: pnpm run lint
+
       - name: Run Build
-        run: npm run build
+        run: pnpm run build
+
       - name: Run Prettier check
-        run: npm run format
+        run: pnpm run format
