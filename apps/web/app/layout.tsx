@@ -1,7 +1,11 @@
+import './globals.css';
+
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import './globals.css';
+import React from 'react';
+
 import { ThemeProvider } from './components/theme-provider';
+import { Provider } from './components/ui/provider';
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -29,14 +33,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistManRope.variable}`}>
+      <body
+        className={` ${geistManRope.variable}`}
+        style={{ background: '#F4F7FE' }}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Provider>{children}</Provider>
         </ThemeProvider>
       </body>
     </html>
