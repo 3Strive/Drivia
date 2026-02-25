@@ -6,6 +6,10 @@ export default [
     ignores: ['**/*.spec.ts', '**/*.test.ts', 'dist/**'],
   },
   {
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+    },
     files: ['**/*.ts'],
     settings: {
       'import/resolver': {
