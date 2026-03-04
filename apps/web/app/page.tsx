@@ -1,7 +1,9 @@
-'use client';
+import { Box } from '@chakra-ui/react';
+import React from 'react';
 
-import SideBar from './components/organism/sidebar';
 
-export default function HomePage() {
-  return <SideBar />;
-}
+const page = () => {
+  return <Box>hello</Box>;
+};
+
+export default page;
