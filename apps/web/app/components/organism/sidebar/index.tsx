@@ -10,6 +10,7 @@ import {
   Badge,
   HStack,
   VStack,
+  Link,
 } from '@chakra-ui/react';
 
 // ─── PALETTE ──────────────────────────────────────────────────────────────────
@@ -21,6 +22,8 @@ interface NavItem {
   href: string;
   label: string;
   icon: JSX.Element;
+  rel?: string;
+  target?: string;
 }
 
 // ─── ICONS ───────────────────────────────────────────────────────────────────
@@ -119,6 +122,8 @@ const NAV_GROUPS: NavGroup[] = [
       {
         href: '/marketplace',
         label: 'Marketplace',
+        target: '_blank',
+        rel: 'noopener noreferrer',
         icon: (
           <Ico
             d={[
@@ -424,6 +429,13 @@ export function Sidebar(): JSX.Element {
                     _hover={{
                       bg: active ? `${P}15` : 'gray.50',
                       color: active ? P : 'gray.700',
+                    }}
+                    _active={{
+                      outline: 'none',
+                      border: 'none',
+                    }}
+                    _focus={{
+                      border: 'none',
                     }}
                     transition="all 0.15s"
                     gap="10px"

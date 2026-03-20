@@ -16,7 +16,6 @@ import {
   Image,
   Link,
 } from '@chakra-ui/react';
-import AppLayout from '../../template/general-layout';
 
 const P = '#6C63FF';
 const P_DARK = '#5B54E8';
@@ -1437,6 +1436,7 @@ function DealerRankCard({
 }
 
 // ─── PAGE ─────────────────────────────────────────────────────────────────────
+// Breakpoints: base=mobile(<48em)  md=tablet(≥48em)  lg=desktop(≥62em)  xl=wide(≥80em)
 export default function CarMarketplace(): JSX.Element {
   const [search, setSearch] = useState('');
   const [filterInsp, setFilterInsp] = useState<InspStatus | 'All'>('All');
@@ -1446,6 +1446,7 @@ export default function CarMarketplace(): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [detail, setDetail] = useState<Car | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSave = (id: string) => setSaved((p) => ({ ...p, [id]: !p[id] }));
 
@@ -1476,31 +1477,201 @@ export default function CarMarketplace(): JSX.Element {
   const availCount = CARS.filter((c) => c.status === 'Available').length;
   const sortedDealers = [...DEALERS].sort((a, b) => b.soldCount - a.soldCount);
 
+  // ── sidebar content (reused in both desktop rail and mobile drawer) ──────────
+  const SidebarContent = () => (
+    <>
+      {/* Inspection guide */}
+      <Box
+        bg={WHITE}
+        borderRadius="14px"
+        p="16px"
+        mb="14px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.05)"
+      >
+        <Text fontWeight="800" fontSize="13px" color="gray.800" mb="12px">
+          Inspection Guide
+        </Text>
+        {(['Inspected', 'Pending', 'Not Inspected'] as InspStatus[]).map(
+          (s) => {
+            const cfg = INSP_CFG[s];
+            const count = CARS.filter((c) => c.inspection === s).length;
+            const desc =
+              s === 'Inspected'
+                ? 'Certified by AutoCheck NG'
+                : s === 'Pending'
+                  ? 'Currently being inspected'
+                  : 'Buyer caution advised';
+            return (
+              <Flex
+                key={s}
+                align="center"
+                gap="9px"
+                p="9px"
+                borderRadius="9px"
+                bg={cfg.bg}
+                border="1px solid"
+                borderColor={cfg.border}
+                mb="7px"
+                _last={{ mb: 0 }}
+              >
+                {s === 'Inspected' ? (
+                  <ShieldOk size={16} />
+                ) : s === 'Pending' ? (
+                  <ShieldPend size={16} />
+                ) : (
+                  <ShieldNo size={16} />
+                )}
+                <Box flex="1">
+                  <Text fontSize="12px" fontWeight="700" color={cfg.color}>
+                    {s}
+                  </Text>
+                  <Text fontSize="10px" color={cfg.color} opacity="0.7">
+                    {desc}
+                  </Text>
+                </Box>
+                <Badge
+                  bg={cfg.border}
+                  color={cfg.color}
+                  borderRadius="5px"
+                  fontSize="10px"
+                  px="6px"
+                  fontWeight="700"
+                >
+                  {count}
+                </Badge>
+              </Flex>
+            );
+          },
+        )}
+      </Box>
+
+      {/* Dealer rankings */}
+      <Box
+        bg={WHITE}
+        borderRadius="14px"
+        p="16px"
+        mb="14px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.05)"
+      >
+        <Flex justify="space-between" align="center" mb="10px">
+          <HStack gap="6px">
+            <TrophyIco />
+            <Text fontWeight="800" fontSize="13px" color="gray.800">
+              Top Dealers
+            </Text>
+          </HStack>
+          <Text fontSize="11px" color={P} fontWeight="600" cursor="pointer">
+            See all
+          </Text>
+        </Flex>
+        <Flex px="12px" mb="6px">
+          <Text fontSize="9px" color="gray.400" fontWeight="700" w="28px">
+            #
+          </Text>
+          <Text fontSize="9px" color="gray.400" fontWeight="700" flex="1">
+            DEALER
+          </Text>
+          <Text fontSize="9px" color="gray.400" fontWeight="700">
+            SOLD
+          </Text>
+        </Flex>
+        {sortedDealers.map((d, i) => (
+          <DealerRankCard key={d.id} dealer={d} rank={i + 1} />
+        ))}
+      </Box>
+
+      {/* Market stats */}
+      <Box
+        bg={WHITE}
+        borderRadius="14px"
+        p="16px"
+        boxShadow="0 2px 8px rgba(0,0,0,0.05)"
+      >
+        <Text fontWeight="800" fontSize="13px" color="gray.800" mb="10px">
+          Market Stats
+        </Text>
+        {[
+          ['Total Listings', `${CARS.length}`, '🚗'],
+          ['Inspected', `${inspCount} of ${CARS.length}`, '✅'],
+          ['Available Now', `${availCount}`, '🟢'],
+          [
+            'Avg. Price',
+            fmt(
+              Math.round(CARS.reduce((a, c) => a + c.price, 0) / CARS.length),
+            ),
+            '💰',
+          ],
+          [
+            'Avg. Rating',
+            `${(CARS.reduce((a, c) => a + c.rating, 0) / CARS.length).toFixed(1)} ⭐`,
+            '📊',
+          ],
+          ['Total Dealers', `${DEALERS.length}`, '🏪'],
+        ].map(([label, value, icon]) => (
+          <Flex
+            key={label}
+            justify="space-between"
+            align="center"
+            py="7px"
+            borderBottom="1px solid"
+            borderColor="gray.50"
+            _last={{ borderBottom: 'none' }}
+          >
+            <HStack gap="6px">
+              <Text fontSize="12px">{icon}</Text>
+              <Text fontSize="11px" color="gray.500">
+                {label}
+              </Text>
+            </HStack>
+            <Text fontSize="11px" fontWeight="700" color="gray.800">
+              {value}
+            </Text>
+          </Flex>
+        ))}
+      </Box>
+    </>
+  );
+
   return (
-    <AppLayout>
-      {/* TOPBAR */}
+    <Box flex="1" overflow="auto" bg={BG} fontFamily="'DM Sans', sans-serif">
+      {/* ── TOPBAR ──────────────────────────────────────────────────────────── */}
       <Flex
         align="center"
         justify="space-between"
-        px="32px"
-        py="16px"
+        px={{ base: '16px', md: '24px', lg: '32px' }}
+        py="14px"
         bg={WHITE}
         borderBottom="1px solid"
         borderColor="gray.100"
         position="sticky"
         top="0"
-        zIndex="10"
+        zIndex="20"
       >
         <Box>
-          <Text fontSize="11px" color="gray.400">
+          <Text
+            fontSize="11px"
+            color="gray.400"
+            display={{ base: 'none', md: 'block' }}
+          >
             Drivia / Marketplace
           </Text>
-          <Heading fontSize="22px" fontWeight="800" color="gray.800" mt="1px">
+          <Heading
+            fontSize={{ base: '18px', md: '20px', lg: '22px' }}
+            fontWeight="800"
+            color="gray.800"
+            mt="1px"
+          >
             Car Marketplace
           </Heading>
         </Box>
-        <HStack gap="10px">
-          <Box position="relative" w="240px">
+
+        <HStack gap={{ base: '6px', md: '10px' }}>
+          {/* Search — full width on md+, icon-only on mobile */}
+          <Box
+            position="relative"
+            w={{ base: '36px', md: '200px', lg: '240px' }}
+            overflow="hidden"
+          >
             <Box
               position="absolute"
               left="10px"
@@ -1521,10 +1692,27 @@ export default function CarMarketplace(): JSX.Element {
               borderRadius="12px"
               fontSize="13px"
               h="36px"
+              display={{ base: 'none', md: 'block' }}
               _placeholder={{ color: 'gray.400' }}
               _focus={{ bg: 'gray.100', boxShadow: 'none' }}
             />
+            {/* Mobile search icon button */}
+            <Box
+              display={{ base: 'flex', md: 'none' }}
+              w="36px"
+              h="36px"
+              borderRadius="10px"
+              bg="gray.50"
+              alignItems="center"
+              justifyContent="center"
+              color="gray.500"
+              cursor="pointer"
+            >
+              <SearchIco />
+            </Box>
           </Box>
+
+          {/* Bell + moon — hide on mobile to save space */}
           {([<BellIco />, <MoonIco />] as JSX.Element[]).map((ic, i) => (
             <Button
               key={i}
@@ -1533,10 +1721,25 @@ export default function CarMarketplace(): JSX.Element {
               borderRadius="10px"
               color="gray.500"
               _hover={{ bg: 'gray.100' }}
+              display={{ base: 'none', sm: 'flex' }}
             >
               {ic}
             </Button>
           ))}
+
+          {/* Mobile: sidebar toggle */}
+          <Button
+            display={{ base: 'flex', lg: 'none' }}
+            variant="ghost"
+            p="2"
+            borderRadius="10px"
+            color="gray.500"
+            _hover={{ bg: 'gray.100' }}
+            onClick={() => setSidebarOpen((o) => !o)}
+          >
+            <GridIco />
+          </Button>
+
           <Avatar.Root size="sm">
             <Avatar.Image src="https://i.pravatar.cc/40?img=47" />
             <Avatar.Fallback>D</Avatar.Fallback>
@@ -1544,13 +1747,49 @@ export default function CarMarketplace(): JSX.Element {
         </HStack>
       </Flex>
 
-      {/* HERO */}
+      {/* ── MOBILE SEARCH BAR (below topbar on small screens) ──────────────── */}
       <Box
-        mx="28px"
-        mt="24px"
-        mb="20px"
-        borderRadius="20px"
-        h="156px"
+        display={{ base: 'block', md: 'none' }}
+        px="16px"
+        pt="12px"
+        pb="4px"
+        bg={BG}
+      >
+        <Box position="relative">
+          <Box
+            position="absolute"
+            left="12px"
+            top="50%"
+            transform="translateY(-50%)"
+            color="gray.400"
+            zIndex="1"
+          >
+            <SearchIco />
+          </Box>
+          <Input
+            pl="36px"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search make, model, location…"
+            bg={WHITE}
+            border="1px solid"
+            borderColor="gray.200"
+            borderRadius="12px"
+            fontSize="13px"
+            h="40px"
+            _placeholder={{ color: 'gray.400' }}
+            _focus={{ borderColor: P, boxShadow: `0 0 0 1px ${P}` }}
+          />
+        </Box>
+      </Box>
+
+      {/* ── HERO ────────────────────────────────────────────────────────────── */}
+      <Box
+        mx={{ base: '12px', md: '20px', lg: '28px' }}
+        mt={{ base: '14px', md: '20px', lg: '24px' }}
+        mb={{ base: '14px', md: '18px', lg: '20px' }}
+        borderRadius={{ base: '16px', md: '18px', lg: '20px' }}
+        h={{ base: '120px', md: '140px', lg: '156px' }}
         overflow="hidden"
         position="relative"
         boxShadow="0 8px 32px rgba(108,99,255,0.35)"
@@ -1577,31 +1816,42 @@ export default function CarMarketplace(): JSX.Element {
           borderRadius="full"
           bg="rgba(255,255,255,0.05)"
         />
+
+        {/* Hide emoji on very small screens */}
         <Text
           position="absolute"
           right="44px"
           top="50%"
           transform="translateY(-50%)"
-          fontSize="72px"
+          fontSize={{ base: '48px', md: '62px', lg: '72px' }}
           lineHeight="1"
+          display={{ base: 'none', sm: 'block' }}
         >
           🚗
         </Text>
-        <Box position="relative" zIndex="1" p="30px">
+
+        <Box
+          position="relative"
+          zIndex="1"
+          p={{ base: '18px 20px', md: '22px 26px', lg: '30px' }}
+        >
           <Heading
-            fontSize="22px"
+            fontSize={{ base: '16px', sm: '18px', md: '20px', lg: '22px' }}
             fontWeight="900"
             color="white"
             lineHeight="1.2"
-            mb="6px"
+            mb="5px"
           >
             Nigeria's Most Trusted Car Market
           </Heading>
-          <Text fontSize="12px" color="rgba(255,255,255,0.78)" mb="12px">
-            {inspCount} inspected · {availCount} available now · Verified
-            dealers nationwide
+          <Text
+            fontSize={{ base: '11px', md: '12px' }}
+            color="rgba(255,255,255,0.78)"
+            mb="10px"
+          >
+            {inspCount} inspected · {availCount} available · Verified dealers
           </Text>
-          <HStack gap="8px">
+          <HStack gap="6px" flexWrap="wrap">
             {[
               `✅ ${inspCount} Inspected`,
               '🔒 Secure Deals',
@@ -1612,9 +1862,9 @@ export default function CarMarketplace(): JSX.Element {
                 bg="rgba(255,255,255,0.18)"
                 color="white"
                 borderRadius="7px"
-                fontSize="10px"
-                px="9px"
-                py="4px"
+                fontSize={{ base: '9px', md: '10px' }}
+                px="8px"
+                py="3px"
                 fontWeight="600"
               >
                 {t}
@@ -1624,18 +1874,28 @@ export default function CarMarketplace(): JSX.Element {
         </Box>
       </Box>
 
-      <Flex gap="20px" px="28px" pb="28px" align="flex-start">
-        {/* MAIN */}
+      {/* ── MAIN CONTENT AREA ───────────────────────────────────────────────── */}
+      <Flex
+        gap={{ base: '0', lg: '20px' }}
+        px={{ base: '12px', md: '20px', lg: '28px' }}
+        pb={{ base: '80px', md: '28px' }}
+        align="flex-start"
+      >
+        {/* ── LEFT: LISTINGS ────────────────────────────────────────────────── */}
         <Box flex="1" minW="0">
           {/* FILTERS */}
           <Box
             bg={WHITE}
             borderRadius="14px"
-            p="14px 16px"
+            p={{ base: '12px', md: '14px 16px' }}
             mb="14px"
             boxShadow="0 2px 8px rgba(0,0,0,0.04)"
           >
-            <Flex gap="12px" align="flex-start" wrap="wrap">
+            <Flex
+              gap={{ base: '10px', md: '12px' }}
+              align="flex-start"
+              flexWrap="wrap"
+            >
               {/* Inspection */}
               <Box>
                 <Text
@@ -1648,7 +1908,7 @@ export default function CarMarketplace(): JSX.Element {
                 >
                   Inspection
                 </Text>
-                <HStack gap="5px">
+                <Flex gap="5px" flexWrap="wrap">
                   {(
                     ['All', 'Inspected', 'Not Inspected', 'Pending'] as const
                   ).map((f) => {
@@ -1659,10 +1919,10 @@ export default function CarMarketplace(): JSX.Element {
                         key={f}
                         as="button"
                         onClick={() => setFilterInsp(f)}
-                        px="9px"
+                        px={{ base: '7px', md: '9px' }}
                         py="4px"
                         borderRadius="7px"
-                        fontSize="11px"
+                        fontSize={{ base: '10px', md: '11px' }}
                         fontWeight="600"
                         border="1.5px solid"
                         transition="all 0.15s"
@@ -1674,15 +1934,18 @@ export default function CarMarketplace(): JSX.Element {
                       </Box>
                     );
                   })}
-                </HStack>
+                </Flex>
               </Box>
+
               <Box
                 w="1px"
                 h="36px"
                 bg="gray.100"
                 alignSelf="flex-end"
                 mb="4px"
+                display={{ base: 'none', md: 'block' }}
               />
+
               {/* Condition */}
               <Box>
                 <Text
@@ -1695,7 +1958,7 @@ export default function CarMarketplace(): JSX.Element {
                 >
                   Condition
                 </Text>
-                <HStack gap="5px">
+                <Flex gap="5px" flexWrap="wrap">
                   {(
                     ['All', 'Brand New', 'Tokunbo', 'Nigerian Used'] as const
                   ).map((f) => {
@@ -1706,10 +1969,10 @@ export default function CarMarketplace(): JSX.Element {
                         key={f}
                         as="button"
                         onClick={() => setFilterCond(f)}
-                        px="9px"
+                        px={{ base: '7px', md: '9px' }}
                         py="4px"
                         borderRadius="7px"
-                        fontSize="11px"
+                        fontSize={{ base: '10px', md: '11px' }}
                         fontWeight="600"
                         border="1.5px solid"
                         transition="all 0.15s"
@@ -1721,15 +1984,18 @@ export default function CarMarketplace(): JSX.Element {
                       </Box>
                     );
                   })}
-                </HStack>
+                </Flex>
               </Box>
+
               <Box
                 w="1px"
                 h="36px"
                 bg="gray.100"
                 alignSelf="flex-end"
                 mb="4px"
+                display={{ base: 'none', md: 'block' }}
               />
+
               {/* Fuel */}
               <Box>
                 <Text
@@ -1742,17 +2008,17 @@ export default function CarMarketplace(): JSX.Element {
                 >
                   Fuel
                 </Text>
-                <HStack gap="5px">
+                <Flex gap="5px" flexWrap="wrap">
                   {['All', 'Petrol', 'Diesel', 'Hybrid', 'Electric'].map(
                     (f) => (
                       <Box
                         key={f}
                         as="button"
                         onClick={() => setFilterFuel(f)}
-                        px="9px"
+                        px={{ base: '7px', md: '9px' }}
                         py="4px"
                         borderRadius="7px"
-                        fontSize="11px"
+                        fontSize={{ base: '10px', md: '11px' }}
                         fontWeight="600"
                         border="1.5px solid"
                         transition="all 0.15s"
@@ -1764,36 +2030,49 @@ export default function CarMarketplace(): JSX.Element {
                       </Box>
                     ),
                   )}
-                </HStack>
+                </Flex>
               </Box>
             </Flex>
           </Box>
 
           {/* SORT ROW */}
-          <Flex justify="space-between" align="center" mb="14px">
+          <Flex
+            justify="space-between"
+            align="center"
+            mb="14px"
+            flexWrap="wrap"
+            gap="8px"
+          >
             <Text fontSize="12px" fontWeight="600" color="gray.500">
               {filtered.length} vehicle{filtered.length !== 1 ? 's' : ''} found
             </Text>
-            <HStack gap="8px">
-              <HStack gap="5px">
+            <HStack gap="8px" flexWrap="wrap">
+              {/* Sort chips — scroll horizontally on mobile */}
+              <Flex
+                gap="5px"
+                overflowX={{ base: 'auto', md: 'visible' }}
+                maxW={{ base: 'calc(100vw - 160px)', md: 'none' }}
+                pb={{ base: '2px', md: '0' }}
+              >
                 {(
                   [
                     ['newest', 'Newest'],
                     ['price_asc', 'Price ↑'],
                     ['price_desc', 'Price ↓'],
                     ['rating', 'Top Rated'],
-                    ['inspected_first', 'Inspected First'],
+                    ['inspected_first', 'Inspected'],
                   ] as [SortBy, string][]
                 ).map(([v, label]) => (
                   <Box
                     key={v}
                     as="button"
                     onClick={() => setSortBy(v)}
-                    px="9px"
+                    px={{ base: '8px', md: '9px' }}
                     py="4px"
                     borderRadius="7px"
-                    fontSize="11px"
+                    fontSize={{ base: '10px', md: '11px' }}
                     fontWeight="600"
+                    flexShrink="0"
                     bg={sortBy === v ? P : WHITE}
                     color={sortBy === v ? 'white' : 'gray.500'}
                     boxShadow={
@@ -1806,13 +2085,16 @@ export default function CarMarketplace(): JSX.Element {
                     {label}
                   </Box>
                 ))}
-              </HStack>
+              </Flex>
+
+              {/* View toggle — hide on mobile */}
               <HStack
                 bg={WHITE}
                 borderRadius="9px"
                 p="3px"
                 boxShadow="0 1px 4px rgba(0,0,0,0.07)"
                 gap="2px"
+                display={{ base: 'none', sm: 'flex' }}
               >
                 {(
                   [
@@ -1869,8 +2151,14 @@ export default function CarMarketplace(): JSX.Element {
             </Flex>
           ) : viewMode === 'grid' ? (
             <Grid
-              templateColumns="repeat(auto-fill, minmax(248px, 1fr))"
-              gap="14px"
+              templateColumns={{
+                base: '1fr',
+                sm: 'repeat(2, 1fr)',
+                md: 'repeat(2, 1fr)',
+                lg: 'repeat(2, 1fr)',
+                xl: 'repeat(3, 1fr)',
+              }}
+              gap={{ base: '10px', md: '14px' }}
             >
               {filtered.map((car) => (
                 <CarCard
@@ -1899,7 +2187,7 @@ export default function CarMarketplace(): JSX.Element {
                     onClick={() => setDetail(car)}
                   >
                     <Box
-                      w="120px"
+                      w={{ base: '90px', sm: '120px' }}
                       flexShrink="0"
                       style={{ background: car.gradient }}
                     >
@@ -1911,12 +2199,16 @@ export default function CarMarketplace(): JSX.Element {
                         opacity="0.8"
                       />
                     </Box>
-                    <Box p="12px 16px" flex="1" minW="0">
+                    <Box
+                      p={{ base: '10px 12px', md: '12px 16px' }}
+                      flex="1"
+                      minW="0"
+                    >
                       <Flex justify="space-between" align="flex-start" mb="4px">
                         <Box>
                           <Text
                             fontWeight="800"
-                            fontSize="14px"
+                            fontSize={{ base: '13px', md: '14px' }}
                             color="gray.800"
                           >
                             {car.year} {car.make} {car.model}
@@ -1945,7 +2237,7 @@ export default function CarMarketplace(): JSX.Element {
                           </HStack>
                         </Box>
                         <Text
-                          fontSize="16px"
+                          fontSize={{ base: '14px', md: '16px' }}
                           fontWeight="900"
                           color={P}
                           flexShrink="0"
@@ -1953,7 +2245,12 @@ export default function CarMarketplace(): JSX.Element {
                           {fmt(car.price)}
                         </Text>
                       </Flex>
-                      <HStack gap="12px" mt="6px">
+                      {/* Meta — hide some items on mobile */}
+                      <Flex
+                        gap={{ base: '8px', md: '12px' }}
+                        mt="6px"
+                        flexWrap="wrap"
+                      >
                         <Flex
                           align="center"
                           gap="5px"
@@ -1986,15 +2283,23 @@ export default function CarMarketplace(): JSX.Element {
                             {car.rating.toFixed(1)}
                           </Text>
                         </HStack>
-                        <HStack gap="3px" color="gray.400">
+                        <HStack
+                          gap="3px"
+                          color="gray.400"
+                          display={{ base: 'none', sm: 'flex' }}
+                        >
                           <LocIco />
                           <Text fontSize="11px">{car.location}</Text>
                         </HStack>
-                        <HStack gap="3px" color="gray.400">
+                        <HStack
+                          gap="3px"
+                          color="gray.400"
+                          display={{ base: 'none', md: 'flex' }}
+                        >
                           <SpeedIco />
                           <Text fontSize="11px">{fmtK(car.mileage)} km</Text>
                         </HStack>
-                      </HStack>
+                      </Flex>
                     </Box>
                   </Flex>
                 );
@@ -2003,163 +2308,70 @@ export default function CarMarketplace(): JSX.Element {
           )}
         </Box>
 
-        {/* SIDEBAR */}
-        <Box w="256px" minW="256px" flexShrink="0">
-          {/* Inspection guide */}
-          <Box
-            bg={WHITE}
-            borderRadius="14px"
-            p="16px"
-            mb="14px"
-            boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-          >
-            <Text fontWeight="800" fontSize="13px" color="gray.800" mb="12px">
-              Inspection Guide
-            </Text>
-            {(['Inspected', 'Pending', 'Not Inspected'] as InspStatus[]).map(
-              (s) => {
-                const cfg = INSP_CFG[s];
-                const count = CARS.filter((c) => c.inspection === s).length;
-                const desc =
-                  s === 'Inspected'
-                    ? 'Certified by AutoCheck NG'
-                    : s === 'Pending'
-                      ? 'Currently being inspected'
-                      : 'Buyer caution advised';
-                return (
-                  <Flex
-                    key={s}
-                    align="center"
-                    gap="9px"
-                    p="9px"
-                    borderRadius="9px"
-                    bg={cfg.bg}
-                    border="1px solid"
-                    borderColor={cfg.border}
-                    mb="7px"
-                    _last={{ mb: 0 }}
-                  >
-                    {s === 'Inspected' ? (
-                      <ShieldOk size={16} />
-                    ) : s === 'Pending' ? (
-                      <ShieldPend size={16} />
-                    ) : (
-                      <ShieldNo size={16} />
-                    )}
-                    <Box flex="1">
-                      <Text fontSize="12px" fontWeight="700" color={cfg.color}>
-                        {s}
-                      </Text>
-                      <Text fontSize="10px" color={cfg.color} opacity="0.7">
-                        {desc}
-                      </Text>
-                    </Box>
-                    <Badge
-                      bg={cfg.border}
-                      color={cfg.color}
-                      borderRadius="5px"
-                      fontSize="10px"
-                      px="6px"
-                      fontWeight="700"
-                    >
-                      {count}
-                    </Badge>
-                  </Flex>
-                );
-              },
-            )}
-          </Box>
+        {/* ── RIGHT: SIDEBAR — desktop always visible, mobile drawer ──────── */}
 
-          {/* Dealer rankings */}
-          <Box
-            bg={WHITE}
-            borderRadius="14px"
-            p="16px"
-            mb="14px"
-            boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-          >
-            <Flex justify="space-between" align="center" mb="10px">
-              <HStack gap="6px">
-                <TrophyIco />
-                <Text fontWeight="800" fontSize="13px" color="gray.800">
-                  Top Dealers
-                </Text>
-              </HStack>
-              <Text fontSize="11px" color={P} fontWeight="600" cursor="pointer">
-                See all
-              </Text>
-            </Flex>
-            <Flex px="12px" mb="6px">
-              <Text fontSize="9px" color="gray.400" fontWeight="700" w="28px">
-                #
-              </Text>
-              <Text fontSize="9px" color="gray.400" fontWeight="700" flex="1">
-                DEALER
-              </Text>
-              <Text fontSize="9px" color="gray.400" fontWeight="700">
-                SOLD
-              </Text>
-            </Flex>
-            {sortedDealers.map((d, i) => (
-              <DealerRankCard key={d.id} dealer={d} rank={i + 1} />
-            ))}
-          </Box>
-
-          {/* Market stats */}
-          <Box
-            bg={WHITE}
-            borderRadius="14px"
-            p="16px"
-            boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-          >
-            <Text fontWeight="800" fontSize="13px" color="gray.800" mb="10px">
-              Market Stats
-            </Text>
-            {[
-              ['Total Listings', `${CARS.length}`, '🚗'],
-              ['Inspected', `${inspCount} of ${CARS.length}`, '✅'],
-              ['Available Now', `${availCount}`, '🟢'],
-              [
-                'Avg. Price',
-                fmt(
-                  Math.round(
-                    CARS.reduce((a, c) => a + c.price, 0) / CARS.length,
-                  ),
-                ),
-                '💰',
-              ],
-              [
-                'Avg. Rating',
-                `${(CARS.reduce((a, c) => a + c.rating, 0) / CARS.length).toFixed(1)} ⭐`,
-                '📊',
-              ],
-              ['Total Dealers', `${DEALERS.length}`, '🏪'],
-            ].map(([label, value, icon]) => (
-              <Flex
-                key={label}
-                justify="space-between"
-                align="center"
-                py="7px"
-                borderBottom="1px solid"
-                borderColor="gray.50"
-                _last={{ borderBottom: 'none' }}
-              >
-                <HStack gap="6px">
-                  <Text fontSize="12px">{icon}</Text>
-                  <Text fontSize="11px" color="gray.500">
-                    {label}
-                  </Text>
-                </HStack>
-                <Text fontSize="11px" fontWeight="700" color="gray.800">
-                  {value}
-                </Text>
-              </Flex>
-            ))}
-          </Box>
+        {/* Desktop rail (lg+) */}
+        <Box
+          w="256px"
+          minW="256px"
+          flexShrink="0"
+          display={{ base: 'none', lg: 'block' }}
+          position="sticky"
+          top="72px"
+          maxH="calc(100vh - 80px)"
+          overflowY="auto"
+        >
+          <SidebarContent />
         </Box>
+
+        {/* Mobile / tablet drawer overlay */}
+        {sidebarOpen && (
+          <Box
+            display={{ base: 'block', lg: 'none' }}
+            position="fixed"
+            inset="0"
+            zIndex="30"
+            bg="rgba(0,0,0,0.4)"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Box
+              position="absolute"
+              top="0"
+              right="0"
+              bottom="0"
+              w={{ base: '88vw', sm: '340px' }}
+              bg={BG}
+              overflowY="auto"
+              p="16px"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Flex justify="space-between" align="center" mb="16px">
+                <Text fontWeight="800" fontSize="16px" color="gray.800">
+                  Stats & Rankings
+                </Text>
+                <Box
+                  as="button"
+                  onClick={() => setSidebarOpen(false)}
+                  w="32px"
+                  h="32px"
+                  borderRadius="8px"
+                  bg="gray.100"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  color="gray.500"
+                  _hover={{ bg: 'gray.200' }}
+                >
+                  <CloseIco />
+                </Box>
+              </Flex>
+              <SidebarContent />
+            </Box>
+          </Box>
+        )}
       </Flex>
 
       {detail && <DetailModal car={detail} onClose={() => setDetail(null)} />}
-    </AppLayout>
+    </Box>
   );
 }
