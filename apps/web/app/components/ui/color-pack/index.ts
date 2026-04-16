@@ -1,0 +1,16 @@
+export const Colors = {
+  P: '#6C63FF',
+  P_DARK: '#5B54E8',
+  P_LIGHT: '#EEF0FF',
+  INK: '#0D0C1D',
+  INK2: '#3D3B55',
+  INK3: '#7C7A99',
+  LINE: '#EEEDF5',
+  BG: '#F7F6FC',
+  WHITE: '#FFFFFF',
+  GREEN: '#22C55E',
+  WA: '#25D366',
+  FB: '#1877F2',
+  IG: '#E1306C',
+  TW: '#1DA1F2',
+};
