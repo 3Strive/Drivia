@@ -1,6 +1,7 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { Prisma, PrismaClient } from '@prisma/client';
 import { withAccelerate } from '@prisma/extension-accelerate';
+
+import { Prisma, PrismaClient } from './generator/client';
 
 @Injectable()
 export class PrismaService
@@ -8,7 +9,11 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor() {
-    super();
+    super({
+      datasources: {
+        db: { url: process.env.DATABASE_URL },
+      },
+    });
 
     Object.assign(
       this,

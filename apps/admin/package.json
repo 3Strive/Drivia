@@ -20,8 +20,6 @@
     "@drivia/eslint-config": "workspace:*",
     "@drivia/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
-    "@types/react": "18.3.1",
-    "@types/react-dom": "18.3.1",
     "eslint": "^9.28.0",
     "typescript": "5.8.2"
   }

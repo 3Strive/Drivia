@@ -1,7 +1,7 @@
 export const QUEUES = {
-  AUTH_QUEUE: 'auth-queue',
+  USER_QUEUE: 'auth-queue',
 };
 
 export const SERVICES = {
-  AUTH_SERVICE: 'AUTH_SERVICE',
+  USER_SERVICE: 'AUTH_SERVICE',
 };

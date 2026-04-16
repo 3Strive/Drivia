@@ -3,7 +3,14 @@ import nestConfig from '@drivia/eslint-config/nest-js';
 export default [
   ...nestConfig,
   {
-    ignores: ['**/*.spec.ts', '**/*.test.ts', 'dist/**', 'prisma/**'],
+    ignores: [
+      '**/*.spec.ts',
+      '**/*.test.ts',
+      'dist/**',
+      'prisma/**',
+      'prisma.config.ts',
+      'generated/**',
+    ],
   },
   {
     languageOptions: {

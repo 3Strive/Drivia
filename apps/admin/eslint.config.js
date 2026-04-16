@@ -1,5 +1,6 @@
 import react from 'eslint-plugin-react';
-import tseslint from 'typescript-eslint';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 
 export default [
   {
@@ -10,7 +11,7 @@ export default [
     ],
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
-      parser: tseslint.parser,
+      parser: tsParser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
@@ -19,7 +20,7 @@ export default [
       },
     },
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
+      '@typescript-eslint': tsPlugin,
       react,
     },
     rules: {

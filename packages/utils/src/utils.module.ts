@@ -1,10 +1,9 @@
 import { Global, Module } from '@nestjs/common';
-
-import { UtilService } from './utils.service';
+import { UtilsService } from './utils.service';
 
 @Global()
 @Module({
-  exports: [UtilService],
-  providers: [UtilService],
+  exports: [UtilsService],
+  providers: [UtilsService],
 })
-export class UtilModule {}
+export class UtilsModule {}

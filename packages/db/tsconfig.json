@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "resolvePackageJsonExports": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": ["node"],
     "esModuleInterop": true,
     "isolatedModules": true,
     "declaration": true,
@@ -14,6 +14,10 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@drivia/db": ["../../packages/db/src/index.ts"],
+      "@drivia/utils": ["../../packages/utils/src/index.ts"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -23,5 +27,5 @@
     "noFallthroughCasesInSwitch": false
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "src/**/*.spec.ts", "prisma/**"]
+  "exclude": ["node_modules", "src/**/*.spec.ts", "prisma/**", "src/generator"]
 }
