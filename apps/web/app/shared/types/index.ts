@@ -18,6 +18,7 @@ export type ListingStatus = 'Available' | 'Reserved' | 'Sold';
 
 export interface CarListing {
   id: string;
+  title: string;
   make: string;
   model: string;
   year: number;
@@ -86,7 +87,12 @@ export interface Contact {
   id: string;
   name: string;
   phone: string;
-  tags: string[]; // e.g. ["SUV Buyer", "Budget 5M-10M"]
+  platform: string;
+  platformColor: string;
+  carsBought: number;
+  totalSpent: number;
+  lastContact: string;
+  tags: 'VIP' | 'Repeat' | 'New' | 'Inactive';
   addedAt: string;
 }
 
