@@ -12,6 +12,9 @@ import {
   VStack,
   Link,
 } from '@chakra-ui/react';
+import ShareModalDemo, { ShareModal } from '../../molecules/sharemodal';
+import { ShareButton } from '../../he/btn-modal';
+import { CarListing } from '../../../shared/types';
 
 // ─── PALETTE ──────────────────────────────────────────────────────────────────
 const P = '#6C63FF';
@@ -242,6 +245,30 @@ const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
+const DEMO_LISTING: CarListing = {
+  status: 'Available',
+  color: '#3F51B5',
+  transmission: 'Automatic',
+  fuelType: 'Petrol',
+  description: 'string',
+  postedAt: '09/30/2026', // ISO date
+  sharedTo: ['whatsapp'],
+  id: '1',
+  title: '2021 Toyota Camry',
+  make: 'Toyota',
+  model: 'Camry',
+  year: 2021,
+  price: 16500000,
+  mileage: 42000,
+  condition: 'Tokunbo',
+  location: 'Lekki, Lagos',
+  phone: '08012345678',
+  images: [
+    'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=220&fit=crop',
+  ],
+  gradient: 'linear(to-br, #3F51B5, #6C63FF)',
+};
+
 // Flat list for search
 const NAV_ITEMS: NavItem[] = NAV_GROUPS.flatMap((g) => g.items);
 
@@ -250,6 +277,7 @@ export function Sidebar(): JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState<string>('');
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const filtered: NavItem[] = query.trim()
     ? NAV_ITEMS.filter((n) =>
@@ -512,6 +540,7 @@ export function Sidebar(): JSX.Element {
           gap="8px"
           _hover={{ bg: P_DARK }}
           boxShadow={`0 4px 14px ${P}44`}
+          onClick={() => setIsShareOpen(true)}
         >
           <ShareIco /> Share Post
         </Button>
@@ -555,6 +584,11 @@ export function Sidebar(): JSX.Element {
           Upgrade Now
         </Button>
       </Box>
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        listing={DEMO_LISTING}
+      />
     </Box>
   );
 }

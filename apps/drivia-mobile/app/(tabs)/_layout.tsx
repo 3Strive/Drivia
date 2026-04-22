@@ -26,6 +26,7 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarStyle: s.tabBar,
         tabBarShowLabel: false,
+        tabBarItemStyle: s.tabBarItem,
       }}
     >
       <Tabs.Screen
@@ -75,21 +76,28 @@ export default function TabsLayout() {
 const s = StyleSheet.create({
   tabBar: {
     height: 80,
+    justifyContent: 'flex-end',
     backgroundColor: C.white,
     borderTopWidth: 1,
     borderTopColor: C.line,
-    alignItems: 'center',
-    alignContent: 'center',
+    alignItems: 'baseline',
     paddingBottom: 0,
+    paddingTop: 8,
+    gap: 4,
+  },
+  tabBarItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   tab: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center', // ← fixed
     paddingVertical: 8,
     paddingHorizontal: 2,
     borderRadius: 12,
     gap: 3,
-    height: 60,
+    height: 50,
   },
   tabActive: { backgroundColor: C.pLight },
   tabLabel: {
