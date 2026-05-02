@@ -20,7 +20,9 @@ import type {
   CarListing,
   Condition,
   ListingStatus,
+  PlatformId,
 } from '../../constants/types';
+import { PLATFORMS } from './broadcast';
 
 /* ---------------- MOCK DATA ---------------- */
 const MOCK: CarListing[] = [
@@ -222,6 +224,13 @@ export default function Inventory() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<ListingStatus | 'All'>('All');
   const [selected, setSelected] = useState<CarListing | null>(null);
+  const [compose, setCompose] = useState<boolean>(false);
+  const [message, setMessage] = useState('');
+  const [selPlats, setSelPlats] = useState<PlatformId[]>(['whatsapp']);
+  const togglePlat = (id: PlatformId) =>
+    setSelPlats((p) =>
+      p.includes(id) ? p.filter((x) => x !== id) : [...p, id],
+    );
 
   const filtered = MOCK.filter((c) => {
     const f = filter === 'All' || c.status === filter;
@@ -238,7 +247,17 @@ export default function Inventory() {
 
   return (
     <View style={s.screen}>
-      <ScreenHeader title="My Inventory" />
+      <ScreenHeader
+        title="My Inventory"
+        right={
+          <TouchableOpacity
+            style={s.composeBtn}
+            onPress={() => setCompose(true)}
+          >
+            <Text style={s.composeBtnText}>Compose</Text>
+          </TouchableOpacity>
+        }
+      />
 
       <FlatList
         data={filtered}
@@ -326,6 +345,114 @@ export default function Inventory() {
           </View>
         </Modal>
       )}
+      <Modal
+        visible={compose}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setCompose(false)}
+      >
+        <View style={s.modal}>
+          <View style={s.handle} />
+          <View style={s.mHeader}>
+            <Text style={s.mTitle}>New Broadcast</Text>
+            <TouchableOpacity onPress={() => setCompose(false)}>
+              <Text style={s.mClose}>X</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            style={{ paddingHorizontal: 20 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <Text style={s.fieldLabel}>Send to</Text>
+            <View style={s.platRow}>
+              {PLATFORMS.map((pl) => {
+                const sel = selPlats.includes(pl.id);
+                return (
+                  <TouchableOpacity
+                    key={pl.id}
+                    onPress={() => togglePlat(pl.id)}
+                    style={[
+                      s.platBtn,
+                      sel && {
+                        borderColor: pl.color,
+                        backgroundColor: pl.color + '18',
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        s.platBtnLetter,
+                        { color: sel ? pl.color : C.ink3 },
+                      ]}
+                    >
+                      {pl.letter}
+                    </Text>
+                    <Text
+                      style={[
+                        s.platBtnName,
+                        { color: sel ? pl.color : C.ink3 },
+                      ]}
+                    >
+                      {pl.name}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+            <Text style={s.fieldLabel}>Images</Text>
+            <View style={s.imagesRow}>
+              <TouchableOpacity style={s.imageBtn}>
+                <Text style={s.imageBtnText}>+</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={s.fieldLabel}>Message</Text>
+            <TextInput
+              style={s.msgBox}
+              placeholder="Type your broadcast message..."
+              value={message}
+              onChangeText={setMessage}
+              multiline
+              numberOfLines={5}
+              textAlignVertical="top"
+            />
+            {selPlats.includes('whatsapp') && message.length > 0 && (
+              <View style={s.preview}>
+                <Text style={s.previewLabel}>WhatsApp Preview</Text>
+                <View style={s.waBubble}>
+                  <Text style={s.waBubbleText}>{message}</Text>
+                  <Text style={s.waBubbleTime}>10:42 checkcheck</Text>
+                </View>
+              </View>
+            )}
+            <Text style={s.fieldLabel}>Audience</Text>
+            <View style={s.audienceRow}>
+              {['All contacts', 'SUV buyers', 'Budget buyers', 'Luxury'].map(
+                (a) => (
+                  <TouchableOpacity key={a} style={s.audienceChip}>
+                    <Text style={s.audienceChipText}>{a}</Text>
+                  </TouchableOpacity>
+                ),
+              )}
+            </View>
+            <View style={s.mActions}>
+              <TouchableOpacity
+                style={[s.sendBtn, { flex: 1, backgroundColor: C.p }]}
+                onPress={() => setCompose(false)}
+              >
+                <Text style={s.sendBtnText}>Send Now</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[s.sendBtn, { backgroundColor: C.pLight }]}
+                onPress={() => setCompose(false)}
+              >
+                <Text style={[s.sendBtnText, { color: C.p }]}>Schedule</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{ height: 40 }} />
+          </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -369,6 +496,120 @@ const s = StyleSheet.create({
     marginBottom: 10,
   },
 
+  composeBtn: {
+    backgroundColor: C.p,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  composeBtnText: { color: C.white, fontWeight: '700', fontSize: 13 },
+  modal: {
+    flex: 1,
+    backgroundColor: C.white,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  handle: {
+    width: 40,
+    height: 4,
+    backgroundColor: C.line,
+    borderRadius: 2,
+    alignSelf: 'center',
+    marginTop: 12,
+  },
+  mHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+  },
+  mTitle: { fontSize: 18, fontWeight: '800', color: C.ink },
+  mClose: { fontSize: 16, color: C.ink3, fontWeight: '700' },
+  fieldLabel: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: C.ink2,
+    marginBottom: 8,
+    marginTop: 16,
+  },
+  platRow: { flexDirection: 'row', gap: 8 },
+  platBtn: {
+    flex: 1,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: C.line,
+    padding: 10,
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: C.white,
+  },
+  platBtnLetter: { fontSize: 15, fontWeight: '900' },
+  platBtnName: { fontSize: 10, fontWeight: '700' },
+  msgBox: {
+    backgroundColor: C.bg,
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 14,
+    color: C.ink,
+    minHeight: 110,
+    borderWidth: 1.5,
+    borderColor: C.line,
+  },
+
+  imagesRow: { flexDirection: 'row', gap: 8 },
+  imageBtn: {
+    backgroundColor: C.pLight,
+    borderRadius: 12,
+    width: 60,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  imageBtnText: { fontSize: 24, fontWeight: '700', color: C.p },
+
+  preview: {
+    marginTop: 14,
+    backgroundColor: '#E3F2E1',
+    borderRadius: 12,
+    padding: 12,
+  },
+  previewLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: C.green,
+    marginBottom: 8,
+  },
+  waBubble: {
+    backgroundColor: '#DCF8C6',
+    borderRadius: 12,
+    borderBottomRightRadius: 3,
+    padding: 10,
+  },
+  waBubbleText: { fontSize: 13, color: '#1C1C1C', lineHeight: 19 },
+  waBubbleTime: {
+    fontSize: 10,
+    color: '#667781',
+    textAlign: 'right',
+    marginTop: 4,
+  },
+  audienceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  audienceChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 10,
+    backgroundColor: C.pLight,
+  },
+  audienceChipText: { fontSize: 12, fontWeight: '600', color: C.p },
+  mActions: { flexDirection: 'row', gap: 10, marginTop: 24 },
+  sendBtn: {
+    height: 50,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  sendBtnText: { fontSize: 14, fontWeight: '700', color: C.white },
   input: {
     backgroundColor: C.white,
     borderRadius: 10,

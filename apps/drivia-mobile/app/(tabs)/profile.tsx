@@ -10,6 +10,7 @@ import {
 import { router } from 'expo-router';
 import { C, S } from '../../constants/theme';
 import { Badge, Card, SectionHeader, Divider } from '../../components/ui';
+import { Ionicons } from '@expo/vector-icons';
 
 type Tab = 'overview' | 'sales' | 'settings';
 
@@ -274,23 +275,40 @@ export default function Profile() {
             <View style={s.saleSummary}>
               {[
                 {
-                  icon: '💰',
-                  label: 'Revenue This Year',
-                  val: '₦218M',
+                  icon: <Ionicons name="stats-chart" size={20} color={C.red} />,
+                  label: 'Revenue',
+                  value: '₦84M',
                   color: C.p,
+                  sub: '+12% this month',
                 },
                 {
-                  icon: '🚗',
-                  label: 'Cars Sold This Year',
-                  val: '21',
+                  icon: <Ionicons name="car" size={20} color={C.p} />,
+                  label: 'Cars Sold',
+                  value: '21',
                   color: C.green,
+                  sub: 'This month',
                 },
-                { icon: '💬', label: 'From WhatsApp', val: '61%', color: C.wa },
                 {
-                  icon: '📊',
-                  label: 'Avg. Sale Price',
-                  val: '₦21.4M',
+                  icon: (
+                    <Ionicons
+                      name="chatbubbles-outline"
+                      size={20}
+                      color={C.ink2}
+                    />
+                  ),
+                  label: 'Active Leads',
+                  value: '38',
                   color: '#2C7A7B',
+                  sub: '6 new today',
+                },
+                {
+                  icon: (
+                    <Ionicons name="cube-outline" size={20} color={C.ink2} />
+                  ),
+                  label: 'In Stock',
+                  value: '47',
+                  color: C.gold,
+                  sub: '3 expiring soon',
                 },
               ].map((st) => (
                 <View
@@ -307,7 +325,7 @@ export default function Profile() {
                     {st.icon}
                   </Text>
                   <Text style={[s.saleStatVal, { color: st.color }]}>
-                    {st.val}
+                    {st.value}
                   </Text>
                   <Text style={s.saleStatLabel}>{st.label}</Text>
                 </View>

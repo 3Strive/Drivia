@@ -12,7 +12,7 @@ import { C, S } from '../../constants/theme';
 import { Badge, Card, ScreenHeader, SectionHeader } from '../../components/ui';
 
 type PlatformId = 'whatsapp' | 'facebook' | 'instagram';
-const PLATFORMS = [
+export const PLATFORMS = [
   { id: 'whatsapp' as PlatformId, name: 'WhatsApp', color: C.wa, letter: 'W' },
   { id: 'facebook' as PlatformId, name: 'Facebook', color: C.fb, letter: 'f' },
   {

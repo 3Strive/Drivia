@@ -12,7 +12,9 @@ import {
   Platform,
 } from 'react-native';
 import { router } from 'expo-router';
-import { C } from '../../constants/theme';
+import { C, R } from '../../constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import Plans from '../plans';
 
 const { width } = Dimensions.get('window');
 const TOTAL = 7;
@@ -21,10 +23,12 @@ const TOTAL = 7;
 interface PlanOption {
   id: string;
   name: string;
-  price: string;
+  priceStr: string;
+  price: number;
   period: string;
   popular: boolean;
   features: string[];
+  missing: string[];
 }
 interface PlatOption {
   id: string;
@@ -34,30 +38,55 @@ interface PlatOption {
   desc: string;
 }
 
-const PLANS: PlanOption[] = [
+const PLANS = [
   {
     id: 'free',
     name: 'Free',
-    price: '₦0',
+    price: 0,
+    priceStr: '₦0',
     period: 'forever',
-    popular: false,
-    features: ['5 listings', '10 broadcasts', '2 platforms', 'Basic leads'],
+    features: ['5 listings', '10 broadcasts/mo', '2 platforms', 'Basic leads'],
+    missing: [
+      'CRM & analytics',
+      'Inspection credits',
+      'Listing boost',
+      'WhatsApp API',
+    ],
   },
   {
     id: 'pro',
     name: 'Pro',
-    price: '₦15K',
-    period: 'per month',
+    price: 15000,
+    priceStr: '₦15,000',
+    period: '/month',
     popular: true,
-    features: ['30 listings', '200 broadcasts', '3 platforms', 'Full CRM'],
+    features: [
+      '30 listings',
+      '200 broadcasts/mo',
+      'All 3 platforms',
+      'Full CRM & analytics',
+      'Inspection credits',
+      'Priority support',
+      '3 team members',
+    ],
+    missing: ['WhatsApp API', 'Dedicated manager'],
   },
   {
     id: 'vvip',
     name: 'VVIP',
-    price: '₦45K',
-    period: 'per month',
-    popular: false,
-    features: ['Unlimited', 'Unlimited', 'All platforms', 'Manager'],
+    price: 45000,
+    priceStr: '₦45,000',
+    period: '/month',
+    features: [
+      'Unlimited listings',
+      'Unlimited broadcasts',
+      'All platforms + API',
+      'Full CRM & analytics',
+      'Unlimited inspection credits',
+      'Dedicated account manager',
+      'Custom branding',
+    ],
+    missing: [] as string[],
   },
 ];
 
@@ -197,7 +226,8 @@ function Step2({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
       <Text style={s.title}>Verify your number</Text>
       <Text style={s.sub}>
         We sent a 4-digit code to{' '}
-        <Text style={{ fontWeight: '700', color: C.ink }}>0801 234 5678</Text>
+        <Text style={{ fontWeight: '700', color: C.ink }}>0801 234 5678</Text>{' '}
+        on WhatsApp
       </Text>
 
       <View style={s.otpRow}>
@@ -250,7 +280,7 @@ function Step3({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
 
         {/* Logo upload placeholder */}
         <View style={s.logoUpload}>
-          <Text style={{ fontSize: 28 }}>📷</Text>
+          <Ionicons name="camera" size={30} color={C.p} />
           <Text style={[s.hint, { color: C.p, marginTop: 4 }]}>
             Upload Logo
           </Text>
@@ -444,6 +474,7 @@ function Step5({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
 // ─── STEP 6: Plan ─────────────────────────────────────────────────────────────
 function Step6({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
   const [selected, setSelected] = useState('free');
+
   return (
     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <View style={s.step}>
@@ -451,56 +482,60 @@ function Step6({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
         <Text style={s.title}>Choose your plan</Text>
         <Text style={s.sub}>Start free, upgrade anytime. No card needed.</Text>
 
-        {PLANS.map((plan) => {
-          const sel = selected === plan.id;
-          return (
-            <TouchableOpacity
-              key={plan.id}
-              onPress={() => setSelected(plan.id)}
-              style={[s.planCard, sel && s.planCardSelected]}
-            >
-              {plan.popular && (
-                <View style={s.popularBadge}>
-                  <Text style={s.popularText}>POPULAR</Text>
-                </View>
-              )}
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                }}
+        {/* Plan cards */}
+        <View style={s.plansWrap}>
+          {PLANS.map((plan) => {
+            const sel = selected === plan.id;
+            // const displayPrice =
+            //   billing === 'yearly' && plan.price > 0
+            //     ? '₦' + Math.round(plan.price * 0.8).toLocaleString()
+            //     : plan.priceStr;
+            return (
+              <TouchableOpacity
+                key={plan.id}
+                onPress={() => setSelected(plan.id)}
+                style={[s.planCard, sel && s.planCardSel]}
+                activeOpacity={0.85}
               >
-                <View>
-                  <Text style={s.planName}>{plan.name}</Text>
-                  <Text style={s.planPrice}>
-                    {plan.price} <Text style={s.planPeriod}>{plan.period}</Text>
-                  </Text>
-                </View>
-                {sel && (
-                  <View style={s.checkCircle}>
-                    <Text
-                      style={{
-                        color: C.white,
-                        fontSize: 10,
-                        fontWeight: '800',
-                      }}
-                    >
-                      ✓
-                    </Text>
+                {(plan as any).popular && (
+                  <View style={s.popularBanner}>
+                    <Text style={s.popularTxt}>MOST POPULAR</Text>
                   </View>
                 )}
-              </View>
-              <View style={{ marginTop: 10, gap: 4 }}>
+
+                <View style={s.planTop}>
+                  <View>
+                    <Text style={s.planName}>{plan.name}</Text>
+                    <Text style={s.planPeriod}>{plan.period}</Text>
+                  </View>
+                  <View style={s.planPriceRow}>
+                    <Text style={[s.planPrice, sel && { color: C.p }]}>
+                      {plan.priceStr}
+                    </Text>
+                    {sel && (
+                      <View style={s.check}>
+                        <Text style={{ color: C.white, fontSize: 10 }}>✓</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+
                 {plan.features.map((f) => (
-                  <Text key={f} style={s.planFeat}>
-                    ✓ {f}
-                  </Text>
+                  <View key={f} style={s.featRow}>
+                    <Text style={[s.featDot, { color: C.green }]}>✓</Text>
+                    <Text style={s.featTxt}>{f}</Text>
+                  </View>
                 ))}
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+                {plan.missing.map((f) => (
+                  <View key={f} style={s.featRow}>
+                    <Text style={[s.featDot, { color: C.ink3 }]}>✗</Text>
+                    <Text style={[s.featTxt, { color: C.ink3 }]}>{f}</Text>
+                  </View>
+                ))}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
 
         <View style={[s.tipBox, { backgroundColor: C.pLight }]}>
           <Text style={[s.tipTitle, { color: C.p }]}>
@@ -517,10 +552,18 @@ function Step6({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={[s.nextBtn, { flex: 1 }]}
-            onPress={onNext}
+            onPress={() => {
+              if (selected !== 'free') {
+                router.push('/plans');
+              } else {
+                onNext();
+              }
+            }}
             activeOpacity={0.85}
           >
-            <Text style={s.nextBtnText}>Continue →</Text>
+            <Text style={s.nextBtnText}>
+              {selected != 'free' ? 'Pay' : 'Continue'} →
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -531,15 +574,29 @@ function Step6({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
 // ─── STEP 7: Success ──────────────────────────────────────────────────────────
 function Step7() {
   const checks = [
-    { icon: '📋', label: 'Dealer profile created' },
-    { icon: '💬', label: 'WhatsApp & Facebook connected' },
-    { icon: '🚀', label: 'Free plan activated' },
-    { icon: '🗺️', label: 'Listed on Drivia Marketplace' },
+    {
+      icon: <Ionicons name="person" color={C.gold} size={20} />,
+      label: 'Dealer profile created',
+    },
+    {
+      icon: <Ionicons name="chatbubble" color={C.ig} size={20} />,
+      label: 'WhatsApp & Facebook connected',
+    },
+    {
+      icon: <Ionicons name="flash-outline" color={C.red} size={20} />,
+      label: 'Free plan activated',
+    },
+    {
+      icon: <Ionicons name="storefront-outline" color={C.green} size={20} />,
+      label: 'Listed on Drivia Marketplace',
+    },
   ];
   return (
     <View style={[s.step, { alignItems: 'center' }]}>
       <View style={s.successRing}>
-        <Text style={{ fontSize: 32 }}>✓</Text>
+        <Text style={{ fontSize: 32 }}>
+          <Ionicons name="checkmark-done" />
+        </Text>
       </View>
       <Text style={s.eyebrow}>You are all set!</Text>
       <Text style={[s.title, { textAlign: 'center' }]}>
@@ -616,7 +673,7 @@ export default function Onboarding() {
             style={[s.progressFill, { width: `${(step / TOTAL) * 100}%` }]}
           />
         </View>
-        <Progress step={step} />
+        {/* <Progress step={step} /> */}
       </View>
 
       {steps[step - 1]}
@@ -684,7 +741,7 @@ const s = StyleSheet.create({
     marginBottom: 6,
     marginTop: 4,
   },
-  hint: { fontSize: 11, color: C.ink3, marginTop: 5 },
+  hint: { fontSize: 11, color: C.ink3, marginVertical: 5 },
 
   inputRow: { flexDirection: 'row' },
   flag: {
@@ -813,20 +870,52 @@ const s = StyleSheet.create({
   platName: { fontSize: 13, fontWeight: '700', color: C.ink },
   platDesc: { fontSize: 11, color: C.ink3 },
 
+  plansWrap: { paddingHorizontal: 16, gap: 12 },
   planCard: {
-    borderRadius: 14,
+    borderRadius: R.lg,
     borderWidth: 2,
     borderColor: C.line,
     backgroundColor: C.white,
-    padding: 16,
-    marginBottom: 10,
+    padding: 18,
     overflow: 'hidden',
   },
-  planCardSelected: { borderColor: C.p, backgroundColor: C.pLight },
-  planName: { fontSize: 16, fontWeight: '800', color: C.ink, marginBottom: 4 },
-  planPrice: { fontSize: 20, fontWeight: '800', color: C.p },
-  planPeriod: { fontSize: 12, fontWeight: '400', color: C.ink3 },
-  planFeat: { fontSize: 12, color: C.ink2, lineHeight: 18 },
+  planCardSel: { borderColor: C.p, backgroundColor: C.pLight },
+  popularBanner: {
+    backgroundColor: C.p,
+    marginHorizontal: -18,
+    marginTop: -18,
+    marginBottom: 14,
+    paddingVertical: 5,
+    alignItems: 'center',
+  },
+  popularTxt: {
+    fontSize: 9,
+    fontWeight: '800',
+    color: C.white,
+    letterSpacing: 1.5,
+  },
+  planTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 14,
+  },
+  planName: { fontSize: 18, fontWeight: '800', color: C.ink },
+  planPeriod: { fontSize: 11, color: C.ink3, marginTop: 2 },
+  planPriceRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  planPrice: { fontSize: 22, fontWeight: '800', color: C.ink },
+  check: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: C.p,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  featRow: { flexDirection: 'row', gap: 8, marginBottom: 5 },
+  featDot: { fontSize: 12, fontWeight: '800', width: 14 },
+  featTxt: { flex: 1, fontSize: 12, color: C.ink2, lineHeight: 18 },
+
   popularBadge: {
     position: 'absolute',
     top: 0,
@@ -903,8 +992,8 @@ const s = StyleSheet.create({
   checkDone: { fontSize: 12, fontWeight: '700', color: C.green },
 
   logoUpload: {
-    width: 72,
-    height: 72,
+    width: 82,
+    height: 82,
     borderRadius: 36,
     backgroundColor: C.pLight,
     borderWidth: 2,

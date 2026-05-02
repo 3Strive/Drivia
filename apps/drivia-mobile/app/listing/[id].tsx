@@ -21,6 +21,7 @@ import {
   Divider,
   RowItem,
 } from '../../components/ui';
+import { Ionicons } from '@expo/vector-icons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -282,22 +283,22 @@ export default function ListingDetail() {
                 listing.condition === 'Brand New'
                   ? C.p
                   : listing.condition === 'Tokunbo'
-                    ? '#0D9488'
-                    : '#C05621'
+                    ? C.white
+                    : C.gold
               }
               bg={
                 listing.condition === 'Brand New'
                   ? C.pLight
                   : listing.condition === 'Tokunbo'
-                    ? '#CCFBF1'
-                    : '#FFF7ED'
+                    ? C.green
+                    : C.bg
               }
             />
             {listing.inspected ? (
               <Badge
-                label={`✅ ${listing.inspectionScore}/100`}
-                color="#0D9488"
-                bg="#CCFBF1"
+                label={`✓  ${listing.inspectionScore}/100`}
+                color={C.green}
+                bg={C.greenBg}
               />
             ) : (
               <Badge label="⚠️ Not Inspected" color="#B45309" bg="#FEF9C3" />

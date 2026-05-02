@@ -1,19 +1,23 @@
 import { Tabs } from 'expo-router';
 import { View, Text, StyleSheet } from 'react-native';
 import { C } from '../../constants/theme';
+import { ReactNode } from 'react';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 function TabIcon({
-  emoji,
   label,
   focused,
+  emoji,
 }: {
-  emoji: string;
   label: string;
   focused: boolean;
+  emoji: ReactNode;
 }) {
   return (
     <View style={[s.tab, focused && s.tabActive]}>
-      <Text style={{ fontSize: 18 }}>{emoji}</Text>
+      <Text style={{ fontSize: 18, color: focused ? C.p : C.green }}>
+        {emoji}
+      </Text>
       <Text style={[s.tabLabel, focused && s.tabLabelActive]}>{label}</Text>
     </View>
   );
@@ -33,7 +37,17 @@ export default function TabsLayout() {
         name="index"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="" label="Home" focused={focused} />
+            <TabIcon
+              emoji={
+                <MaterialIcons
+                  name="home"
+                  size={30}
+                  color={focused ? C.p : C.ink}
+                />
+              }
+              label="Home"
+              focused={focused}
+            />
           ),
         }}
       />
@@ -41,7 +55,13 @@ export default function TabsLayout() {
         name="inventory"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="🚗" label="Inventory" focused={focused} />
+            <TabIcon
+              emoji={
+                <Ionicons name="car" size={30} color={focused ? C.p : C.ink} />
+              }
+              label="Inventory"
+              focused={focused}
+            />
           ),
         }}
       />
@@ -49,7 +69,17 @@ export default function TabsLayout() {
         name="leads"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="💬" label="Leads" focused={focused} />
+            <TabIcon
+              emoji={
+                <Ionicons
+                  name="analytics"
+                  size={30}
+                  color={focused ? C.p : C.ink}
+                />
+              }
+              label="Leads"
+              focused={focused}
+            />
           ),
         }}
       />
@@ -57,7 +87,17 @@ export default function TabsLayout() {
         name="broadcast"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="📣" label="Broadcast" focused={focused} />
+            <TabIcon
+              emoji={
+                <MaterialIcons
+                  name="campaign"
+                  size={30}
+                  color={focused ? C.p : C.ink}
+                />
+              }
+              label="Broadcast"
+              focused={focused}
+            />
           ),
         }}
       />
@@ -65,7 +105,17 @@ export default function TabsLayout() {
         name="profile"
         options={{
           tabBarIcon: ({ focused }) => (
-            <TabIcon emoji="👤" label="Profile" focused={focused} />
+            <TabIcon
+              emoji={
+                <MaterialIcons
+                  name="person"
+                  size={30}
+                  color={focused ? C.p : C.ink}
+                />
+              }
+              label="Profile"
+              focused={focused}
+            />
           ),
         }}
       />
@@ -92,7 +142,7 @@ const s = StyleSheet.create({
   },
   tab: {
     alignItems: 'center',
-    justifyContent: 'center', // ← fixed
+    justifyContent: 'center',
     paddingVertical: 8,
     paddingHorizontal: 2,
     borderRadius: 12,

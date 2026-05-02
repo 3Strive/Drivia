@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   View,
   Text,
@@ -14,13 +14,28 @@ export function Badge({
   label,
   color = C.p,
   bg,
+  leftIcon,
+  rightIcon,
 }: {
   label: string;
   color?: string;
   bg?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
 }) {
   return (
-    <View style={[st.badge, { backgroundColor: bg ?? color + '18' }]}>
+    <View
+      style={[
+        st.badge,
+        {
+          backgroundColor: bg ?? color + '18',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+        },
+      ]}
+    >
+      {leftIcon && leftIcon}
       <Text style={[st.badgeText, { color }]}>{label}</Text>
     </View>
   );
@@ -34,7 +49,7 @@ export function StatCard({
   color = C.p,
   sub,
 }: {
-  icon: string;
+  icon: ReactNode;
   label: string;
   value: string;
   color?: string;
