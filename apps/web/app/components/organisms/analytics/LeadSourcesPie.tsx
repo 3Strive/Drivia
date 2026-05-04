@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import { PieChart, Pie, Cell } from 'recharts';
-import { LegendItem } from '../molecules/LegendItem';
-import { SectionHeader } from '../atoms/SectionHeader';
+import { LegendItem } from '../../molecules/LegendItem';
+import { SectionHeader } from '../../atoms/SectionHeader';
 
 // ─── LEAD SOURCES PIE CHART CARD ──────────────────────────────────────────────
 interface PieSlice {
@@ -42,7 +42,12 @@ export const LeadSourcesPie = ({ data }: LeadSourcesPieProps) => (
     </Flex>
     <VStack gap="6px" align="stretch">
       {data.map((p) => (
-        <LegendItem key={p.name} name={p.name} value={p.value} color={p.color} />
+        <LegendItem
+          key={p.name}
+          name={p.name}
+          value={p.value}
+          color={p.color}
+        />
       ))}
     </VStack>
   </Box>

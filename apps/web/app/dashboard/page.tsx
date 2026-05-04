@@ -4,13 +4,7 @@ import React from 'react';
 import { Box, Grid, Flex, Text, HStack, VStack } from '@chakra-ui/react';
 import AppLayout from '../components/template/general-layout';
 import { PageTopBar } from '../components/molecules';
-import {
-  BestSellingCarsTable,
-  KpiGrid,
-  LeadSourcesPie,
-  PageFooter,
-  RevenueChart,
-} from '../components/organisms';
+
 import { COLORS } from '../components/atoms';
 import {
   FaBroadcastTower,
@@ -27,6 +21,11 @@ import {
   IoChatbubblesOutline,
 } from 'react-icons/io5';
 import { FaPaperclip } from 'react-icons/fa';
+import { KpiGrid } from '../components/organisms/analytics/KpiGrid';
+import { RevenueChart } from '../components/organisms/analytics/RevenueChart';
+import { LeadSourcesPie } from '../components/organisms/analytics/LeadSourcesPie';
+import { BestSellingCarsTable } from '../components/organisms/analytics/BestSellingCarsTable';
+import { PageFooter } from '../components/organisms';
 
 const revenueData = [
   { month: 'Jun', revenue: 38000000, sales: 2 },
@@ -95,7 +94,7 @@ const recentActivity = [
     icon: <FaCamera />,
     text: 'Mercedes C300 photos uploaded',
     time: '2 hrs ago',
-    color: '#805AD5',
+    color: '#3B82F6',
   },
   {
     icon: <IoChatbubbles />,
@@ -109,7 +108,7 @@ const quickStats = [
   { label: 'Active Listings', value: 14, color: COLORS.primary },
   { label: "Today's Leads", value: 7, color: '#25D366' },
   { label: 'Pending Follow-ups', value: 3, color: '#DD6B20' },
-  { label: 'Viewings This Week', value: 5, color: '#805AD5' },
+  { label: 'Viewings This Week', value: 5, color: '#3B82F6' },
 ];
 
 const totalRevenue = revenueData.reduce((a, d) => a + d.revenue, 0);
@@ -228,7 +227,7 @@ export default function DashboardPage() {
               {
                 icon: <IoAnalytics />,
                 label: ` View Analytics`,
-                color: '#805AD5',
+                color: '#3B82F6',
               },
               {
                 icon: <IoChatbubblesOutline />,

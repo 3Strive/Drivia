@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Text } from '@chakra-ui/react';
-import { CarTableRow, CarRowData } from '../molecules/CarTableRow';
-import { SectionHeader } from '../atoms/SectionHeader';
+import { CarRowData, CarTableRow } from '../../molecules';
+import { SectionHeader } from '../../atoms';
 
 // ─── BEST SELLING CARS TABLE CARD ─────────────────────────────────────────────
 interface BestSellingCarsTableProps {

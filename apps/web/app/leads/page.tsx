@@ -6,12 +6,11 @@ import AppLayout from '../components/template/general-layout';
 import { COLORS, SearchIco } from '../components/atoms';
 import { Lead, LeadKanbanBoard } from '../components/organisms/LeadKanbanBoard';
 import { PageTopBar } from '../components/molecules';
-import {
-  LeadSourcesPie,
-  PageFooter,
-  PlatformPerformanceTable,
-} from '../components/organisms';
+
 import { LeadDetailDrawer } from '../components/organisms/LeadDetailDrawer';
+import { PlatformPerformanceTable } from '../components/organisms/analytics/PlatformPerformanceTable';
+import { LeadSourcesPie } from '../components/organisms/analytics/LeadSourcesPie';
+import { PageFooter } from '../components/organisms';
 
 type KanbanColumn =
   | 'new'

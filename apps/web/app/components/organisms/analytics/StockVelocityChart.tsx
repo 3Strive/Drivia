@@ -10,8 +10,8 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { SectionHeader } from '../atoms/SectionHeader';
-import { COLORS } from '../atoms/palette';
+import { SectionHeader } from '../../atoms/SectionHeader';
+import { COLORS } from '../../atoms/palette';
 
 // ─── STOCK VELOCITY BAR CHART CARD ───────────────────────────────────────────
 interface StockDataPoint {
@@ -46,7 +46,11 @@ export const StockVelocityChart = ({
         margin={{ top: 0, right: 0, left: -20, bottom: 0 }}
         barSize={28}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F5" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="#F0F0F5"
+          vertical={false}
+        />
         <XAxis
           dataKey="range"
           tick={{ fontSize: 9, fill: '#A0AEC0' }}
@@ -59,7 +63,10 @@ export const StockVelocityChart = ({
           tickLine={false}
         />
         <Tooltip />
-        <Bar dataKey="count" radius={[6, 6, 0, 0] as [number, number, number, number]}>
+        <Bar
+          dataKey="count"
+          radius={[6, 6, 0, 0] as [number, number, number, number]}
+        >
           {data.map((d, i) => (
             <Cell
               key={i}
