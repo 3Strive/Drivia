@@ -9,10 +9,10 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { RevenueTooltip } from '../molecules/RevenueTooltip';
-import { SectionHeader } from '../atoms/SectionHeader';
-import { fmtShort } from '../atoms/formatters';
-import { COLORS } from '../atoms/palette';
+import { RevenueTooltip } from '../../molecules/RevenueTooltip';
+import { SectionHeader } from '../../atoms/SectionHeader';
+import { fmtShort } from '../../atoms/formatters';
+import { COLORS } from '../../atoms/palette';
 
 // ─── REVENUE AREA CHART CARD ──────────────────────────────────────────────────
 interface RevenueDataPoint {
@@ -53,7 +53,11 @@ export const RevenueChart = ({ data, totalRevenue }: RevenueChartProps) => (
             <stop offset="95%" stopColor={COLORS.primary} stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F5" vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          stroke="#F0F0F5"
+          vertical={false}
+        />
         <XAxis
           dataKey="month"
           tick={{ fontSize: 11, fill: '#A0AEC0' }}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Text, VStack } from '@chakra-ui/react';
-import { PlatformRow, PlatformRowData } from '../molecules/PlatformRow';
-import { SectionHeader } from '../atoms/SectionHeader';
+import { PlatformRow, PlatformRowData } from '../../molecules/PlatformRow';
+import { SectionHeader } from '../../atoms/SectionHeader';
 
 // ─── PLATFORM PERFORMANCE TABLE CARD ─────────────────────────────────────────
 interface PlatformPerformanceTableProps {
@@ -10,7 +10,9 @@ interface PlatformPerformanceTableProps {
 
 const HEADERS = ['Platform', 'Enquiries', 'Sold', 'Conv.'];
 
-export const PlatformPerformanceTable = ({ data }: PlatformPerformanceTableProps) => (
+export const PlatformPerformanceTable = ({
+  data,
+}: PlatformPerformanceTableProps) => (
   <Box
     bg="white"
     borderRadius="16px"

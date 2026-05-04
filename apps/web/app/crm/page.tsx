@@ -10,7 +10,8 @@ import {
 } from '../components/organisms/FollowUpReminders';
 import { PageTopBar } from '../components/molecules';
 import { ContactListTable } from '../components/organisms/ContactListTable';
-import { LeadSourcesPie, PageFooter } from '../components/organisms';
+import { PageFooter } from '../components/organisms';
+import { LeadSourcesPie } from '../components/organisms/analytics/LeadSourcesPie';
 
 const contacts: Contact[] = [
   {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { Grid } from '@chakra-ui/react';
-import { KpiCard } from '../atoms/KpiCard';
-import { fmtShort } from '../atoms/formatters';
+
 import { FaCar, FaMoneyBill } from 'react-icons/fa';
 import { IoAnalyticsSharp, IoPricetag } from 'react-icons/io5';
+import { fmtShort, KpiCard } from '../../atoms';
 
 // ─── KPI CARDS GRID ───────────────────────────────────────────────────────────
 interface KpiGridProps {
