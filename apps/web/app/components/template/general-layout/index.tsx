@@ -39,7 +39,7 @@ export default function AppLayout({
       <Sidebar />
 
       {/* ── Page content: scrolls independently ── */}
-      <Flex flex="1" overflow="auto" direction="column" bg="#F4F5FA">
+      <Flex flex="1" overflow="auto" direction="column" bg="#F8F8F8">
         {children}
       </Flex>
     </Flex>

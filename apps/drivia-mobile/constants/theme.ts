@@ -7,7 +7,7 @@ export const C = {
   ink2: '#3D3B55',
   ink3: '#7C7A99',
   line: '#EEEDF5',
-  bg: '#F7F6FC',
+  bg: '#F8F8F8',
   white: '#FFFFFF',
   green: '#15803D',
   greenBg: '#F0FFF4',

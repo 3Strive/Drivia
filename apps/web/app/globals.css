@@ -48,3 +48,13 @@ a {
     display: unset;
   }
 }
+
+.feed {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+.card {
+  height: 100vh;
+  scroll-snap-align: start;
+}

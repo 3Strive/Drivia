@@ -1,6 +1,6 @@
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 export const COLORS = {
-  primary: '#6C63FF',
+  primary: '#3B82F6',
   primaryDark: '#5B54E8',
   bg: '#F4F5FA',
   white: '#FFFFFF',

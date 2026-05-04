@@ -66,7 +66,7 @@ const contacts: Contact[] = [
     name: 'Seun Williams',
     phone: '0812 890 1234',
     platform: 'Referral',
-    platformColor: '#805AD5',
+    platformColor: '#3B82F6',
     carsBought: 1,
     totalSpent: 14200000,
     lastContact: '3 days ago',

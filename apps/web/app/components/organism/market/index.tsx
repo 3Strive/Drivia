@@ -1,6 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
+import { FaHeart, FaRegHeart, FaSearch, FaTimes } from 'react-icons/fa';
+import { LuPlus } from 'react-icons/lu';
+import { FaPhoneAlt } from 'react-icons/fa';
+import { FaWhatsapp } from 'react-icons/fa';
+
 import {
   Box,
   Flex,
@@ -8,185 +13,25 @@ import {
   Input,
   Button,
   Badge,
-  Avatar,
-  Grid,
   HStack,
   VStack,
-  Heading,
   Image,
   Link,
+  Grid,
+  GridItem,
 } from '@chakra-ui/react';
 
-const P = '#6C63FF';
-const P_DARK = '#5B54E8';
-const P_LIGHT = '#EEF0FF';
-const BG = '#F4F5FA';
-const WHITE = '#FFFFFF';
-
-const Ico = ({
-  d,
-  size = 16,
-  stroke = 'currentColor',
-  fill = 'none',
-  sw = 2,
-}: {
-  d: string | string[];
-  size?: number;
-  stroke?: string;
-  fill?: string;
-  sw?: number;
-}): JSX.Element => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill={fill}
-    stroke={stroke}
-    strokeWidth={sw}
-  >
-    {Array.isArray(d) ? (
-      d.map((p, i) => <path key={i} d={p} />)
-    ) : (
-      <path d={d} />
-    )}
-  </svg>
-);
-
-const SearchIco = () => (
-  <Ico d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
-);
-const BellIco = () => (
-  <Ico
-    d={[
-      'M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9',
-      'M13.73 21a2 2 0 0 1-3.46 0',
-    ]}
-  />
-);
-const MoonIco = () => (
-  <Ico d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-);
-const GridIco = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-  >
-    <rect x="3" y="3" width="7" height="7" />
-    <rect x="14" y="3" width="7" height="7" />
-    <rect x="14" y="14" width="7" height="7" />
-    <rect x="3" y="14" width="7" height="7" />
-  </svg>
-);
-const ListIco = () => (
-  <Ico
-    d={[
-      'M8 6h13',
-      'M8 12h13',
-      'M8 18h13',
-      'M3 6h.01',
-      'M3 12h.01',
-      'M3 18h.01',
-    ]}
-  />
-);
-const CloseIco = () => <Ico d="M18 6 6 18M6 6l12 12" sw={2.5} />;
-const PhoneIco = () => (
-  <Ico
-    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l1.14-1.14a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
-    size={14}
-  />
-);
-const LocIco = () => (
-  <Ico
-    d={[
-      'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z',
-      'M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4',
-    ]}
-    size={13}
-  />
-);
-const SpeedIco = () => (
-  <Ico
-    d={['M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z', 'M12 12l4-4', 'M12 12v4']}
-    size={13}
-  />
-);
-const FuelIco = () => (
-  <Ico
-    d={[
-      'M3 22V10a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12',
-      'M3 10V6a2 2 0 0 1 2-2h2',
-      'M7 22v-4h6v4',
-      'M17 10h2a2 2 0 0 1 2 2v3a1 1 0 0 0 1 1h0a1 1 0 0 0 1-1v-5l-3-3',
-    ]}
-    size={13}
-  />
-);
-const TrophyIco = () => (
-  <Ico
-    d={[
-      'M6 9H4.5a2.5 2.5 0 0 1 0-5H6',
-      'M18 9h1.5a2.5 2.5 0 0 0 0-5H18',
-      'M4 22h16',
-      'M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22',
-      'M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22',
-      'M18 2H6v7a6 6 0 0 0 12 0V2z',
-    ]}
-    size={14}
-    stroke={P}
-  />
-);
-const HeartIco = ({ on }: { on: boolean }) => (
-  <Ico
-    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-    fill={on ? P : 'none'}
-    stroke={on ? P : 'currentColor'}
-    size={15}
-  />
-);
-const ShieldOk = ({ size = 14 }: { size?: number }) => (
-  <Ico
-    d={['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', 'M9 12l2 2 4-4']}
-    size={size}
-    stroke="#38A169"
-  />
-);
-const ShieldNo = ({ size = 14 }: { size?: number }) => (
-  <Ico
-    d={[
-      'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',
-      'M15 9l-6 6',
-      'M9 9l6 6',
-    ]}
-    size={size}
-    stroke="#E53E3E"
-  />
-);
-const ShieldPend = ({ size = 14 }: { size?: number }) => (
-  <Ico
-    d={['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', 'M12 8v4', 'M12 16h.01']}
-    size={size}
-    stroke="#D69E2E"
-  />
-);
-
-const fmt = (n: number) => `₦${n.toLocaleString('en-NG')}`;
-const fmtK = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(0)}k` : `${n}`);
-
+// ─── TYPES ────────────────────────────────────────────────────────────────────
 type Condition = 'Brand New' | 'Tokunbo' | 'Nigerian Used';
 type InspStatus = 'Inspected' | 'Not Inspected' | 'Pending';
 type ListStatus = 'Available' | 'Reserved' | 'Sold';
-type SortBy =
-  | 'newest'
-  | 'price_asc'
-  | 'price_desc'
-  | 'rating'
-  | 'inspected_first';
-type ViewMode = 'grid' | 'list';
+type FilterOpt =
+  | 'All'
+  | 'Inspected'
+  | 'Tokunbo'
+  | 'Brand New'
+  | 'Nigerian Used';
+type SortOpt = 'Newest' | 'Price ↑' | 'Price ↓' | 'Top Rated';
 
 interface InspReport {
   engine: number;
@@ -214,72 +59,24 @@ interface Car {
   transmission: 'Automatic' | 'Manual';
   fuel: 'Petrol' | 'Diesel' | 'Hybrid' | 'Electric';
   dealerId: string;
+  dealerName: string;
+  dealerRating: number;
   phone: string;
-  gradient: string;
-  img: string;
+  images: string[];
   savedCount: number;
   viewCount: number;
   rating: number;
   reviewCount: number;
   postedDaysAgo: number;
 }
-interface Dealer {
-  id: string;
-  name: string;
-  avatar: string;
-  location: string;
-  totalListings: number;
-  soldCount: number;
-  rating: number;
-  reviewCount: number;
-  responseTime: string;
-  inspectedPct: number;
-  joinedYear: number;
-  badge: 'Gold' | 'Silver' | 'Verified' | 'New';
-}
 
-const INSP_CFG: Record<
-  InspStatus,
-  { bg: string; color: string; border: string; icon: JSX.Element }
-> = {
-  Inspected: {
-    bg: '#F0FFF4',
-    color: '#276749',
-    border: '#9AE6B4',
-    icon: <ShieldOk />,
-  },
-  'Not Inspected': {
-    bg: '#FFF5F5',
-    color: '#9B2C2C',
-    border: '#FEB2B2',
-    icon: <ShieldNo />,
-  },
-  Pending: {
-    bg: '#FFFAF0',
-    color: '#744210',
-    border: '#FAF089',
-    icon: <ShieldPend />,
-  },
-};
-const COND_CFG: Record<Condition, { bg: string; color: string }> = {
-  'Brand New': { bg: P_LIGHT, color: P },
-  Tokunbo: { bg: '#E6FFFA', color: '#2C7A7B' },
-  'Nigerian Used': { bg: '#FFFAF0', color: '#C05621' },
-};
-const STAT_CFG: Record<ListStatus, { bg: string; color: string }> = {
-  Available: { bg: '#C6F6D5', color: '#276749' },
-  Reserved: { bg: '#FEFCBF', color: '#744210' },
-  Sold: { bg: '#FED7D7', color: '#9B2C2C' },
-};
-const BADGE_CFG: Record<
-  Dealer['badge'],
-  { bg: string; color: string; icon: string }
-> = {
-  Gold: { bg: '#FEFCBF', color: '#744210', icon: '🥇' },
-  Silver: { bg: '#EDF2F7', color: '#4A5568', icon: '🥈' },
-  Verified: { bg: P_LIGHT, color: P, icon: '✓' },
-  New: { bg: '#E6FFFA', color: '#2C7A7B', icon: '🆕' },
-};
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const EXTRA_IMAGES = [
+  'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80',
+  'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80',
+  'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&q=80',
+  'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&q=80',
+];
 
 const CARS: Car[] = [
   {
@@ -307,9 +104,12 @@ const CARS: Car[] = [
     transmission: 'Automatic',
     fuel: 'Petrol',
     dealerId: 'd1',
+    dealerName: 'Lagos Auto Hub',
+    dealerRating: 4.8,
     phone: '08012345678',
-    gradient: 'linear-gradient(135deg,#3F51B5,#6C63FF)',
-    img: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80',
+    ],
     savedCount: 34,
     viewCount: 312,
     rating: 4.7,
@@ -341,9 +141,12 @@ const CARS: Car[] = [
     transmission: 'Automatic',
     fuel: 'Petrol',
     dealerId: 'd1',
+    dealerName: 'Lagos Auto Hub',
+    dealerRating: 4.8,
     phone: '08012345678',
-    gradient: 'linear-gradient(135deg,#1a1a2e,#16213e)',
-    img: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80',
+    ],
     savedCount: 21,
     viewCount: 198,
     rating: 4.5,
@@ -375,9 +178,12 @@ const CARS: Car[] = [
     transmission: 'Automatic',
     fuel: 'Petrol',
     dealerId: 'd2',
+    dealerName: 'Premium Motors NG',
+    dealerRating: 4.9,
     phone: '08087654321',
-    gradient: 'linear-gradient(135deg,#bdbdbd,#757575)',
-    img: 'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&q=80',
+    ],
     savedCount: 58,
     viewCount: 490,
     rating: 4.9,
@@ -399,9 +205,12 @@ const CARS: Car[] = [
     transmission: 'Automatic',
     fuel: 'Petrol',
     dealerId: 'd3',
+    dealerName: 'Abuja Car Deals',
+    dealerRating: 4.2,
     phone: '07011234567',
-    gradient: 'linear-gradient(135deg,#b8860b,#ffd700)',
-    img: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80',
+    ],
     savedCount: 15,
     viewCount: 142,
     rating: 4.1,
@@ -433,9 +242,12 @@ const CARS: Car[] = [
     transmission: 'Automatic',
     fuel: 'Petrol',
     dealerId: 'd1',
+    dealerName: 'Lagos Auto Hub',
+    dealerRating: 4.8,
     phone: '08012345678',
-    gradient: 'linear-gradient(135deg,#c62828,#e53935)',
-    img: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80',
+    ],
     savedCount: 72,
     viewCount: 641,
     rating: 5.0,
@@ -457,9 +269,12 @@ const CARS: Car[] = [
     transmission: 'Manual',
     fuel: 'Diesel',
     dealerId: 'd4',
+    dealerName: 'PH Motors',
+    dealerRating: 3.9,
     phone: '09087654321',
-    gradient: 'linear-gradient(135deg,#1565C0,#1976D2)',
-    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+    ],
     savedCount: 8,
     viewCount: 89,
     rating: 3.8,
@@ -491,220 +306,82 @@ const CARS: Car[] = [
     transmission: 'Automatic',
     fuel: 'Petrol',
     dealerId: 'd2',
+    dealerName: 'Premium Motors NG',
+    dealerRating: 4.9,
     phone: '08087654321',
-    gradient: 'linear-gradient(135deg,#212121,#424242)',
-    img: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=220&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&q=80',
+    ],
     savedCount: 49,
     viewCount: 388,
     rating: 4.8,
     reviewCount: 22,
     postedDaysAgo: 2,
   },
-  {
-    id: '8',
-    make: 'Hyundai',
-    model: 'Tucson',
-    year: 2021,
-    price: 19500000,
-    mileage: 29000,
-    condition: 'Tokunbo',
-    status: 'Available',
-    inspection: 'Not Inspected',
-    location: 'Enugu',
-    color: 'White',
-    transmission: 'Automatic',
-    fuel: 'Petrol',
-    dealerId: 'd5',
-    phone: '07056789012',
-    gradient: 'linear-gradient(135deg,#00695C,#26A69A)',
-    img: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=400&h=220&fit=crop',
-    savedCount: 11,
-    viewCount: 104,
-    rating: 3.9,
-    reviewCount: 5,
-    postedDaysAgo: 8,
-  },
-  {
-    id: '9',
-    make: 'Range Rover',
-    model: 'Velar',
-    year: 2019,
-    price: 62000000,
-    mileage: 44000,
-    condition: 'Tokunbo',
-    status: 'Available',
-    inspection: 'Inspected',
-    report: {
-      engine: 8,
-      exterior: 9,
-      interior: 9,
-      transmission: 8,
-      electronics: 8,
-      overall: 84,
-      inspector: 'DriveCheck PH',
-      date: 'Oct 25, 2024',
-    },
-    location: 'Lekki, Lagos',
-    color: 'Blue',
-    transmission: 'Automatic',
-    fuel: 'Petrol',
-    dealerId: 'd2',
-    phone: '08087654321',
-    gradient: 'linear-gradient(135deg,#283593,#3949AB)',
-    img: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=220&fit=crop',
-    savedCount: 63,
-    viewCount: 520,
-    rating: 4.6,
-    reviewCount: 31,
-    postedDaysAgo: 12,
-  },
-  {
-    id: '10',
-    make: 'Toyota',
-    model: 'Corolla',
-    year: 2019,
-    price: 12000000,
-    mileage: 85000,
-    condition: 'Nigerian Used',
-    status: 'Available',
-    inspection: 'Not Inspected',
-    location: 'Ibadan',
-    color: 'Silver',
-    transmission: 'Manual',
-    fuel: 'Petrol',
-    dealerId: 'd5',
-    phone: '07056789012',
-    gradient: 'linear-gradient(135deg,#546E7A,#78909C)',
-    img: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&h=220&fit=crop',
-    savedCount: 6,
-    viewCount: 74,
-    rating: 3.5,
-    reviewCount: 3,
-    postedDaysAgo: 20,
-  },
 ];
 
-const DEALERS: Dealer[] = [
-  {
-    id: 'd1',
-    name: 'Lagos Auto Hub',
-    avatar: 'https://i.pravatar.cc/40?img=11',
-    location: 'Lekki, Lagos',
-    totalListings: 47,
-    soldCount: 312,
-    rating: 4.8,
-    reviewCount: 198,
-    responseTime: '< 1hr',
-    inspectedPct: 92,
-    joinedYear: 2019,
-    badge: 'Gold',
-  },
-  {
-    id: 'd2',
-    name: 'Premium Motors NG',
-    avatar: 'https://i.pravatar.cc/40?img=22',
-    location: 'Victoria Island',
-    totalListings: 31,
-    soldCount: 189,
-    rating: 4.9,
-    reviewCount: 142,
-    responseTime: '< 30min',
-    inspectedPct: 100,
-    joinedYear: 2020,
-    badge: 'Gold',
-  },
-  {
-    id: 'd3',
-    name: 'Abuja Car Deals',
-    avatar: 'https://i.pravatar.cc/40?img=33',
-    location: 'Abuja, FCT',
-    totalListings: 18,
-    soldCount: 95,
-    rating: 4.2,
-    reviewCount: 67,
-    responseTime: '< 3hrs',
-    inspectedPct: 55,
-    joinedYear: 2021,
-    badge: 'Silver',
-  },
-  {
-    id: 'd4',
-    name: 'PH Motors',
-    avatar: 'https://i.pravatar.cc/40?img=44',
-    location: 'Port Harcourt',
-    totalListings: 12,
-    soldCount: 61,
-    rating: 3.9,
-    reviewCount: 34,
-    responseTime: '< 6hrs',
-    inspectedPct: 40,
-    joinedYear: 2022,
-    badge: 'Verified',
-  },
-  {
-    id: 'd5',
-    name: 'Enugu Auto Sales',
-    avatar: 'https://i.pravatar.cc/40?img=55',
-    location: 'Enugu',
-    totalListings: 8,
-    soldCount: 22,
-    rating: 3.7,
-    reviewCount: 15,
-    responseTime: '< 12hrs',
-    inspectedPct: 30,
-    joinedYear: 2023,
-    badge: 'New',
-  },
-];
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+const fmt = (n: number) => '₦' + (n / 1_000_000).toFixed(1) + 'M';
+const km = (m: number) => (m === 0 ? '0 km' : (m / 1000).toFixed(0) + 'k km');
+const initials = (s: string) =>
+  s
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
 
-// ─── STARS ────────────────────────────────────────────────────────────────────
-function Stars({
-  rating,
-  size = 11,
-}: {
-  rating: number;
-  size?: number;
-}): JSX.Element {
-  return (
-    <HStack gap="1px">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <svg
-          key={i}
-          width={size}
-          height={size}
-          viewBox="0 0 24 24"
-          fill={i <= Math.round(rating) ? '#F6AD55' : '#E2E8F0'}
-          stroke="none"
-        >
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-      ))}
-    </HStack>
-  );
+function getSlides(images: string[]): string[] {
+  const slides = [...images];
+  let i = 0;
+  while (slides.length < 4) {
+    slides.push(EXTRA_IMAGES[i % EXTRA_IMAGES.length]);
+    i++;
+  }
+  return slides;
 }
 
+const COND_COLOR: Record<Condition, { text: string; bg: string }> = {
+  'Brand New': { text: '#1e40af', bg: '#dbeafe' },
+  Tokunbo: { text: '#0d7a68', bg: '#ccfbf1' },
+  'Nigerian Used': { text: '#9a3412', bg: '#fff7ed' },
+};
+const STATUS_COLOR: Record<ListStatus, { text: string; bg: string }> = {
+  Available: { text: '#166534', bg: '#dcfce7' },
+  Reserved: { text: '#92400e', bg: '#fef3c7' },
+  Sold: { text: '#991b1b', bg: '#fee2e2' },
+};
+const INSP_COLOR: Record<
+  InspStatus,
+  { text: string; bg: string; border: string }
+> = {
+  Inspected: { text: '#166534', bg: '#f0fdf4', border: '#86efac' },
+  'Not Inspected': { text: '#991b1b', bg: '#fff1f2', border: '#fecdd3' },
+  Pending: { text: '#92400e', bg: '#fffbeb', border: '#fde68a' },
+};
+
 // ─── SCORE BAR ────────────────────────────────────────────────────────────────
-function ScoreBar({
-  label,
-  value,
-}: {
-  label: string;
-  value: number;
-}): JSX.Element {
-  const color = value >= 8 ? '#38A169' : value >= 6 ? '#D69E2E' : '#E53E3E';
+function ScoreBar({ label, value }: { label: string; value: number }) {
+  const color = value >= 8 ? '#16a34a' : value >= 6 ? '#d97706' : '#dc2626';
   return (
     <Flex align="center" gap="8px" mb="5px">
-      <Text fontSize="11px" color="gray.500" w="95px" flexShrink="0">
+      <Text fontSize="11px" color="whiteAlpha.500" w="90px" flexShrink={0}>
         {label}
       </Text>
-      <Box flex="1" h="5px" bg="gray.100" borderRadius="3px" overflow="hidden">
-        <Box h="100%" w={`${value * 10}%`} bg={color} borderRadius="3px" />
+      <Box
+        flex={1}
+        h="4px"
+        bg="whiteAlpha.100"
+        borderRadius="2px"
+        overflow="hidden"
+      >
+        <Box h="100%" w={`${value * 10}%`} bg={color} borderRadius="2px" />
       </Box>
       <Text
         fontSize="11px"
-        fontWeight="700"
+        fontWeight={700}
         color={color}
-        w="22px"
+        w="20px"
         textAlign="right"
       >
         {value}
@@ -713,8 +390,274 @@ function ScoreBar({
   );
 }
 
-// ─── CAR CARD ─────────────────────────────────────────────────────────────────
-function CarCard({
+// ─── DETAIL BOTTOM SHEET ──────────────────────────────────────────────────────
+function DetailPanel({ car, onClose }: { car: Car; onClose: () => void }) {
+  const insp = INSP_COLOR[car.inspection];
+  return (
+    <Box
+      position="fixed"
+      inset={0}
+      zIndex={200}
+      bg="blackAlpha.700"
+      backdropFilter="blur(6px)"
+      display="flex"
+      alignItems="flex-end"
+      onClick={onClose}
+    >
+      <Box
+        w="100%"
+        maxW="560px"
+        mx="auto"
+        bg="#0f0f0f"
+        borderRadius="20px 20px 0 0"
+        maxH="85vh"
+        overflowY="auto"
+        border="1px solid"
+        borderColor="whiteAlpha.200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Handle */}
+        <Flex justify="center" pt="12px">
+          <Box w="36px" h="4px" borderRadius="2px" bg="whiteAlpha.300" />
+        </Flex>
+
+        <Box p="16px 20px 32px">
+          {/* Header */}
+          <Flex justify="space-between" align="flex-start" mb="16px">
+            <Box>
+              <Text fontSize="20px" fontWeight={900} color="white">
+                {car.year} {car.make} {car.model}
+              </Text>
+              <HStack gap="6px" mt="5px">
+                <Badge
+                  px="8px"
+                  py="3px"
+                  borderRadius="6px"
+                  fontSize="10px"
+                  fontWeight={700}
+                  bg={COND_COLOR[car.condition].bg}
+                  color={COND_COLOR[car.condition].text}
+                >
+                  {car.condition}
+                </Badge>
+                <Badge
+                  px="8px"
+                  py="3px"
+                  borderRadius="6px"
+                  fontSize="10px"
+                  fontWeight={700}
+                  bg={STATUS_COLOR[car.status].bg}
+                  color={STATUS_COLOR[car.status].text}
+                >
+                  {car.status}
+                </Badge>
+              </HStack>
+            </Box>
+            <Box
+              as="button"
+              onClick={onClose}
+              bg="whiteAlpha.200"
+              border="none"
+              color="white"
+              borderRadius="99px"
+              w="32px"
+              h="32px"
+              cursor="pointer"
+              fontSize="16px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              _hover={{ bg: 'whiteAlpha.300' }}
+            >
+              ✕
+            </Box>
+          </Flex>
+
+          {/* Price */}
+          <Text fontSize="30px" fontWeight={900} color="#6C63FF" mb="4px">
+            {fmt(car.price)}
+          </Text>
+          <Text fontSize="12px" color="whiteAlpha.600" mb="18px">
+            📍 {car.location} · {car.viewCount} views · {car.savedCount} saves
+          </Text>
+
+          {/* Specs grid */}
+          <Grid templateColumns="1fr 1fr" gap="8px" mb="18px">
+            {[
+              ['Transmission', car.transmission],
+              ['Fuel', car.fuel],
+              ['Color', car.color],
+              ['Mileage', `${car.mileage.toLocaleString()} km`],
+              ['Posted', `${car.postedDaysAgo}d ago`],
+              ['Rating', `⭐ ${car.rating} (${car.reviewCount})`],
+            ].map(([k, v]) => (
+              <Box key={k} bg="whiteAlpha.100" borderRadius="10px" p="9px 12px">
+                <Text
+                  fontSize="10px"
+                  color="whiteAlpha.500"
+                  fontWeight={600}
+                  mb="2px"
+                >
+                  {k}
+                </Text>
+                <Text fontSize="13px" fontWeight={700} color="white">
+                  {v}
+                </Text>
+              </Box>
+            ))}
+          </Grid>
+
+          {/* Inspection */}
+          <Box mb="18px">
+            <Text
+              fontSize="10px"
+              fontWeight={700}
+              color="whiteAlpha.500"
+              textTransform="uppercase"
+              letterSpacing="0.5px"
+              mb="8px"
+            >
+              Inspection
+            </Text>
+            <Flex
+              align="center"
+              gap="10px"
+              p="10px 14px"
+              borderRadius="10px"
+              bg={insp.bg}
+              border="1px solid"
+              borderColor={insp.border}
+              mb="10px"
+            >
+              <Text fontSize="16px">
+                {car.inspection === 'Inspected'
+                  ? '🛡️'
+                  : car.inspection === 'Pending'
+                    ? '⏳'
+                    : '⚠️'}
+              </Text>
+              <Text flex={1} fontSize="13px" fontWeight={700} color={insp.text}>
+                {car.inspection}
+              </Text>
+              {car.report && (
+                <Text fontSize="22px" fontWeight={900} color={insp.text}>
+                  {car.report.overall}
+                  <Text as="span" fontSize="11px">
+                    /100
+                  </Text>
+                </Text>
+              )}
+            </Flex>
+            {car.report && (
+              <Box bg="whiteAlpha.50" borderRadius="10px" p="12px 14px">
+                <ScoreBar label="Engine" value={car.report.engine} />
+                <ScoreBar label="Exterior" value={car.report.exterior} />
+                <ScoreBar label="Interior" value={car.report.interior} />
+                <ScoreBar
+                  label="Transmission"
+                  value={car.report.transmission}
+                />
+                <ScoreBar label="Electronics" value={car.report.electronics} />
+                <Flex justify="space-between" mt="8px">
+                  <Text fontSize="10px" color="whiteAlpha.400">
+                    By {car.report.inspector}
+                  </Text>
+                  <Text fontSize="10px" color="whiteAlpha.400">
+                    {car.report.date}
+                  </Text>
+                </Flex>
+              </Box>
+            )}
+          </Box>
+
+          {/* Dealer */}
+          <Box bg="whiteAlpha.100" borderRadius="12px" p="12px 14px" mb="20px">
+            <Text
+              fontSize="10px"
+              fontWeight={700}
+              color="whiteAlpha.500"
+              textTransform="uppercase"
+              letterSpacing="0.5px"
+              mb="8px"
+            >
+              Dealer
+            </Text>
+            <HStack gap="10px">
+              <Flex
+                w="36px"
+                h="36px"
+                borderRadius="99px"
+                bg="#fbbf24"
+                align="center"
+                justify="center"
+                fontSize="12px"
+                fontWeight={900}
+                color="white"
+                flexShrink={0}
+              >
+                {initials(car.dealerName)}
+              </Flex>
+              <Box>
+                <Text fontSize="13px" fontWeight={700} color="white">
+                  {car.dealerName}
+                </Text>
+                <Text fontSize="11px" color="#fbbf24">
+                  ⭐ {car.dealerRating}
+                </Text>
+              </Box>
+            </HStack>
+          </Box>
+
+          {/* CTAs */}
+          <HStack gap="10px">
+            <Link
+              href={`https://wa.me/234${car.phone.slice(1)}`}
+              target="_blank"
+              flex={1}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="8px"
+              bg="#25D366"
+              color="white"
+              borderRadius="12px"
+              h="48px"
+              fontSize="14px"
+              fontWeight={700}
+              textDecoration="none"
+              _hover={{ opacity: 0.9 }}
+            >
+              💬 WhatsApp
+            </Link>
+            <Link
+              href={`tel:${car.phone}`}
+              flex={1}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="8px"
+              bg="rgba(108,99,255,0.2)"
+              color="#a5a0ff"
+              borderRadius="12px"
+              h="48px"
+              fontSize="14px"
+              fontWeight={700}
+              textDecoration="none"
+              border="1px solid"
+              borderColor="rgba(108,99,255,0.3)"
+              _hover={{ opacity: 0.9 }}
+            >
+              📞 Call
+            </Link>
+          </HStack>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
+// ─── FYP CARD ─────────────────────────────────────────────────────────────────
+function FYPCard({
   car,
   saved,
   onSave,
@@ -724,1654 +667,684 @@ function CarCard({
   saved: boolean;
   onSave: () => void;
   onDetail: () => void;
-}): JSX.Element {
-  const insp = INSP_CFG[car.inspection];
+}) {
+  const slides = getSlides(car.images);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const cond = COND_COLOR[car.condition];
+  const insp = INSP_COLOR[car.inspection];
+
+  const goTo = (idx: number) => {
+    const next = Math.max(0, Math.min(idx, slides.length - 1));
+    scrollRef.current?.scrollTo({
+      left: next * window.innerWidth,
+      behavior: 'smooth',
+    });
+    setActiveSlide(next);
+  };
+
+  const onScroll = () => {
+    if (!scrollRef.current) return;
+    const idx = Math.round(scrollRef.current.scrollLeft / window.innerWidth);
+    setActiveSlide(Math.min(idx, slides.length - 1));
+  };
+
   return (
     <Box
-      bg={WHITE}
-      borderRadius="16px"
+      h="100dvh"
+      position="relative"
       overflow="hidden"
-      border="1px solid"
-      borderColor="gray.100"
-      boxShadow="0 2px 12px rgba(0,0,0,0.06)"
-      _hover={{
-        transform: 'translateY(-3px)',
-        boxShadow: '0 10px 30px rgba(108,99,255,0.13)',
-      }}
-      transition="all 0.2s"
-      cursor="pointer"
-      onClick={onDetail}
+      flexShrink={0}
+      scrollSnapAlign="start"
     >
-      {/* Thumbnail */}
+      {/* ── Image slider ── */}
       <Box
-        h="152px"
-        position="relative"
-        overflow="hidden"
-        style={{ background: car.gradient }}
+        ref={scrollRef}
+        onScroll={onScroll}
+        display="flex"
+        overflowX="auto"
+        h="100%"
+        css={{
+          scrollSnapType: 'x mandatory',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+        }}
       >
-        <Image
-          src={car.img}
-          position="absolute"
-          inset="0"
-          w="100%"
-          h="100%"
-          objectFit="cover"
-          opacity="0.78"
-        />
-        <Box
-          position="absolute"
-          inset="0"
-          bgGradient="linear(to-t,rgba(0,0,0,0.42),transparent)"
-        />
-
-        <HStack position="absolute" top="9px" left="9px" gap="4px">
-          <Badge
-            bg={STAT_CFG[car.status].bg}
-            color={STAT_CFG[car.status].color}
-            borderRadius="5px"
-            fontSize="9px"
-            px="6px"
-            py="2px"
-            fontWeight="700"
+        {slides.map((uri, idx) => (
+          <Box
+            key={idx}
+            minW="100vw"
+            h="100%"
+            position="relative"
+            bg="#111"
+            scrollSnapAlign="start"
           >
-            {car.status}
-          </Badge>
-          <Badge
-            bg={COND_CFG[car.condition].bg}
-            color={COND_CFG[car.condition].color}
-            borderRadius="5px"
-            fontSize="9px"
-            px="6px"
-            py="2px"
-            fontWeight="700"
-          >
-            {car.condition}
-          </Badge>
-        </HStack>
+            <Image
+              src={uri}
+              position="absolute"
+              inset={0}
+              w="100%"
+              h="90%"
+              objectFit="cover"
+              filter="blur(20px)"
+              transform="scale(1.08)"
+              opacity={0.55}
+              alt=""
+            />
+            <Box position="absolute" inset={0} bg="blackAlpha.400" />
+            <Image
+              src={uri}
+              alt={`${car.make} ${car.model}`}
+              position="absolute"
+              inset={0}
+              w="100%"
+              h="100%"
+              objectFit="contain"
+            />
+          </Box>
+        ))}
+      </Box>
 
+      {/* ── Arrows ── */}
+      {activeSlide > 0 && (
         <Box
           as="button"
+          onClick={() => goTo(activeSlide - 1)}
           position="absolute"
-          top="9px"
-          right="9px"
-          w="27px"
-          h="27px"
-          borderRadius="8px"
-          bg="whiteAlpha.900"
+          left="12px"
+          top="50%"
+          transform="translateY(-50%)"
+          w="40px"
+          h="40px"
+          borderRadius="99px"
+          bg="blackAlpha.600"
+          border="1px solid"
+          borderColor="whiteAlpha.300"
+          color="white"
+          fontSize="22px"
           display="flex"
           alignItems="center"
           justifyContent="center"
-          color={saved ? P : 'gray.500'}
-          _hover={{ bg: 'white' }}
-          onClick={(e) => {
-            e.stopPropagation();
-            onSave();
-          }}
-          transition="all 0.15s"
+          cursor="pointer"
+          zIndex={10}
+          _hover={{ bg: 'blackAlpha.800' }}
         >
-          <HeartIco on={saved} />
+          ‹
         </Box>
+      )}
+      {activeSlide < slides.length - 1 && (
+        <Box
+          as="button"
+          onClick={() => goTo(activeSlide + 1)}
+          position="absolute"
+          right="12px"
+          top="50%"
+          transform="translateY(-50%)"
+          w="40px"
+          h="40px"
+          borderRadius="99px"
+          bg="blackAlpha.600"
+          border="1px solid"
+          borderColor="whiteAlpha.300"
+          color="white"
+          fontSize="22px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          cursor="pointer"
+          zIndex={10}
+          _hover={{ bg: 'blackAlpha.800' }}
+        >
+          ›
+        </Box>
+      )}
 
-        <HStack position="absolute" bottom="7px" left="9px" gap="6px">
-          <Text fontSize="11px" color="white" fontWeight="700">
-            {car.year}
-          </Text>
-          <Text fontSize="10px" color="whiteAlpha.700">
-            ·
-          </Text>
-          <Text fontSize="10px" color="whiteAlpha.800">
-            {fmtK(car.mileage)} km
-          </Text>
-          <Text fontSize="10px" color="whiteAlpha.700">
-            ·
-          </Text>
-          <Text fontSize="10px" color="whiteAlpha.800">
-            {car.transmission}
-          </Text>
-        </HStack>
+      {/* ── Dot indicators ── */}
+      <HStack
+        position="absolute"
+        bottom="220px"
+        left="50%"
+        transform="translateX(-50%)"
+        gap="6px"
+      >
+        {slides.map((_, idx) => (
+          <Box
+            key={idx}
+            onClick={() => goTo(idx)}
+            w={idx === activeSlide ? '18px' : '6px'}
+            h="6px"
+            borderRadius="99px"
+            bg={idx === activeSlide ? 'white' : 'whiteAlpha.400'}
+            transition="all 0.25s"
+            cursor="pointer"
+          />
+        ))}
+      </HStack>
+
+      {/* ── Condition pill — top left ── */}
+      <Box position="absolute" bottom="205px" left="16px">
+        <Badge
+          px="10px"
+          py="4px"
+          borderRadius="99px"
+          fontSize="11px"
+          fontWeight={700}
+          letterSpacing="0.5px"
+          textTransform="uppercase"
+          bg={cond.bg}
+          color={cond.text}
+        >
+          {car.condition}
+        </Badge>
       </Box>
 
-      <Box p="12px 14px">
+      {/* ── Inspection score + save — top right ── */}
+      <VStack
+        position="absolute"
+        top="6%"
+        right="16px"
+        align="flex-end"
+        gap="8px"
+      >
+        {car.inspection === 'Inspected' && (
+          <HStack
+            bg="whiteAlpha.900"
+            borderRadius="99px"
+            px="10px"
+            py="4px"
+            gap="5px"
+          >
+            <Box w="7px" h="7px" borderRadius="99px" bg="#22c55e" />
+            <Text fontSize="11px" fontWeight={700} color="gray.800">
+              {car.report?.overall}/100
+            </Text>
+          </HStack>
+        )}
+      </VStack>
+
+      <VStack
+        position="absolute"
+        bottom="250px"
+        right="16px"
+        as="button"
+        onClick={onSave}
+        cursor="pointer"
+        _hover={{ bg: 'blackAlpha.700' }}
+      >
+        {saved ? (
+          <FaHeart size={30} color="red" />
+        ) : (
+          <FaRegHeart size={30} color="white" />
+        )}
+      </VStack>
+      {/* ── Bottom overlay ── */}
+      <Box
+        onClick={onDetail}
+        position="absolute"
+        bottom={0}
+        left={0}
+        right={0}
+        bgGradient="linear(to-t, blackAlpha.900, transparent)"
+        px="16px"
+        pt="40px"
+        pb="36px"
+        cursor="pointer"
+      >
         <Text
-          fontWeight="800"
-          fontSize="14px"
-          color="gray.800"
-          lineClamp={1}
-          mb="3px"
+          fontSize={{ base: '22px', md: '28px' }}
+          fontWeight={900}
+          color="white"
+          letterSpacing="0.3px"
         >
-          {car.make} {car.model}
+          {fmt(car.price)}
+        </Text>
+        <Text
+          fontSize={{ base: '15px', md: '19px' }}
+          fontWeight={800}
+          color="white"
+          my="3px"
+        >
+          {car.year} {car.make} {car.model}
         </Text>
 
-        <HStack gap="10px" mb="8px">
-          <HStack gap="3px" color="gray.400">
-            <LocIco />
-            <Text fontSize="11px">{car.location}</Text>
-          </HStack>
-          <HStack gap="3px" color="gray.400">
-            <FuelIco />
-            <Text fontSize="11px">{car.fuel}</Text>
-          </HStack>
-        </HStack>
-
-        {/* Inspection pill */}
         <Flex
           align="center"
-          gap="5px"
-          display="inline-flex"
-          px="8px"
-          py="4px"
-          borderRadius="7px"
-          mb="8px"
-          bg={insp.bg}
-          border="1px solid"
-          borderColor={insp.border}
+          gap="8px"
+          flexWrap="wrap"
+          mb="14px"
+          opacity={0.85}
+          fontSize={{ base: '11px', md: '13px' }}
         >
-          {insp.icon}
-          <Text fontSize="10px" fontWeight="700" color={insp.color}>
+          <Text color="white">📍 {car.location}</Text>
+          <Box w="3px" h="3px" borderRadius="99px" bg="whiteAlpha.500" />
+          <Text color="white">🛣 {km(car.mileage)}</Text>
+          <Box w="3px" h="3px" borderRadius="99px" bg="whiteAlpha.500" />
+          <Text color="white">⛽ {car.fuel}</Text>
+          <Box w="3px" h="3px" borderRadius="99px" bg="whiteAlpha.500" />
+          <Badge
+            px="7px"
+            py="2px"
+            borderRadius="6px"
+            fontSize="10px"
+            fontWeight={700}
+            bg={insp.bg}
+            color={insp.text}
+          >
             {car.inspection}
-          </Text>
-          {car.report && (
-            <Text fontSize="10px" color={insp.color} opacity="0.8">
-              · {car.report.overall}/100
+          </Badge>
+        </Flex>
+
+        <Flex align="center" gap="10px">
+          <Flex
+            w="32px"
+            h="32px"
+            borderRadius="99px"
+            bg="#fbbf24"
+            align="center"
+            justify="center"
+            fontSize="11px"
+            fontWeight={900}
+            color="white"
+            flexShrink={0}
+          >
+            {initials(car.dealerName)}
+          </Flex>
+          <Box flex={1} minW={0}>
+            <Text fontSize="12px" fontWeight={700} color="white" lineClamp={1}>
+              {car.dealerName}
             </Text>
-          )}
+            <Text fontSize="11px" color="#fbbf24">
+              ⭐ {car.dealerRating}
+            </Text>
+          </Box>
+          <Link
+            href={`tel:${car.phone}`}
+            onClick={(e) => e.stopPropagation()}
+            display="flex"
+            alignItems="center"
+            gap="4px"
+            bg="whiteAlpha.900"
+            borderRadius="10px"
+            px="12px"
+            py="8px"
+            fontSize="12px"
+            fontWeight={700}
+            color="gray.700"
+            textDecoration="none"
+            flexShrink={0}
+            _hover={{ bg: 'white' }}
+          >
+            <FaPhoneAlt /> Call
+          </Link>
+          <Link
+            href={`https://wa.me/234${car.phone.slice(1)}`}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            display="flex"
+            alignItems="center"
+            gap="4px"
+            bg="#dcfce7"
+            borderRadius="10px"
+            px="12px"
+            py="8px"
+            fontSize="12px"
+            fontWeight={700}
+            color="#16a34a"
+            textDecoration="none"
+            flexShrink={0}
+            _hover={{ bg: '#bbf7d0' }}
+          >
+            <FaWhatsapp />
+            Chat
+          </Link>
         </Flex>
 
-        <HStack gap="5px" mb="10px">
-          <Stars rating={car.rating} />
-          <Text fontSize="11px" color="gray.400">
-            {car.rating.toFixed(1)} ({car.reviewCount})
-          </Text>
-        </HStack>
-
-        <Flex justify="space-between" align="center">
-          <Text fontSize="15px" fontWeight="900" color={P}>
-            {fmt(car.price)}
-          </Text>
-          <HStack gap="5px" onClick={(e) => e.stopPropagation()}>
-            <Link
-              href={`https://wa.me/234${car.phone.slice(1)}`}
-              target="_blank"
-              w="28px"
-              h="28px"
-              borderRadius="7px"
-              bg="#25D36618"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              _hover={{ bg: '#25D36630' }}
-            >
-              <Text fontSize="11px" fontWeight="900" color="#25D366">
-                W
-              </Text>
-            </Link>
-            <Box
-              as="button"
-              w="28px"
-              h="28px"
-              borderRadius="7px"
-              bg={P_LIGHT}
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              color={P}
-              _hover={{ bg: `${P}28` }}
-            >
-              <PhoneIco />
-            </Box>
-          </HStack>
-        </Flex>
-
-        <Flex
-          justify="space-between"
-          mt="8px"
-          pt="7px"
-          borderTop="1px solid"
-          borderColor="gray.50"
+        <Text
+          fontSize="11px"
+          color="whiteAlpha.500"
+          mt="10px"
+          textAlign="center"
         >
-          <Text fontSize="10px" color="gray.400">
-            {car.viewCount} views
-          </Text>
-          <Text fontSize="10px" color="gray.400">
-            {car.savedCount} saves
-          </Text>
-          <Text fontSize="10px" color="gray.400">
-            {car.postedDaysAgo}d ago
-          </Text>
-        </Flex>
+          Tap for full details · {car.viewCount} views · {car.savedCount} saves
+        </Text>
       </Box>
     </Box>
   );
 }
 
-// ─── DETAIL MODAL ─────────────────────────────────────────────────────────────
-function DetailModal({
-  car,
+// ─── HEADER PANEL ─────────────────────────────────────────────────────────────
+function HeaderPanel({
+  open,
   onClose,
+  search,
+  setSearch,
+  filter,
+  setFilter,
+  sort,
+  setSort,
+  current,
+  total,
 }: {
-  car: Car;
+  open: boolean;
   onClose: () => void;
-}): JSX.Element {
-  const insp = INSP_CFG[car.inspection];
-  const dealer = DEALERS.find((d) => d.id === car.dealerId)!;
-  const bdg = BADGE_CFG[dealer.badge];
-
+  search: string;
+  setSearch: (v: string) => void;
+  filter: FilterOpt;
+  setFilter: (v: FilterOpt) => void;
+  sort: SortOpt;
+  setSort: (v: SortOpt) => void;
+  current: number;
+  total: number;
+}) {
   return (
     <>
+      {open && <Box position="fixed" inset={0} zIndex={98} onClick={onClose} />}
       <Box
         position="fixed"
-        inset="0"
-        bg="blackAlpha.600"
-        zIndex="1000"
-        onClick={onClose}
-        style={{ backdropFilter: 'blur(4px)' }}
-      />
-      <Box
-        position="fixed"
-        top="50%"
-        left="50%"
-        transform="translate(-50%,-50%)"
-        zIndex="1001"
-        w="800px"
-        maxW="96vw"
-        maxH="90vh"
-        bg={WHITE}
-        borderRadius="22px"
-        overflow="hidden"
-        boxShadow="0 32px 100px rgba(0,0,0,0.2)"
-        display="flex"
-        flexDir="column"
+        top={0}
+        left={0}
+        right={0}
+        zIndex={99}
+        bg={open ? 'rgba(0,0,0,0.92)' : 'transparent'}
+        backdropFilter={open ? 'blur(16px)' : 'none'}
+        pt={open ? '52px' : '14px'}
+        px="16px"
+        pb={open ? '16px' : 0}
+        transition="all 0.25s"
+        pointerEvents="none"
       >
-        <Flex
-          align="center"
-          justify="space-between"
-          px="24px"
-          py="16px"
-          borderBottom="1px solid"
-          borderColor="gray.100"
-          flexShrink="0"
-        >
-          <Box>
-            <Text fontWeight="900" fontSize="18px" color="gray.800">
-              {car.year} {car.make} {car.model}
-            </Text>
-            <HStack gap="6px" mt="3px">
-              <Badge
-                bg={COND_CFG[car.condition].bg}
-                color={COND_CFG[car.condition].color}
-                borderRadius="5px"
-                fontSize="10px"
-                px="7px"
-                fontWeight="700"
-              >
-                {car.condition}
-              </Badge>
-              <Badge
-                bg={STAT_CFG[car.status].bg}
-                color={STAT_CFG[car.status].color}
-                borderRadius="5px"
-                fontSize="10px"
-                px="7px"
-                fontWeight="700"
-              >
-                {car.status}
-              </Badge>
-            </HStack>
-          </Box>
-          <Box
-            as="button"
-            onClick={onClose}
-            w="34px"
-            h="34px"
+        {/* Always-visible bar */}
+        <Flex justify="space-between" align="center" pointerEvents="all">
+          <Text
+            fontSize="22px"
+            fontWeight={900}
+            color="white"
+            bg="blackAlpha.400"
             borderRadius="9px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            bg="gray.100"
-            color="gray.500"
-            _hover={{ bg: 'gray.200' }}
+            px="10px"
+            py="3px"
           >
-            <CloseIco />
-          </Box>
+            Marketplace
+          </Text>
+          <HStack gap="8px">
+            <Box
+              as="button"
+              onClick={onClose}
+              display="flex"
+              alignItems="center"
+              gap="6px"
+              bg="blackAlpha.600"
+              border="1px solid"
+              borderColor="whiteAlpha.300"
+              borderRadius="99px"
+              px="13px"
+              py="7px"
+              color="white"
+              cursor="pointer"
+              fontSize="12px"
+              fontWeight={700}
+              _hover={{ bg: 'blackAlpha.800' }}
+            >
+              {open ? <FaTimes /> : <FaSearch size={20} />}
+            </Box>
+          </HStack>
         </Flex>
 
-        <Box overflow="auto" flex="1">
-          <Grid templateColumns="1.3fr 1fr">
-            {/* LEFT */}
-            <Box p="22px" borderRight="1px solid" borderColor="gray.100">
-              <Box
-                borderRadius="14px"
-                overflow="hidden"
-                mb="16px"
-                h="195px"
-                position="relative"
-                style={{ background: car.gradient }}
-              >
-                <Image
-                  src={car.img}
-                  w="100%"
-                  h="100%"
-                  objectFit="cover"
-                  opacity="0.82"
-                />
-              </Box>
-
-              {/* Specs grid */}
-              <Grid templateColumns="1fr 1fr" gap="8px" mb="16px">
-                {[
-                  ['Transmission', car.transmission],
-                  ['Fuel', car.fuel],
-                  ['Color', car.color],
-                  ['Mileage', `${car.mileage.toLocaleString()} km`],
-                  ['Location', car.location],
-                  ['Posted', `${car.postedDaysAgo}d ago`],
-                ].map(([k, v]) => (
-                  <Box
-                    key={k}
-                    bg="gray.50"
-                    borderRadius="9px"
-                    px="12px"
-                    py="9px"
-                  >
-                    <Text fontSize="10px" color="gray.400" fontWeight="600">
-                      {k}
-                    </Text>
-                    <Text fontSize="13px" fontWeight="700" color="gray.800">
-                      {v}
-                    </Text>
-                  </Box>
-                ))}
-              </Grid>
-
-              {/* Rating breakdown */}
-              <Box bg="gray.50" borderRadius="12px" p="14px">
-                <Text
-                  fontSize="11px"
-                  fontWeight="700"
-                  color="gray.500"
-                  textTransform="uppercase"
-                  letterSpacing="0.5px"
-                  mb="10px"
-                >
-                  Reviews
-                </Text>
-                <Flex align="center" gap="14px">
-                  <Box textAlign="center" flexShrink="0">
-                    <Text
-                      fontSize="34px"
-                      fontWeight="900"
-                      color="gray.800"
-                      lineHeight="1"
-                    >
-                      {car.rating.toFixed(1)}
-                    </Text>
-                    <Stars rating={car.rating} size={12} />
-                    <Text fontSize="10px" color="gray.400" mt="2px">
-                      {car.reviewCount} reviews
-                    </Text>
-                  </Box>
-                  <Box flex="1">
-                    {[5, 4, 3, 2, 1].map((n) => {
-                      const filled =
-                        n === 5 ? 60 : n === 4 ? 25 : n === 3 ? 10 : 3;
-                      return (
-                        <Flex key={n} align="center" gap="6px" mb="4px">
-                          <Text fontSize="10px" color="gray.400" w="8px">
-                            {n}
-                          </Text>
-                          <Box
-                            flex="1"
-                            h="4px"
-                            bg="gray.200"
-                            borderRadius="2px"
-                            overflow="hidden"
-                          >
-                            <Box
-                              h="100%"
-                              bg="#F6AD55"
-                              borderRadius="2px"
-                              w={`${filled}%`}
-                            />
-                          </Box>
-                        </Flex>
-                      );
-                    })}
-                  </Box>
-                </Flex>
-              </Box>
-            </Box>
-
-            {/* RIGHT */}
-            <Box p="22px">
-              <Text fontSize="28px" fontWeight="900" color={P} mb="3px">
-                {fmt(car.price)}
+        {/* Expanded content */}
+        {open && (
+          <Box mt="14px" pointerEvents="all">
+            {/* Search */}
+            <Flex
+              align="center"
+              gap="8px"
+              bg="whiteAlpha.100"
+              border="1px solid"
+              borderColor="whiteAlpha.200"
+              borderRadius="10px"
+              px="14px"
+              h="42px"
+              mb="10px"
+            >
+              <Text fontSize="15px">
+                <FaSearch color="#fff" />
               </Text>
-              <HStack gap="8px" mb="20px">
-                <HStack gap="3px" color="gray.400">
-                  <LocIco />
-                  <Text fontSize="12px">{car.location}</Text>
-                </HStack>
-                <Text fontSize="11px" color="gray.400">
-                  ·
-                </Text>
-                <Text fontSize="12px" color="gray.400">
-                  {car.viewCount} views · {car.savedCount} saves
-                </Text>
-              </HStack>
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Make, model, location..."
+                bg="transparent"
+                border="none"
+                outline="none"
+                color="white"
+                fontSize="14px"
+                _placeholder={{ color: 'whiteAlpha.400' }}
+                _focus={{ boxShadow: 'none' }}
+                p={0}
+              />
+            </Flex>
 
-              {/* Inspection report */}
-              <Box mb="18px">
-                <Text
-                  fontSize="11px"
-                  fontWeight="700"
-                  color="gray.500"
-                  textTransform="uppercase"
-                  letterSpacing="0.5px"
-                  mb="8px"
-                >
-                  Inspection
-                </Text>
-                <Flex
-                  align="center"
-                  gap="8px"
+            {/* Filter chips */}
+            <Flex
+              gap="7px"
+              overflowX="auto"
+              pb="10px"
+              css={{
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': { display: 'none' },
+              }}
+            >
+              {(
+                [
+                  'All',
+                  'Inspected',
+                  'Tokunbo',
+                  'Brand New',
+                  'Nigerian Used',
+                ] as FilterOpt[]
+              ).map((f) => (
+                <Box
+                  key={f}
+                  as="button"
+                  onClick={() => setFilter(f)}
                   px="12px"
-                  py="9px"
-                  borderRadius="10px"
-                  bg={insp.bg}
+                  py="5px"
+                  borderRadius="99px"
+                  flexShrink={0}
+                  bg={filter === f ? '#6C63FF' : 'whiteAlpha.100'}
                   border="1px solid"
-                  borderColor={insp.border}
-                  mb="10px"
+                  borderColor={filter === f ? '#6C63FF' : 'whiteAlpha.200'}
+                  color={filter === f ? 'white' : 'whiteAlpha.700'}
+                  fontSize="12px"
+                  fontWeight={600}
+                  cursor="pointer"
+                  _hover={{ bg: filter === f ? '#5B54E8' : 'whiteAlpha.200' }}
                 >
-                  {car.inspection === 'Inspected' ? (
-                    <ShieldOk size={16} />
-                  ) : car.inspection === 'Pending' ? (
-                    <ShieldPend size={16} />
-                  ) : (
-                    <ShieldNo size={16} />
-                  )}
-                  <Text
-                    fontSize="13px"
-                    fontWeight="700"
-                    color={insp.color}
-                    flex="1"
-                  >
-                    {car.inspection}
-                  </Text>
-                  {car.report && (
-                    <Box textAlign="center">
-                      <Text
-                        fontSize="20px"
-                        fontWeight="900"
-                        color={insp.color}
-                        lineHeight="1"
-                      >
-                        {car.report.overall}
-                      </Text>
-                      <Text fontSize="9px" color={insp.color} opacity="0.7">
-                        /100
-                      </Text>
-                    </Box>
-                  )}
-                </Flex>
-                {car.report ? (
-                  <Box>
-                    <ScoreBar label="Engine" value={car.report.engine} />
-                    <ScoreBar label="Exterior" value={car.report.exterior} />
-                    <ScoreBar label="Interior" value={car.report.interior} />
-                    <ScoreBar
-                      label="Transmission"
-                      value={car.report.transmission}
-                    />
-                    <ScoreBar
-                      label="Electronics"
-                      value={car.report.electronics}
-                    />
-                    <HStack justify="space-between" mt="6px">
-                      <Text fontSize="10px" color="gray.400">
-                        By {car.report.inspector}
-                      </Text>
-                      <Text fontSize="10px" color="gray.400">
-                        {car.report.date}
-                      </Text>
-                    </HStack>
-                  </Box>
-                ) : (
+                  {f}
+                </Box>
+              ))}
+            </Flex>
+
+            {/* Sort chips */}
+            <Flex
+              align="center"
+              gap="7px"
+              overflowX="auto"
+              css={{
+                scrollbarWidth: 'none',
+                '&::-webkit-scrollbar': { display: 'none' },
+              }}
+            >
+              <Text
+                fontSize="12px"
+                fontWeight={700}
+                color="whiteAlpha.500"
+                flexShrink={0}
+              >
+                Sort:
+              </Text>
+              {(['Newest', 'Price ↑', 'Price ↓', 'Top Rated'] as SortOpt[]).map(
+                (o) => (
                   <Box
-                    bg="gray.50"
-                    borderRadius="9px"
-                    p="12px"
-                    textAlign="center"
+                    key={o}
+                    as="button"
+                    onClick={() => setSort(o)}
+                    px="11px"
+                    py="4px"
+                    borderRadius="99px"
+                    flexShrink={0}
+                    bg={sort === o ? '#6C63FF' : 'whiteAlpha.100'}
+                    border="1px solid"
+                    borderColor={sort === o ? '#6C63FF' : 'whiteAlpha.200'}
+                    color={sort === o ? 'white' : 'whiteAlpha.600'}
+                    fontSize="11px"
+                    fontWeight={600}
+                    cursor="pointer"
+                    _hover={{ bg: sort === o ? '#5B54E8' : 'whiteAlpha.200' }}
                   >
-                    <Text fontSize="12px" color="gray.400">
-                      {car.inspection === 'Pending'
-                        ? 'Inspection in progress. Check back soon.'
-                        : 'This vehicle has not been inspected. Proceed with caution.'}
-                    </Text>
+                    {o}
                   </Box>
-                )}
-              </Box>
-
-              {/* Dealer */}
-              <Box p="12px" bg="gray.50" borderRadius="12px" mb="16px">
-                <Text
-                  fontSize="10px"
-                  fontWeight="700"
-                  color="gray.400"
-                  textTransform="uppercase"
-                  letterSpacing="0.5px"
-                  mb="8px"
-                >
-                  Dealer
-                </Text>
-                <HStack gap="10px" mb="6px">
-                  <Avatar.Root size="sm">
-                    <Avatar.Image src={dealer.avatar} />
-                    <Avatar.Fallback>{dealer.name[0]}</Avatar.Fallback>
-                  </Avatar.Root>
-                  <Box flex="1">
-                    <HStack gap="5px" mb="1px">
-                      <Text fontSize="13px" fontWeight="700" color="gray.800">
-                        {dealer.name}
-                      </Text>
-                      <Badge
-                        bg={bdg.bg}
-                        color={bdg.color}
-                        fontSize="9px"
-                        px="6px"
-                        borderRadius="5px"
-                        fontWeight="700"
-                      >
-                        {bdg.icon} {dealer.badge}
-                      </Badge>
-                    </HStack>
-                    <HStack gap="5px">
-                      <Stars rating={dealer.rating} />
-                      <Text fontSize="10px" color="gray.400">
-                        ({dealer.reviewCount})
-                      </Text>
-                    </HStack>
-                  </Box>
-                </HStack>
-                <Grid templateColumns="1fr 1fr" gap="6px" mt="6px">
-                  {[
-                    ['Response', dealer.responseTime],
-                    ['Inspected', `${dealer.inspectedPct}% of stock`],
-                    ['Listings', `${dealer.totalListings} active`],
-                    ['Total Sold', `${dealer.soldCount} cars`],
-                  ].map(([k, v]) => (
-                    <Box
-                      key={k}
-                      bg={WHITE}
-                      borderRadius="7px"
-                      px="10px"
-                      py="6px"
-                    >
-                      <Text fontSize="9px" color="gray.400" fontWeight="600">
-                        {k}
-                      </Text>
-                      <Text fontSize="11px" fontWeight="700" color="gray.700">
-                        {v}
-                      </Text>
-                    </Box>
-                  ))}
-                </Grid>
-              </Box>
-
-              {/* CTAs */}
-              <VStack gap="8px">
-                <Link
-                  href={`https://wa.me/234${car.phone.slice(1)}`}
-                  target="_blank"
-                  display="flex"
-                  w="100%"
-                  alignItems="center"
-                  justifyContent="center"
-                  gap="8px"
-                  bg="#25D366"
-                  color="white"
-                  borderRadius="11px"
-                  h="42px"
-                  fontSize="13px"
-                  fontWeight="700"
-                  _hover={{ opacity: 0.88 }}
-                  boxShadow="0 4px 14px #25D36644"
-                >
-                  💬 WhatsApp Dealer
-                </Link>
-                <Link
-                  href={`tel:${car.phone}`}
-                  display="flex"
-                  w="100%"
-                  alignItems="center"
-                  justifyContent="center"
-                  gap="8px"
-                  bg={P_LIGHT}
-                  color={P}
-                  borderRadius="11px"
-                  h="42px"
-                  fontSize="13px"
-                  fontWeight="700"
-                  _hover={{ bg: `${P}22` }}
-                >
-                  <PhoneIco /> Call Dealer
-                </Link>
-              </VStack>
-            </Box>
-          </Grid>
-        </Box>
+                ),
+              )}
+            </Flex>
+          </Box>
+        )}
       </Box>
     </>
   );
 }
 
-// ─── DEALER RANK CARD ─────────────────────────────────────────────────────────
-function DealerRankCard({
-  dealer,
-  rank,
-}: {
-  dealer: Dealer;
-  rank: number;
-}): JSX.Element {
-  const bdg = BADGE_CFG[dealer.badge];
-  const medal =
-    rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : null;
-  return (
-    <Flex
-      align="center"
-      gap="10px"
-      px="12px"
-      py="10px"
-      borderRadius="10px"
-      bg="gray.50"
-      mb="5px"
-      _hover={{ bg: P_LIGHT }}
-      transition="all 0.15s"
-      cursor="pointer"
-    >
-      <Text fontSize="13px" w="20px" textAlign="center" flexShrink="0">
-        {medal ?? (
-          <Text as="span" fontSize="11px" color="gray.400" fontWeight="700">
-            #{rank}
-          </Text>
-        )}
-      </Text>
-      <Avatar.Root size="xs" flexShrink="0">
-        <Avatar.Image src={dealer.avatar} />
-        <Avatar.Fallback>{dealer.name[0]}</Avatar.Fallback>
-      </Avatar.Root>
-      <Box flex="1" minW="0">
-        <HStack gap="4px" mb="1px">
-          <Text fontSize="12px" fontWeight="700" color="gray.800" lineClamp={1}>
-            {dealer.name}
-          </Text>
-          <Badge
-            bg={bdg.bg}
-            color={bdg.color}
-            fontSize="8px"
-            px="5px"
-            borderRadius="4px"
-            fontWeight="700"
-            flexShrink="0"
-          >
-            {bdg.icon} {dealer.badge}
-          </Badge>
-        </HStack>
-        <HStack gap="3px">
-          <Stars rating={dealer.rating} size={9} />
-          <Text fontSize="9px" color="gray.400">
-            ({dealer.reviewCount})
-          </Text>
-        </HStack>
-      </Box>
-      <Box textAlign="right" flexShrink="0">
-        <Text fontSize="12px" fontWeight="800" color="gray.700">
-          {dealer.soldCount}
-        </Text>
-        <Text fontSize="9px" color="gray.400">
-          sold
-        </Text>
-      </Box>
-    </Flex>
-  );
-}
-
-// ─── PAGE ─────────────────────────────────────────────────────────────────────
-// Breakpoints: base=mobile(<48em)  md=tablet(≥48em)  lg=desktop(≥62em)  xl=wide(≥80em)
-export default function CarMarketplace(): JSX.Element {
+// ─── MAIN PAGE ────────────────────────────────────────────────────────────────
+export default function CarMarketplace() {
   const [search, setSearch] = useState('');
-  const [filterInsp, setFilterInsp] = useState<InspStatus | 'All'>('All');
-  const [filterCond, setFilterCond] = useState<Condition | 'All'>('All');
-  const [filterFuel, setFilterFuel] = useState('All');
-  const [sortBy, setSortBy] = useState<SortBy>('newest');
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [filter, setFilter] = useState<FilterOpt>('All');
+  const [sort, setSort] = useState<SortOpt>('Newest');
   const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [detail, setDetail] = useState<Car | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [current, setCurrent] = useState(1);
+  const feedRef = useRef<HTMLDivElement>(null);
 
   const toggleSave = (id: string) => setSaved((p) => ({ ...p, [id]: !p[id] }));
 
-  let filtered = CARS.filter((c) => {
-    if (
-      search &&
-      !`${c.make} ${c.model} ${c.year} ${c.location}`
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    )
-      return false;
-    if (filterInsp !== 'All' && c.inspection !== filterInsp) return false;
-    if (filterCond !== 'All' && c.condition !== filterCond) return false;
-    if (filterFuel !== 'All' && c.fuel !== filterFuel) return false;
-    return true;
-  });
-
-  filtered = [...filtered].sort((a, b) => {
-    if (sortBy === 'price_asc') return a.price - b.price;
-    if (sortBy === 'price_desc') return b.price - a.price;
-    if (sortBy === 'rating') return b.rating - a.rating;
-    if (sortBy === 'inspected_first')
-      return a.inspection === 'Inspected' ? -1 : 1;
+  const filtered = CARS.filter((c) => {
+    const q = `${c.make} ${c.model} ${c.year} ${c.location}`.toLowerCase();
+    if (!q.includes(search.toLowerCase())) return false;
+    if (filter === 'All') return true;
+    if (filter === 'Inspected') return c.inspection === 'Inspected';
+    return c.condition === filter;
+  }).sort((a, b) => {
+    if (sort === 'Price ↑') return a.price - b.price;
+    if (sort === 'Price ↓') return b.price - a.price;
+    if (sort === 'Top Rated') return b.rating - a.rating;
     return a.postedDaysAgo - b.postedDaysAgo;
   });
 
-  const inspCount = CARS.filter((c) => c.inspection === 'Inspected').length;
-  const availCount = CARS.filter((c) => c.status === 'Available').length;
-  const sortedDealers = [...DEALERS].sort((a, b) => b.soldCount - a.soldCount);
-
-  // ── sidebar content (reused in both desktop rail and mobile drawer) ──────────
-  const SidebarContent = () => (
-    <>
-      {/* Inspection guide */}
-      <Box
-        bg={WHITE}
-        borderRadius="14px"
-        p="16px"
-        mb="14px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-      >
-        <Text fontWeight="800" fontSize="13px" color="gray.800" mb="12px">
-          Inspection Guide
-        </Text>
-        {(['Inspected', 'Pending', 'Not Inspected'] as InspStatus[]).map(
-          (s) => {
-            const cfg = INSP_CFG[s];
-            const count = CARS.filter((c) => c.inspection === s).length;
-            const desc =
-              s === 'Inspected'
-                ? 'Certified by AutoCheck NG'
-                : s === 'Pending'
-                  ? 'Currently being inspected'
-                  : 'Buyer caution advised';
-            return (
-              <Flex
-                key={s}
-                align="center"
-                gap="9px"
-                p="9px"
-                borderRadius="9px"
-                bg={cfg.bg}
-                border="1px solid"
-                borderColor={cfg.border}
-                mb="7px"
-                _last={{ mb: 0 }}
-              >
-                {s === 'Inspected' ? (
-                  <ShieldOk size={16} />
-                ) : s === 'Pending' ? (
-                  <ShieldPend size={16} />
-                ) : (
-                  <ShieldNo size={16} />
-                )}
-                <Box flex="1">
-                  <Text fontSize="12px" fontWeight="700" color={cfg.color}>
-                    {s}
-                  </Text>
-                  <Text fontSize="10px" color={cfg.color} opacity="0.7">
-                    {desc}
-                  </Text>
-                </Box>
-                <Badge
-                  bg={cfg.border}
-                  color={cfg.color}
-                  borderRadius="5px"
-                  fontSize="10px"
-                  px="6px"
-                  fontWeight="700"
-                >
-                  {count}
-                </Badge>
-              </Flex>
-            );
-          },
-        )}
-      </Box>
-
-      {/* Dealer rankings */}
-      <Box
-        bg={WHITE}
-        borderRadius="14px"
-        p="16px"
-        mb="14px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-      >
-        <Flex justify="space-between" align="center" mb="10px">
-          <HStack gap="6px">
-            <TrophyIco />
-            <Text fontWeight="800" fontSize="13px" color="gray.800">
-              Top Dealers
-            </Text>
-          </HStack>
-          <Text fontSize="11px" color={P} fontWeight="600" cursor="pointer">
-            See all
-          </Text>
-        </Flex>
-        <Flex px="12px" mb="6px">
-          <Text fontSize="9px" color="gray.400" fontWeight="700" w="28px">
-            #
-          </Text>
-          <Text fontSize="9px" color="gray.400" fontWeight="700" flex="1">
-            DEALER
-          </Text>
-          <Text fontSize="9px" color="gray.400" fontWeight="700">
-            SOLD
-          </Text>
-        </Flex>
-        {sortedDealers.map((d, i) => (
-          <DealerRankCard key={d.id} dealer={d} rank={i + 1} />
-        ))}
-      </Box>
-
-      {/* Market stats */}
-      <Box
-        bg={WHITE}
-        borderRadius="14px"
-        p="16px"
-        boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-      >
-        <Text fontWeight="800" fontSize="13px" color="gray.800" mb="10px">
-          Market Stats
-        </Text>
-        {[
-          ['Total Listings', `${CARS.length}`, '🚗'],
-          ['Inspected', `${inspCount} of ${CARS.length}`, '✅'],
-          ['Available Now', `${availCount}`, '🟢'],
-          [
-            'Avg. Price',
-            fmt(
-              Math.round(CARS.reduce((a, c) => a + c.price, 0) / CARS.length),
-            ),
-            '💰',
-          ],
-          [
-            'Avg. Rating',
-            `${(CARS.reduce((a, c) => a + c.rating, 0) / CARS.length).toFixed(1)} ⭐`,
-            '📊',
-          ],
-          ['Total Dealers', `${DEALERS.length}`, '🏪'],
-        ].map(([label, value, icon]) => (
-          <Flex
-            key={label}
-            justify="space-between"
-            align="center"
-            py="7px"
-            borderBottom="1px solid"
-            borderColor="gray.50"
-            _last={{ borderBottom: 'none' }}
-          >
-            <HStack gap="6px">
-              <Text fontSize="12px">{icon}</Text>
-              <Text fontSize="11px" color="gray.500">
-                {label}
-              </Text>
-            </HStack>
-            <Text fontSize="11px" fontWeight="700" color="gray.800">
-              {value}
-            </Text>
-          </Flex>
-        ))}
-      </Box>
-    </>
-  );
+  const onFeedScroll = useCallback(() => {
+    if (!feedRef.current) return;
+    const idx = Math.round(feedRef.current.scrollTop / window.innerHeight) + 1;
+    setCurrent(Math.min(idx, filtered.length));
+  }, [filtered.length]);
 
   return (
-    <Box flex="1" overflow="auto" bg={BG} fontFamily="'DM Sans', sans-serif">
-      {/* ── TOPBAR ──────────────────────────────────────────────────────────── */}
-      <Flex
-        align="center"
-        justify="space-between"
-        px={{ base: '16px', md: '24px', lg: '32px' }}
-        py="14px"
-        bg={WHITE}
-        borderBottom="1px solid"
-        borderColor="gray.100"
-        position="sticky"
-        top="0"
-        zIndex="20"
-      >
-        <Box>
-          <Text
-            fontSize="11px"
-            color="gray.400"
-            display={{ base: 'none', md: 'block' }}
-          >
-            Drivia / Marketplace
-          </Text>
-          <Heading
-            fontSize={{ base: '18px', md: '20px', lg: '22px' }}
-            fontWeight="800"
-            color="gray.800"
-            mt="1px"
-          >
-            Car Marketplace
-          </Heading>
-        </Box>
-
-        <HStack gap={{ base: '6px', md: '10px' }}>
-          {/* Search — full width on md+, icon-only on mobile */}
-          <Box
-            position="relative"
-            w={{ base: '36px', md: '200px', lg: '240px' }}
-            overflow="hidden"
-          >
-            <Box
-              position="absolute"
-              left="10px"
-              top="50%"
-              transform="translateY(-50%)"
-              color="gray.400"
-              zIndex="1"
-            >
-              <SearchIco />
-            </Box>
-            <Input
-              pl="34px"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search make, model, location…"
-              bg="gray.50"
-              border="none"
-              borderRadius="12px"
-              fontSize="13px"
-              h="36px"
-              display={{ base: 'none', md: 'block' }}
-              _placeholder={{ color: 'gray.400' }}
-              _focus={{ bg: 'gray.100', boxShadow: 'none' }}
-            />
-            {/* Mobile search icon button */}
-            <Box
-              display={{ base: 'flex', md: 'none' }}
-              w="36px"
-              h="36px"
-              borderRadius="10px"
-              bg="gray.50"
-              alignItems="center"
-              justifyContent="center"
-              color="gray.500"
-              cursor="pointer"
-            >
-              <SearchIco />
-            </Box>
-          </Box>
-
-          {/* Bell + moon — hide on mobile to save space */}
-          {([<BellIco />, <MoonIco />] as JSX.Element[]).map((ic, i) => (
-            <Button
-              key={i}
-              variant="ghost"
-              p="2"
-              borderRadius="10px"
-              color="gray.500"
-              _hover={{ bg: 'gray.100' }}
-              display={{ base: 'none', sm: 'flex' }}
-            >
-              {ic}
-            </Button>
-          ))}
-
-          {/* Mobile: sidebar toggle */}
-          <Button
-            display={{ base: 'flex', lg: 'none' }}
-            variant="ghost"
-            p="2"
-            borderRadius="10px"
-            color="gray.500"
-            _hover={{ bg: 'gray.100' }}
-            onClick={() => setSidebarOpen((o) => !o)}
-          >
-            <GridIco />
-          </Button>
-
-          <Avatar.Root size="sm">
-            <Avatar.Image src="https://i.pravatar.cc/40?img=47" />
-            <Avatar.Fallback>D</Avatar.Fallback>
-          </Avatar.Root>
-        </HStack>
-      </Flex>
-
-      {/* ── MOBILE SEARCH BAR (below topbar on small screens) ──────────────── */}
+    <Box
+      h="100dvh"
+      bg="black"
+      overflow="hidden"
+      fontFamily="'DM Sans', system-ui, sans-serif"
+    >
+      {/* Feed */}
       <Box
-        display={{ base: 'block', md: 'none' }}
-        px="16px"
-        pt="12px"
-        pb="4px"
-        bg={BG}
-      >
-        <Box position="relative">
-          <Box
-            position="absolute"
-            left="12px"
-            top="50%"
-            transform="translateY(-50%)"
-            color="gray.400"
-            zIndex="1"
-          >
-            <SearchIco />
-          </Box>
-          <Input
-            pl="36px"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search make, model, location…"
-            bg={WHITE}
-            border="1px solid"
-            borderColor="gray.200"
-            borderRadius="12px"
-            fontSize="13px"
-            h="40px"
-            _placeholder={{ color: 'gray.400' }}
-            _focus={{ borderColor: P, boxShadow: `0 0 0 1px ${P}` }}
-          />
-        </Box>
-      </Box>
-
-      {/* ── HERO ────────────────────────────────────────────────────────────── */}
-      <Box
-        mx={{ base: '12px', md: '20px', lg: '28px' }}
-        mt={{ base: '14px', md: '20px', lg: '24px' }}
-        mb={{ base: '14px', md: '18px', lg: '20px' }}
-        borderRadius={{ base: '16px', md: '18px', lg: '20px' }}
-        h={{ base: '120px', md: '140px', lg: '156px' }}
-        overflow="hidden"
-        position="relative"
-        boxShadow="0 8px 32px rgba(108,99,255,0.35)"
-        style={{
-          background:
-            'linear-gradient(135deg,#6C63FF 0%,#5B54E8 55%,#4338CA 100%)',
+        ref={feedRef}
+        onScroll={onFeedScroll}
+        h="100dvh"
+        overflowY="scroll"
+        css={{
+          scrollSnapType: 'y mandatory',
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
         }}
       >
-        <Box
-          position="absolute"
-          right="-20px"
-          top="-30px"
-          w="200px"
-          h="200px"
-          borderRadius="full"
-          bg="rgba(255,255,255,0.07)"
-        />
-        <Box
-          position="absolute"
-          right="220px"
-          bottom="-50px"
-          w="170px"
-          h="170px"
-          borderRadius="full"
-          bg="rgba(255,255,255,0.05)"
-        />
-
-        {/* Hide emoji on very small screens */}
-        <Text
-          position="absolute"
-          right="44px"
-          top="50%"
-          transform="translateY(-50%)"
-          fontSize={{ base: '48px', md: '62px', lg: '72px' }}
-          lineHeight="1"
-          display={{ base: 'none', sm: 'block' }}
-        >
-          🚗
-        </Text>
-
-        <Box
-          position="relative"
-          zIndex="1"
-          p={{ base: '18px 20px', md: '22px 26px', lg: '30px' }}
-        >
-          <Heading
-            fontSize={{ base: '16px', sm: '18px', md: '20px', lg: '22px' }}
-            fontWeight="900"
+        {filtered.length === 0 ? (
+          <Flex
+            h="100dvh"
+            direction="column"
+            align="center"
+            justify="center"
+            gap="12px"
             color="white"
-            lineHeight="1.2"
-            mb="5px"
           >
-            Nigeria's Most Trusted Car Market
-          </Heading>
-          <Text
-            fontSize={{ base: '11px', md: '12px' }}
-            color="rgba(255,255,255,0.78)"
-            mb="10px"
-          >
-            {inspCount} inspected · {availCount} available · Verified dealers
-          </Text>
-          <HStack gap="6px" flexWrap="wrap">
-            {[
-              `✅ ${inspCount} Inspected`,
-              '🔒 Secure Deals',
-              '📍 Nationwide',
-            ].map((t) => (
-              <Badge
-                key={t}
-                bg="rgba(255,255,255,0.18)"
-                color="white"
-                borderRadius="7px"
-                fontSize={{ base: '9px', md: '10px' }}
-                px="8px"
-                py="3px"
-                fontWeight="600"
-              >
-                {t}
-              </Badge>
-            ))}
-          </HStack>
-        </Box>
+            <Text fontSize="40px">🔍</Text>
+            <Text fontSize="16px" fontWeight={700}>
+              No cars match your filters
+            </Text>
+            <Box
+              as="button"
+              onClick={() => {
+                setFilter('All');
+                setSearch('');
+              }}
+              bg="#6C63FF"
+              color="white"
+              border="none"
+              borderRadius="10px"
+              px="20px"
+              py="10px"
+              fontSize="14px"
+              fontWeight={700}
+              cursor="pointer"
+              _hover={{ bg: '#5B54E8' }}
+            >
+              Clear filters
+            </Box>
+          </Flex>
+        ) : (
+          filtered.map((car) => (
+            <FYPCard
+              key={car.id}
+              car={car}
+              saved={!!saved[car.id]}
+              onSave={() => toggleSave(car.id)}
+              onDetail={() => setDetail(car)}
+            />
+          ))
+        )}
       </Box>
 
-      {/* ── MAIN CONTENT AREA ───────────────────────────────────────────────── */}
-      <Flex
-        gap={{ base: '0', lg: '20px' }}
-        px={{ base: '12px', md: '20px', lg: '28px' }}
-        pb={{ base: '80px', md: '28px' }}
-        align="flex-start"
+      {/* Floating header */}
+      <HeaderPanel
+        open={panelOpen}
+        onClose={() => setPanelOpen((p) => !p)}
+        search={search}
+        setSearch={setSearch}
+        filter={filter}
+        setFilter={setFilter}
+        sort={sort}
+        setSort={setSort}
+        current={current}
+        total={filtered.length}
+      />
+      <Box
+        position="fixed"
+        bottom="290px"
+        right="8px"
+        zIndex={100}
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        w="50px"
+        h="50px"
+        borderRadius="99px"
+        bg="rgba(255, 255, 255, 0.781)"
+        color="white"
+        fontSize="24px"
+        cursor="pointer"
       >
-        {/* ── LEFT: LISTINGS ────────────────────────────────────────────────── */}
-        <Box flex="1" minW="0">
-          {/* FILTERS */}
-          <Box
-            bg={WHITE}
-            borderRadius="14px"
-            p={{ base: '12px', md: '14px 16px' }}
-            mb="14px"
-            boxShadow="0 2px 8px rgba(0,0,0,0.04)"
-          >
-            <Flex
-              gap={{ base: '10px', md: '12px' }}
-              align="flex-start"
-              flexWrap="wrap"
-            >
-              {/* Inspection */}
-              <Box>
-                <Text
-                  fontSize="9px"
-                  color="gray.400"
-                  fontWeight="700"
-                  mb="5px"
-                  textTransform="uppercase"
-                  letterSpacing="0.5px"
-                >
-                  Inspection
-                </Text>
-                <Flex gap="5px" flexWrap="wrap">
-                  {(
-                    ['All', 'Inspected', 'Not Inspected', 'Pending'] as const
-                  ).map((f) => {
-                    const active = filterInsp === f;
-                    const cfg = f !== 'All' ? INSP_CFG[f as InspStatus] : null;
-                    return (
-                      <Box
-                        key={f}
-                        as="button"
-                        onClick={() => setFilterInsp(f)}
-                        px={{ base: '7px', md: '9px' }}
-                        py="4px"
-                        borderRadius="7px"
-                        fontSize={{ base: '10px', md: '11px' }}
-                        fontWeight="600"
-                        border="1.5px solid"
-                        transition="all 0.15s"
-                        bg={active ? (cfg?.bg ?? P_LIGHT) : WHITE}
-                        color={active ? (cfg?.color ?? P) : 'gray.400'}
-                        borderColor={active ? (cfg?.border ?? P) : 'gray.200'}
-                      >
-                        {f}
-                      </Box>
-                    );
-                  })}
-                </Flex>
-              </Box>
+        <LuPlus size={30} color="#000" />
+      </Box>
 
-              <Box
-                w="1px"
-                h="36px"
-                bg="gray.100"
-                alignSelf="flex-end"
-                mb="4px"
-                display={{ base: 'none', md: 'block' }}
-              />
-
-              {/* Condition */}
-              <Box>
-                <Text
-                  fontSize="9px"
-                  color="gray.400"
-                  fontWeight="700"
-                  mb="5px"
-                  textTransform="uppercase"
-                  letterSpacing="0.5px"
-                >
-                  Condition
-                </Text>
-                <Flex gap="5px" flexWrap="wrap">
-                  {(
-                    ['All', 'Brand New', 'Tokunbo', 'Nigerian Used'] as const
-                  ).map((f) => {
-                    const active = filterCond === f;
-                    const cfg = f !== 'All' ? COND_CFG[f as Condition] : null;
-                    return (
-                      <Box
-                        key={f}
-                        as="button"
-                        onClick={() => setFilterCond(f)}
-                        px={{ base: '7px', md: '9px' }}
-                        py="4px"
-                        borderRadius="7px"
-                        fontSize={{ base: '10px', md: '11px' }}
-                        fontWeight="600"
-                        border="1.5px solid"
-                        transition="all 0.15s"
-                        bg={active ? (cfg?.bg ?? P_LIGHT) : WHITE}
-                        color={active ? (cfg?.color ?? P) : 'gray.400'}
-                        borderColor={active ? (cfg?.bg ?? P) : 'gray.200'}
-                      >
-                        {f}
-                      </Box>
-                    );
-                  })}
-                </Flex>
-              </Box>
-
-              <Box
-                w="1px"
-                h="36px"
-                bg="gray.100"
-                alignSelf="flex-end"
-                mb="4px"
-                display={{ base: 'none', md: 'block' }}
-              />
-
-              {/* Fuel */}
-              <Box>
-                <Text
-                  fontSize="9px"
-                  color="gray.400"
-                  fontWeight="700"
-                  mb="5px"
-                  textTransform="uppercase"
-                  letterSpacing="0.5px"
-                >
-                  Fuel
-                </Text>
-                <Flex gap="5px" flexWrap="wrap">
-                  {['All', 'Petrol', 'Diesel', 'Hybrid', 'Electric'].map(
-                    (f) => (
-                      <Box
-                        key={f}
-                        as="button"
-                        onClick={() => setFilterFuel(f)}
-                        px={{ base: '7px', md: '9px' }}
-                        py="4px"
-                        borderRadius="7px"
-                        fontSize={{ base: '10px', md: '11px' }}
-                        fontWeight="600"
-                        border="1.5px solid"
-                        transition="all 0.15s"
-                        bg={filterFuel === f ? P_LIGHT : WHITE}
-                        color={filterFuel === f ? P : 'gray.400'}
-                        borderColor={filterFuel === f ? P : 'gray.200'}
-                      >
-                        {f}
-                      </Box>
-                    ),
-                  )}
-                </Flex>
-              </Box>
-            </Flex>
-          </Box>
-
-          {/* SORT ROW */}
-          <Flex
-            justify="space-between"
-            align="center"
-            mb="14px"
-            flexWrap="wrap"
-            gap="8px"
-          >
-            <Text fontSize="12px" fontWeight="600" color="gray.500">
-              {filtered.length} vehicle{filtered.length !== 1 ? 's' : ''} found
-            </Text>
-            <HStack gap="8px" flexWrap="wrap">
-              {/* Sort chips — scroll horizontally on mobile */}
-              <Flex
-                gap="5px"
-                overflowX={{ base: 'auto', md: 'visible' }}
-                maxW={{ base: 'calc(100vw - 160px)', md: 'none' }}
-                pb={{ base: '2px', md: '0' }}
-              >
-                {(
-                  [
-                    ['newest', 'Newest'],
-                    ['price_asc', 'Price ↑'],
-                    ['price_desc', 'Price ↓'],
-                    ['rating', 'Top Rated'],
-                    ['inspected_first', 'Inspected'],
-                  ] as [SortBy, string][]
-                ).map(([v, label]) => (
-                  <Box
-                    key={v}
-                    as="button"
-                    onClick={() => setSortBy(v)}
-                    px={{ base: '8px', md: '9px' }}
-                    py="4px"
-                    borderRadius="7px"
-                    fontSize={{ base: '10px', md: '11px' }}
-                    fontWeight="600"
-                    flexShrink="0"
-                    bg={sortBy === v ? P : WHITE}
-                    color={sortBy === v ? 'white' : 'gray.500'}
-                    boxShadow={
-                      sortBy === v
-                        ? `0 2px 8px ${P}44`
-                        : '0 1px 4px rgba(0,0,0,0.07)'
-                    }
-                    transition="all 0.15s"
-                  >
-                    {label}
-                  </Box>
-                ))}
-              </Flex>
-
-              {/* View toggle — hide on mobile */}
-              <HStack
-                bg={WHITE}
-                borderRadius="9px"
-                p="3px"
-                boxShadow="0 1px 4px rgba(0,0,0,0.07)"
-                gap="2px"
-                display={{ base: 'none', sm: 'flex' }}
-              >
-                {(
-                  [
-                    ['grid', <GridIco />],
-                    ['list', <ListIco />],
-                  ] as [ViewMode, JSX.Element][]
-                ).map(([v, ic]) => (
-                  <Box
-                    key={v}
-                    as="button"
-                    onClick={() => setViewMode(v)}
-                    w="26px"
-                    h="26px"
-                    borderRadius="6px"
-                    bg={viewMode === v ? P : 'transparent'}
-                    color={viewMode === v ? 'white' : 'gray.400'}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    transition="all 0.15s"
-                  >
-                    {ic}
-                  </Box>
-                ))}
-              </HStack>
-            </HStack>
-          </Flex>
-
-          {/* LISTINGS */}
-          {filtered.length === 0 ? (
-            <Flex direction="column" align="center" py="64px" gap="12px">
-              <Text fontSize="32px">🔍</Text>
-              <Text fontWeight="700" fontSize="16px" color="gray.600">
-                No vehicles match your filters
-              </Text>
-              <Button
-                bg={P}
-                color="white"
-                borderRadius="10px"
-                fontSize="13px"
-                fontWeight="700"
-                h="36px"
-                px="20px"
-                _hover={{ bg: P_DARK }}
-                onClick={() => {
-                  setFilterInsp('All');
-                  setFilterCond('All');
-                  setFilterFuel('All');
-                  setSearch('');
-                }}
-              >
-                Clear Filters
-              </Button>
-            </Flex>
-          ) : viewMode === 'grid' ? (
-            <Grid
-              templateColumns={{
-                base: '1fr',
-                sm: 'repeat(2, 1fr)',
-                md: 'repeat(2, 1fr)',
-                lg: 'repeat(2, 1fr)',
-                xl: 'repeat(3, 1fr)',
-              }}
-              gap={{ base: '10px', md: '14px' }}
-            >
-              {filtered.map((car) => (
-                <CarCard
-                  key={car.id}
-                  car={car}
-                  saved={!!saved[car.id]}
-                  onSave={() => toggleSave(car.id)}
-                  onDetail={() => setDetail(car)}
-                />
-              ))}
-            </Grid>
-          ) : (
-            <VStack gap="8px" align="stretch">
-              {filtered.map((car) => {
-                const insp = INSP_CFG[car.inspection];
-                return (
-                  <Flex
-                    key={car.id}
-                    bg={WHITE}
-                    borderRadius="13px"
-                    overflow="hidden"
-                    boxShadow="0 2px 8px rgba(0,0,0,0.05)"
-                    cursor="pointer"
-                    _hover={{ boxShadow: '0 4px 18px rgba(108,99,255,0.1)' }}
-                    transition="all 0.15s"
-                    onClick={() => setDetail(car)}
-                  >
-                    <Box
-                      w={{ base: '90px', sm: '120px' }}
-                      flexShrink="0"
-                      style={{ background: car.gradient }}
-                    >
-                      <Image
-                        src={car.img}
-                        w="100%"
-                        h="100%"
-                        objectFit="cover"
-                        opacity="0.8"
-                      />
-                    </Box>
-                    <Box
-                      p={{ base: '10px 12px', md: '12px 16px' }}
-                      flex="1"
-                      minW="0"
-                    >
-                      <Flex justify="space-between" align="flex-start" mb="4px">
-                        <Box>
-                          <Text
-                            fontWeight="800"
-                            fontSize={{ base: '13px', md: '14px' }}
-                            color="gray.800"
-                          >
-                            {car.year} {car.make} {car.model}
-                          </Text>
-                          <HStack gap="5px" mt="2px">
-                            <Badge
-                              bg={COND_CFG[car.condition].bg}
-                              color={COND_CFG[car.condition].color}
-                              borderRadius="4px"
-                              fontSize="9px"
-                              px="6px"
-                              fontWeight="700"
-                            >
-                              {car.condition}
-                            </Badge>
-                            <Badge
-                              bg={STAT_CFG[car.status].bg}
-                              color={STAT_CFG[car.status].color}
-                              borderRadius="4px"
-                              fontSize="9px"
-                              px="6px"
-                              fontWeight="700"
-                            >
-                              {car.status}
-                            </Badge>
-                          </HStack>
-                        </Box>
-                        <Text
-                          fontSize={{ base: '14px', md: '16px' }}
-                          fontWeight="900"
-                          color={P}
-                          flexShrink="0"
-                        >
-                          {fmt(car.price)}
-                        </Text>
-                      </Flex>
-                      {/* Meta — hide some items on mobile */}
-                      <Flex
-                        gap={{ base: '8px', md: '12px' }}
-                        mt="6px"
-                        flexWrap="wrap"
-                      >
-                        <Flex
-                          align="center"
-                          gap="5px"
-                          px="7px"
-                          py="3px"
-                          borderRadius="6px"
-                          bg={insp.bg}
-                          border="1px solid"
-                          borderColor={insp.border}
-                          display="inline-flex"
-                        >
-                          {insp.icon}
-                          <Text
-                            fontSize="10px"
-                            fontWeight="700"
-                            color={insp.color}
-                          >
-                            {car.inspection}
-                          </Text>
-                          {car.report && (
-                            <Text fontSize="10px" color={insp.color}>
-                              {' '}
-                              · {car.report.overall}/100
-                            </Text>
-                          )}
-                        </Flex>
-                        <HStack gap="3px">
-                          <Stars rating={car.rating} />
-                          <Text fontSize="11px" color="gray.400">
-                            {car.rating.toFixed(1)}
-                          </Text>
-                        </HStack>
-                        <HStack
-                          gap="3px"
-                          color="gray.400"
-                          display={{ base: 'none', sm: 'flex' }}
-                        >
-                          <LocIco />
-                          <Text fontSize="11px">{car.location}</Text>
-                        </HStack>
-                        <HStack
-                          gap="3px"
-                          color="gray.400"
-                          display={{ base: 'none', md: 'flex' }}
-                        >
-                          <SpeedIco />
-                          <Text fontSize="11px">{fmtK(car.mileage)} km</Text>
-                        </HStack>
-                      </Flex>
-                    </Box>
-                  </Flex>
-                );
-              })}
-            </VStack>
-          )}
-        </Box>
-
-        {/* ── RIGHT: SIDEBAR — desktop always visible, mobile drawer ──────── */}
-
-        {/* Desktop rail (lg+) */}
-        <Box
-          w="256px"
-          minW="256px"
-          flexShrink="0"
-          display={{ base: 'none', lg: 'block' }}
-          position="sticky"
-          top="72px"
-          maxH="calc(100vh - 80px)"
-          overflowY="auto"
-        >
-          <SidebarContent />
-        </Box>
-
-        {/* Mobile / tablet drawer overlay */}
-        {sidebarOpen && (
-          <Box
-            display={{ base: 'block', lg: 'none' }}
-            position="fixed"
-            inset="0"
-            zIndex="30"
-            bg="rgba(0,0,0,0.4)"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <Box
-              position="absolute"
-              top="0"
-              right="0"
-              bottom="0"
-              w={{ base: '88vw', sm: '340px' }}
-              bg={BG}
-              overflowY="auto"
-              p="16px"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Flex justify="space-between" align="center" mb="16px">
-                <Text fontWeight="800" fontSize="16px" color="gray.800">
-                  Stats & Rankings
-                </Text>
-                <Box
-                  as="button"
-                  onClick={() => setSidebarOpen(false)}
-                  w="32px"
-                  h="32px"
-                  borderRadius="8px"
-                  bg="gray.100"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  color="gray.500"
-                  _hover={{ bg: 'gray.200' }}
-                >
-                  <CloseIco />
-                </Box>
-              </Flex>
-              <SidebarContent />
-            </Box>
-          </Box>
-        )}
-      </Flex>
-
-      {detail && <DetailModal car={detail} onClose={() => setDetail(null)} />}
+      {/* Detail bottom sheet */}
+      {detail && <DetailPanel car={detail} onClose={() => setDetail(null)} />}
     </Box>
   );
 }

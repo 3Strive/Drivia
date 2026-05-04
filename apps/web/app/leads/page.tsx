@@ -26,7 +26,7 @@ const platformData = [
   { platform: 'Facebook', enquiries: 28, sold: 9, color: '#1877F2' },
   { platform: 'Instagram', enquiries: 21, sold: 6, color: '#E1306C' },
   { platform: 'Walk-in', enquiries: 14, sold: 7, color: '#718096' },
-  { platform: 'Referral', enquiries: 11, sold: 6, color: '#805AD5' },
+  { platform: 'Referral', enquiries: 11, sold: 6, color: '#3B82F6' },
 ];
 
 const pieData = [

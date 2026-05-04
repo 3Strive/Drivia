@@ -2,6 +2,8 @@ import React from 'react';
 import { Grid } from '@chakra-ui/react';
 import { KpiCard } from '../atoms/KpiCard';
 import { fmtShort } from '../atoms/formatters';
+import { FaCar, FaMoneyBill } from 'react-icons/fa';
+import { IoAnalyticsSharp, IoPricetag } from 'react-icons/io5';
 
 // ─── KPI CARDS GRID ───────────────────────────────────────────────────────────
 interface KpiGridProps {
@@ -11,7 +13,12 @@ interface KpiGridProps {
   convRate: number;
 }
 
-export const KpiGrid = ({ totalRevenue, totalSold, avgSalePrice, convRate }: KpiGridProps) => {
+export const KpiGrid = ({
+  totalRevenue,
+  totalSold,
+  avgSalePrice,
+  convRate,
+}: KpiGridProps) => {
   const stats = [
     {
       label: 'Total Revenue',
@@ -19,7 +26,7 @@ export const KpiGrid = ({ totalRevenue, totalSold, avgSalePrice, convRate }: Kpi
       sub: '+18% vs last period',
       up: true,
       color: '#6C63FF',
-      icon: '💰',
+      icon: <FaMoneyBill />,
     },
     {
       label: 'Cars Sold',
@@ -27,7 +34,7 @@ export const KpiGrid = ({ totalRevenue, totalSold, avgSalePrice, convRate }: Kpi
       sub: '+3 vs last period',
       up: true,
       color: '#276749',
-      icon: '🚗',
+      icon: <FaCar />,
     },
     {
       label: 'Avg Sale Price',
@@ -35,15 +42,15 @@ export const KpiGrid = ({ totalRevenue, totalSold, avgSalePrice, convRate }: Kpi
       sub: 'Based on all sales',
       up: true,
       color: '#2C7A7B',
-      icon: '📊',
+      icon: <IoPricetag />,
     },
     {
       label: 'Conv. Rate',
       value: `${convRate}%`,
       sub: '-2% vs last period',
       up: false,
-      color: '#805AD5',
-      icon: '🎯',
+      color: '#3B82F6',
+      icon: <IoAnalyticsSharp />,
     },
   ];
 

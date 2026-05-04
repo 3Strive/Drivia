@@ -15,10 +15,7 @@ import {
 import ShareModalDemo, { ShareModal } from '../../molecules/sharemodal';
 import { ShareButton } from '../../he/btn-modal';
 import { CarListing } from '../../../shared/types';
-
-// ─── PALETTE ──────────────────────────────────────────────────────────────────
-const P = '#6C63FF';
-const P_DARK = '#5B54E8';
+import { COLORS } from '../../atoms';
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 interface NavItem {
@@ -317,7 +314,7 @@ export function Sidebar(): JSX.Element {
           w="28px"
           h="28px"
           borderRadius="8px"
-          bg={P}
+          bg={COLORS.primary}
           flexShrink="0"
           display="flex"
           alignItems="center"
@@ -333,7 +330,7 @@ export function Sidebar(): JSX.Element {
         <Badge
           fontSize="9px"
           bg="purple.100"
-          color={P}
+          color={COLORS.primary}
           borderRadius="4px"
           px="6px"
           py="1px"
@@ -369,7 +366,11 @@ export function Sidebar(): JSX.Element {
             size="sm"
             h="34px"
             _placeholder={{ color: 'gray.400' }}
-            _focus={{ bg: 'white', borderColor: `${P}66`, boxShadow: 'none' }}
+            _focus={{
+              bg: 'white',
+              borderColor: `${COLORS.primary}66`,
+              boxShadow: 'none',
+            }}
             transition="all 0.15s"
           />
         </Box>
@@ -392,13 +393,13 @@ export function Sidebar(): JSX.Element {
                 px="12px"
                 py="9px"
                 borderRadius="10px"
-                bg={active ? `${P}15` : 'transparent'}
-                color={active ? P : 'gray.500'}
+                bg={active ? `${COLORS.primary}15` : 'transparent'}
+                color={active ? COLORS.primary : 'gray.500'}
                 cursor="pointer"
                 onClick={() => router.push(item.href)}
                 _hover={{
-                  bg: active ? `${P}15` : 'gray.50',
-                  color: active ? P : 'gray.700',
+                  bg: active ? `${COLORS.primary}15` : 'gray.50',
+                  color: active ? COLORS.primary : 'gray.700',
                 }}
                 transition="all 0.15s"
                 gap="10px"
@@ -419,7 +420,7 @@ export function Sidebar(): JSX.Element {
                     w="6px"
                     h="6px"
                     borderRadius="full"
-                    bg={P}
+                    bg={COLORS.primary}
                     flexShrink="0"
                   />
                 )}
@@ -450,13 +451,13 @@ export function Sidebar(): JSX.Element {
                     px="12px"
                     py="8px"
                     borderRadius="10px"
-                    bg={active ? `${P}15` : 'transparent'}
-                    color={active ? P : 'gray.500'}
+                    bg={active ? `${COLORS.primary}15` : 'transparent'}
+                    color={active ? COLORS.primary : 'gray.500'}
                     cursor="pointer"
                     onClick={() => router.push(item.href)}
                     _hover={{
-                      bg: active ? `${P}15` : 'gray.50',
-                      color: active ? P : 'gray.700',
+                      bg: active ? `${COLORS.primary}15` : 'gray.50',
+                      color: active ? COLORS.primary : 'gray.700',
                     }}
                     _active={{
                       outline: 'none',
@@ -484,7 +485,7 @@ export function Sidebar(): JSX.Element {
                         w="6px"
                         h="6px"
                         borderRadius="full"
-                        bg={P}
+                        bg={COLORS.primary}
                         flexShrink="0"
                       />
                     )}
@@ -530,7 +531,7 @@ export function Sidebar(): JSX.Element {
       {/* ── SHARE POST ── */}
       <Box mt="16px" mb="14px">
         <Button
-          bg={P}
+          bg={COLORS.primary}
           color="white"
           borderRadius="10px"
           fontSize="13px"
@@ -538,8 +539,8 @@ export function Sidebar(): JSX.Element {
           h="38px"
           w="100%"
           gap="8px"
-          _hover={{ bg: P_DARK }}
-          boxShadow={`0 4px 14px ${P}44`}
+          _hover={{ bg: COLORS.primaryDark }}
+          boxShadow={`0 4px 14px ${COLORS.primary}44`}
           onClick={() => setIsShareOpen(true)}
         >
           <ShareIco /> Share Post
@@ -547,12 +548,17 @@ export function Sidebar(): JSX.Element {
       </Box>
 
       {/* ── UPGRADE BANNER ── */}
-      <Box bg={`${P}10`} borderRadius="16px" p="14px" textAlign="center">
+      <Box
+        bg={`${COLORS.primary}10`}
+        borderRadius="16px"
+        p="14px"
+        textAlign="center"
+      >
         <Box
           w="36px"
           h="36px"
           borderRadius="full"
-          bg={P}
+          bg={COLORS.primary}
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -573,13 +579,13 @@ export function Sidebar(): JSX.Element {
         </Text>
         <Button
           size="xs"
-          bg={P}
+          bg={COLORS.primary}
           color="white"
           borderRadius="8px"
           fontSize="10px"
           fontWeight="600"
           w="100%"
-          _hover={{ bg: P_DARK }}
+          _hover={{ bg: COLORS.primaryDark }}
         >
           Upgrade Now
         </Button>

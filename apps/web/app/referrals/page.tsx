@@ -162,7 +162,7 @@ export default function ReferralsPage() {
               label: 'Pending Reward',
               value:
                 referrals.filter((r) => r.status === 'verified').length * 2,
-              color: '#805AD5',
+              color: '#3B82F6',
               icon: '⏳',
             },
           ].map((s) => (

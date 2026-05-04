@@ -15,6 +15,7 @@ import {
 import { Colors } from '../../../ui/color-pack';
 //import { NavButtons } from '../../../molecules/nav-buttons';
 import { useRouter } from 'next/navigation';
+import { NavButtons } from '../../../molecules/NavButtons';
 
 type Step1Props = {
   onNext: () => void;

@@ -13,26 +13,27 @@ import {
   Grid,
   Image,
 } from '@chakra-ui/react';
+import { CarListing } from '../../shared/types';
 
 // ─── PALETTE ──────────────────────────────────────────────────────────────────
 const P = '#6C63FF';
 const P_DARK = '#5B54E8';
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
-export interface CarListing {
-  id: number;
-  title: string;
-  make: string;
-  model: string;
-  year: number;
-  price: number; // in Naira
-  mileage: number; // in km
-  condition: 'Tokunbo' | 'Nigerian Used' | 'Brand New';
-  location: string;
-  phone: string;
-  img?: string;
-  gradient?: string;
-}
+// export interface CarListing {
+//   id: number;
+//   title: string;
+//   make: string;
+//   model: string;
+//   year: number;
+//   price: number; // in Naira
+//   mileage: number; // in km
+//   condition: 'Tokunbo' | 'Nigerian Used' | 'Brand New';
+//   location: string;
+//   phone: string;
+//   img?: string;
+//   gradient?: string;
+// }
 
 type PlatformId = 'whatsapp' | 'facebook' | 'instagram';
 type PostStatus = 'idle' | 'posting' | 'success' | 'error';
@@ -535,9 +536,9 @@ export function ShareModal({
                     listing.gradient ?? 'linear(to-br, #6C63FF, #9c5bff)'
                   }
                 >
-                  {listing.img && (
+                  {listing.images && (
                     <Image
-                      src={listing.img}
+                      src={listing.images[0]}
                       position="absolute"
                       inset="0"
                       w="100%"
@@ -876,7 +877,7 @@ export function ShareModal({
 
 // ─── DEMO WRAPPER (delete this in production) ─────────────────────────────────
 const DEMO_LISTING: CarListing = {
-  id: 1,
+  id: '1',
   title: '2021 Toyota Camry',
   make: 'Toyota',
   model: 'Camry',
@@ -886,8 +887,18 @@ const DEMO_LISTING: CarListing = {
   condition: 'Tokunbo',
   location: 'Lekki, Lagos',
   phone: '08012345678',
-  img: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=220&fit=crop',
+  images: [
+    'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=220&fit=crop',
+  ],
   gradient: 'linear(to-br, #3F51B5, #6C63FF)',
+  transmission: 'Automatic',
+  fuelType: 'Petrol',
+  description:
+    'Well-maintained 2021 Toyota Camry with low mileage. Single owner, full service history, and no accidents. Features include leather seats, touchscreen display, rearview camera, and keyless entry. Perfect for city driving and long trips. Contact for more details or to schedule a test drive.',
+  color: 'White',
+  status: 'Available',
+  postedAt: '2024-05-15T10:30:00Z',
+  sharedTo: ['facebook'],
 };
 
 export default function ShareModalDemo(): JSX.Element {

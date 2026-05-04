@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Box, Flex, Text, HStack } from '@chakra-ui/react';
 import { UpIco, DownIco } from './icons';
 
@@ -9,7 +9,7 @@ export interface KpiCardProps {
   sub: string;
   up: boolean;
   color: string;
-  icon: string;
+  icon: ReactNode;
 }
 
 export const KpiCard = ({

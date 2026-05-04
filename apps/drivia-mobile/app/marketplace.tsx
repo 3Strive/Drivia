@@ -4,14 +4,11 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
   FlatList,
   Dimensions,
   Linking,
-  ImageBackground,
   ScrollView,
   TextInput,
-  Animated,
   LayoutAnimation,
   Platform,
   UIManager,
@@ -25,7 +22,6 @@ import { C, R } from '../constants/theme';
 import { Chip, SectionHeader } from '../components/ui';
 import type { CarListing, Condition, PlatformId } from '../constants/types';
 import { Ionicons } from '@expo/vector-icons';
-import { PanResponder } from 'react-native';
 import { PLATFORMS } from './(tabs)/broadcast';
 // Enable LayoutAnimation on Android
 if (
@@ -416,7 +412,15 @@ function getSlides(images: string[]): string[] {
 }
 
 // ─── FYP CARD ─────────────────────────────────────────────────────────────────
-function FYPCard({ item }: { item: CarListing }) {
+function FYPCard({
+  item,
+  saved,
+  onSave,
+}: {
+  item: CarListing;
+  saved: boolean;
+  onSave: () => void;
+}) {
   const cond = CONDITION_COLOR[item.condition];
   const slides = getSlides(item.images);
   const [activeSlide, setActiveSlide] = useState(0);
@@ -492,6 +496,14 @@ function FYPCard({ item }: { item: CarListing }) {
         </View>
       )}
 
+      <TouchableOpacity style={s.saveBtn} onPress={onSave}>
+        {saved ? (
+          <Ionicons name="heart" size={30} color="red" />
+        ) : (
+          <Ionicons name="heart-outline" size={30} color="white" />
+        )}
+      </TouchableOpacity>
+
       {/* Bottom info panel */}
       <TouchableOpacity
         onLongPress={() => router.push(`/listing/${item.id}`)}
@@ -553,6 +565,7 @@ export default function Marketplace() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<FilterOpt>('All');
   const [sort, setSort] = useState<SortOpt>('Newest');
+  const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [current, setCurrent] = useState(1);
   const [compose, setCompose] = useState(false);
   const [message, setMessage] = useState('');
@@ -561,6 +574,8 @@ export default function Marketplace() {
     setSelPlats((prev) =>
       prev.includes(id) ? prev.filter((p) => p !== id) : [...prev, id],
     );
+
+  const toggleSave = (id: string) => setSaved((p) => ({ ...p, [id]: !p[id] }));
 
   const filtered = LISTINGS.filter((c) => {
     const q = `${c.make} ${c.model} ${c.year} ${c.location}`.toLowerCase();
@@ -595,7 +610,13 @@ export default function Marketplace() {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <FYPCard item={item} />}
+        renderItem={({ item }) => (
+          <FYPCard
+            saved={!!saved[item.id]}
+            onSave={() => toggleSave(item.id)}
+            item={item}
+          />
+        )}
         pagingEnabled
         showsVerticalScrollIndicator={false}
         snapToInterval={SCREEN_H}
@@ -822,6 +843,18 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  saveBtn: {
+    width: 30,
+    position: 'absolute',
+    bottom: 215,
+    right: 25,
+    height: 30,
+    borderRadius: 99,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   headerTitle: {
     position: 'absolute',
     top: HEADER_TOP_PADDING - 10,

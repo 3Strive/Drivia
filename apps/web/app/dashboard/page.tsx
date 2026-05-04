@@ -12,6 +12,21 @@ import {
   RevenueChart,
 } from '../components/organisms';
 import { COLORS } from '../components/atoms';
+import {
+  FaBroadcastTower,
+  FaCamera,
+  FaCar,
+  FaEye,
+  FaHeart,
+  FaPlus,
+} from 'react-icons/fa';
+import {
+  IoAnalytics,
+  IoChatbubbleOutline,
+  IoChatbubbles,
+  IoChatbubblesOutline,
+} from 'react-icons/io5';
+import { FaPaperclip } from 'react-icons/fa';
 
 const revenueData = [
   { month: 'Jun', revenue: 38000000, sales: 2 },
@@ -59,31 +74,31 @@ const topCars = [
 
 const recentActivity = [
   {
-    icon: '💬',
+    icon: <IoChatbubbleOutline />,
     text: 'New WhatsApp lead for Toyota Camry',
     time: '2 min ago',
     color: '#25D366',
   },
   {
-    icon: '🚗',
+    icon: <FaCar />,
     text: 'Honda CR-V marked as sold',
     time: '18 min ago',
     color: '#276749',
   },
   {
-    icon: '👁️',
+    icon: <FaEye />,
     text: 'Lexus RX350 listing viewed 12 times',
     time: '1 hr ago',
     color: COLORS.primary,
   },
   {
-    icon: '📸',
+    icon: <FaCamera />,
     text: 'Mercedes C300 photos uploaded',
     time: '2 hrs ago',
     color: '#805AD5',
   },
   {
-    icon: '🤝',
+    icon: <IoChatbubbles />,
     text: 'Price negotiation started on Highlander',
     time: '3 hrs ago',
     color: '#DD6B20',
@@ -200,13 +215,33 @@ export default function DashboardPage() {
           </Text>
           <HStack gap="12px" flexWrap="wrap">
             {[
-              { label: '+ Add Car Listing', color: COLORS.primary },
-              { label: '📣 Send Broadcast', color: '#25D366' },
-              { label: '📊 View Analytics', color: '#805AD5' },
-              { label: '👥 View All Leads', color: '#DD6B20' },
-              { label: '🔗 Share Referral Link', color: '#2C7A7B' },
+              {
+                icon: <FaPlus />,
+                label: 'Add Car Listing',
+                color: COLORS.primary,
+              },
+              {
+                icon: <FaBroadcastTower />,
+                label: `Send Broadcast`,
+                color: '#25D366',
+              },
+              {
+                icon: <IoAnalytics />,
+                label: ` View Analytics`,
+                color: '#805AD5',
+              },
+              {
+                icon: <IoChatbubblesOutline />,
+                label: `View All Leads`,
+                color: '#DD6B20',
+              },
+              {
+                icon: <FaPaperclip />,
+                label: `Share Referral Link`,
+                color: '#2C7A7B',
+              },
             ].map((a) => (
-              <Box
+              <HStack
                 key={a.label}
                 as="button"
                 px="18px"
@@ -221,8 +256,8 @@ export default function DashboardPage() {
                 _hover={{ bg: `${a.color}20` }}
                 transition="all 0.15s"
               >
-                {a.label}
-              </Box>
+                {a.icon} {a.label}
+              </HStack>
             ))}
           </HStack>
         </Box>
