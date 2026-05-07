@@ -5,6 +5,14 @@
 
 export * from './auth';
 export * from './analytics';
-export * from './ReferralComponents';
-
+export * from './Leads';
+export * from './broadcast';
+export * from './crm';
+export * from './dashboard';
+export * from './inspector';
+export * from './inventory';
+export * from './market';
+export * from './plans';
+export * from './referals';
+export * from './socials';
 export * from './PageFooter';

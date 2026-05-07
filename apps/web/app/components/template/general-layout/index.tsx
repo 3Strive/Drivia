@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { Flex } from '@chakra-ui/react';
-import { Sidebar } from '../../organism/sidebar';
 import { CarListing } from '../../../shared/types';
+import { Sidebar } from '../../organisms/sidebar';
 
 const DEMO_LISTING: CarListing = {
   id: '1',

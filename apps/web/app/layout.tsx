@@ -7,15 +7,6 @@ import React from 'react';
 import { ThemeProvider } from './components/theme-provider';
 import { Provider } from './components/ui/provider';
 
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-// });
-
 const geistManRope = localFont({
   src: './fonts/Manrope-VariableFont_wght.ttf',
   variable: '--font-geist-mono',

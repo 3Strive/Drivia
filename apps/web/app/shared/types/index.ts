@@ -16,12 +16,26 @@ export const DANGER = '#E53E3E';
 export type Condition = 'Brand New' | 'Tokunbo' | 'Nigerian Used';
 export type ListingStatus = 'Available' | 'Reserved' | 'Sold';
 
+export interface InspReport {
+  engine: number;
+  exterior: number;
+  interior: number;
+  transmission: number;
+  electronics: number;
+  overall: number;
+  inspector: string;
+  date: string;
+}
 export interface CarListing {
   id: string;
   title: string;
   make: string;
   model: string;
   year: number;
+  bodyType?: string;
+  views?: number;
+  enquiries?: number;
+  daysListed?: number;
   price: number; // ₦
   mileage: number; // km
   condition: Condition;
@@ -36,7 +50,38 @@ export interface CarListing {
   gradient: string;
   postedAt: string; // ISO date
   sharedTo: PlatformId[];
+  dealerName?: string;
+  inspectedBy?: string;
+  dealerRating?: number;
+  savedCount?: number;
+  inspection?: InspStatus;
+  report?: InspReport;
+  rating?: number;
+  reviewCount?: number;
+  dealerId?: string;
 }
+
+// AddCarForm uses string-friendly types for controlled inputs
+export type AddCarForm = {
+  make: string;
+  model: string;
+  year: number | '';
+  bodyType: string;
+  price: number | '';
+  mileage: number | '';
+  condition: Condition | '';
+  status?: ListingStatus;
+  location: string;
+  color: string;
+  transmission: '' | 'Automatic' | 'Manual';
+  fuelType: '' | 'Petrol' | 'Diesel' | 'Electric' | 'Hybrid';
+  description: string;
+  phone: string;
+  gradient: string;
+  postedAt: string;
+  sharedTo: PlatformId[];
+  images: string[];
+};
 
 // ─── LEADS ────────────────────────────────────────────────────────────────────
 export type LeadStatus =
@@ -61,7 +106,7 @@ export interface Lead {
   avatar?: string;
   source: LeadSource;
   status: LeadStatus;
-  listingId: string; // which car they're interested in
+  listingId: string;
   budget: number; // ₦
   notes: string;
   createdAt: string;
@@ -88,6 +133,7 @@ export interface Contact {
   name: string;
   phone: string;
   platform: string;
+  avatar?: string;
   platformColor: string;
   carsBought: number;
   totalSpent: number;
@@ -117,9 +163,59 @@ export interface Customer {
   budgetMin: number;
   budgetMax: number;
   preferredMake?: string;
-  preferredType?: string; // SUV, Sedan, etc.
+  preferredType?: string;
   notes: string;
   totalPurchases: number;
   lastContact: string;
   tags: string[];
 }
+
+export interface FollowUp {
+  id: string;
+  name: string;
+  phone: string;
+  note: string;
+  dueIn: string;
+  overdue: boolean;
+  avatar?: string;
+}
+
+export interface InventoryFilters {
+  search: string;
+  make: string;
+  bodyType: string;
+  priceRange: string;
+  status: string;
+}
+
+export interface BroadcastCampaign {
+  id: string;
+  message: string;
+  platforms: string[];
+  sentAt: string;
+  reach: number;
+  opened: number;
+  replies: number;
+  status: 'sent' | 'scheduled' | 'failed';
+}
+
+export interface InspectionRequest {
+  id: string;
+  dealerName: string;
+  car: string;
+  location: string;
+  requestedDate: string;
+  status: 'pending' | 'accepted' | 'completed';
+}
+
+export interface Referral {
+  id: string;
+  name: string;
+  email: string;
+  signedUpAt: string;
+  status: 'pending' | 'verified' | 'rewarded';
+  reward: number;
+}
+
+export type ListStatus = 'Available' | 'Reserved' | 'Sold';
+export type InspStatus = 'Inspected' | 'Not Inspected' | 'Pending';
