@@ -1,6 +1,7 @@
 import { Box, Button, Input, Text, VStack } from '@chakra-ui/react';
 import { COLORS } from '../../atoms';
 import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
 
 interface ForgotPasswordFormProps {
   onBack: () => void;
@@ -108,7 +109,7 @@ export const ForgotPasswordForm = ({ onBack }: ForgotPasswordFormProps) => {
       {step === 'done' && (
         <Box textAlign="center" py="20px">
           <Text fontSize="40px" mb="10px">
-            ✅
+            <FaCheck size={16} color="green" />
           </Text>
           <Text fontSize="15px" fontWeight="700" color="gray.800" mb="6px">
             Password reset!
