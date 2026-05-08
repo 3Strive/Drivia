@@ -12,9 +12,9 @@ import {
   VStack,
   Link,
 } from '@chakra-ui/react';
-import { ShareModal } from '../Sharemodal';
+import { ShareModal } from '../modal/Sharemodal';
 import { CarListing } from '../../../shared/types';
-import { COLORS } from '../../atoms';
+import { COLORS, GridIco, Ico, SearchIco, ShareIco } from '../../atoms';
 
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 interface NavItem {
@@ -24,65 +24,6 @@ interface NavItem {
   rel?: string;
   target?: string;
 }
-
-// ─── ICONS ───────────────────────────────────────────────────────────────────
-const Ico = ({
-  d,
-  size = 18,
-  stroke = 'currentColor',
-  fill = 'none',
-  sw = 2,
-}: {
-  d: string | string[];
-  size?: number;
-  stroke?: string;
-  fill?: string;
-  sw?: number;
-}): JSX.Element => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill={fill}
-    stroke={stroke}
-    strokeWidth={sw}
-  >
-    {Array.isArray(d) ? (
-      d.map((p, i) => <path key={i} d={p} />)
-    ) : (
-      <path d={d} />
-    )}
-  </svg>
-);
-
-const SearchIco = (): JSX.Element => (
-  <Ico d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" size={15} />
-);
-const ShareIco = (): JSX.Element => (
-  <Ico
-    d={[
-      'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8',
-      'M16 6l-4-4-4 4',
-      'M12 2v13',
-    ]}
-    size={15}
-  />
-);
-const GridIco = (): JSX.Element => (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-  >
-    <rect x="3" y="3" width="7" height="7" />
-    <rect x="14" y="3" width="7" height="7" />
-    <rect x="14" y="14" width="7" height="7" />
-    <rect x="3" y="14" width="7" height="7" />
-  </svg>
-);
 
 // ─── NAV ITEMS ───────────────────────────────────────────────────────────────
 interface NavGroup {
@@ -95,11 +36,11 @@ const NAV_GROUPS: NavGroup[] = [
     label: 'Overview',
     items: [
       { href: '/dashboard', label: 'Dashboard', icon: <GridIco /> },
-      {
-        href: '/analytics',
-        label: 'Analytics',
-        icon: <Ico d={['M18 20V10', 'M12 20V4', 'M6 20v-6']} />,
-      },
+      // {
+      //   href: '/analytics',
+      //   label: 'Analytics',
+      //   icon: <Ico d={['M18 20V10', 'M12 20V4', 'M6 20v-6']} />,
+      // },
     ],
   },
   {
@@ -134,59 +75,59 @@ const NAV_GROUPS: NavGroup[] = [
       },
     ],
   },
-  {
-    label: 'Sales',
-    items: [
-      {
-        href: '/leads',
-        label: 'Leads',
-        icon: (
-          <Ico
-            d={[
-              'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2',
-              'M23 21v-2a4 4 0 0 0-3-3.87',
-              'M16 3.13a4 4 0 0 1 0 7.75',
-            ]}
-          />
-        ),
-      },
-      {
-        href: '/crm',
-        label: 'Customers',
-        icon: (
-          <Ico
-            d={[
-              'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2',
-              'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
-            ]}
-          />
-        ),
-      },
-    ],
-  },
-  {
-    label: 'Marketing',
-    items: [
-      {
-        href: '/broadcast',
-        label: 'Broadcast',
-        icon: <Ico d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z" />,
-      },
-      {
-        href: '/socials',
-        label: 'Manage Socials',
-        icon: (
-          <Ico
-            d={[
-              'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8',
-              'M16 6l-4-4-4 4',
-              'M12 2v13',
-            ]}
-          />
-        ),
-      },
-    ],
-  },
+  // {
+  //   label: 'Sales',
+  //   items: [
+  //     {
+  //       href: '/leads',
+  //       label: 'Leads',
+  //       icon: (
+  //         <Ico
+  //           d={[
+  //             'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2',
+  //             'M23 21v-2a4 4 0 0 0-3-3.87',
+  //             'M16 3.13a4 4 0 0 1 0 7.75',
+  //           ]}
+  //         />
+  //       ),
+  //     },
+  //     {
+  //       href: '/crm',
+  //       label: 'Customers',
+  //       icon: (
+  //         <Ico
+  //           d={[
+  //             'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2',
+  //             'M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+  //           ]}
+  //         />
+  //       ),
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: 'Marketing',
+  //   items: [
+  //     {
+  //       href: '/broadcast',
+  //       label: 'Broadcast',
+  //       icon: <Ico d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z" />,
+  //     },
+  //     {
+  //       href: '/socials',
+  //       label: 'Manage Socials',
+  //       icon: (
+  //         <Ico
+  //           d={[
+  //             'M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8',
+  //             'M16 6l-4-4-4 4',
+  //             'M12 2v13',
+  //           ]}
+  //         />
+  //       ),
+  //     },
+  //   ],
+  // },
   {
     label: 'Account',
     items: [
@@ -230,13 +171,13 @@ const NAV_GROUPS: NavGroup[] = [
           />
         ),
       },
-      {
-        href: '/inspector',
-        label: 'Become an Inspector',
-        icon: (
-          <Ico d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v4M12 16h.01" />
-        ),
-      },
+      // {
+      //   href: '/inspector',
+      //   label: 'Become an Inspector',
+      //   icon: (
+      //     <Ico d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 8v4M12 16h.01" />
+      //   ),
+      // },
     ],
   },
 ];
