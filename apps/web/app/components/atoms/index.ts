@@ -4,7 +4,6 @@
 
 export * from './palette';
 export * from './formatters';
-export * from './Ico';
 export * from './icons';
 export * from './KpiCard';
 export * from './PeriodSelector';

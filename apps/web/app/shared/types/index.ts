@@ -219,3 +219,14 @@ export interface Referral {
 
 export type ListStatus = 'Available' | 'Reserved' | 'Sold';
 export type InspStatus = 'Inspected' | 'Not Inspected' | 'Pending';
+export type PostStatus = 'idle' | 'posting' | 'success' | 'error';
+
+export interface Platform {
+  id: PlatformId;
+  name: string;
+  color: string;
+  bg: string;
+  charLimit: number | null;
+  connected: boolean;
+  icon: JSX.Element;
+}
