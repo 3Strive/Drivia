@@ -1,6 +1,12 @@
-import { Box, Flex, HStack, Input, Text } from '@chakra-ui/react';
-import { FaSearch, FaTimes } from 'react-icons/fa';
+import { Box, Flex, HStack, Input, Text, VStack } from '@chakra-ui/react';
+import {
+  FaArrowAltCircleLeft,
+  FaArrowLeft,
+  FaSearch,
+  FaTimes,
+} from 'react-icons/fa';
 import { COLORS } from '../../atoms';
+import { useRouter } from 'next/navigation';
 
 type FilterOpt =
   | 'All'
@@ -33,6 +39,7 @@ export function HeaderPanel({
   current: number;
   total: number;
 }) {
+  const router = useRouter();
   return (
     <>
       {open && <Box position="fixed" inset={0} zIndex={98} onClick={onClose} />}
@@ -45,24 +52,46 @@ export function HeaderPanel({
         bg={open ? 'rgba(0,0,0,0.92)' : 'transparent'}
         backdropFilter={open ? 'blur(16px)' : 'none'}
         pt={open ? '52px' : '14px'}
-        px="16px"
+        px="14px"
         pb={open ? '16px' : 0}
         transition="all 0.25s"
         pointerEvents="none"
       >
         {/* Always-visible bar */}
-        <Flex justify="space-between" align="center" pointerEvents="all">
-          <Text
-            fontSize="22px"
-            fontWeight={900}
-            color="white"
-            bg="blackAlpha.400"
-            borderRadius="9px"
-            px="10px"
-            py="3px"
-          >
-            Marketplace
-          </Text>
+        <Flex justify="space-between" align="start" pointerEvents="all">
+          <HStack>
+            <Box
+              as="button"
+              onClick={() => router.back()}
+              display="flex"
+              alignItems="center"
+              gap="6px"
+              bg="blackAlpha.600"
+              border="1px solid"
+              borderColor="whiteAlpha.300"
+              borderRadius="99px"
+              px="13px"
+              py="7px"
+              color={COLORS.white}
+              cursor="pointer"
+              fontSize="12px"
+              fontWeight={700}
+              _hover={{ bg: 'blackAlpha.800' }}
+            >
+              <FaArrowLeft />
+            </Box>
+            <Text
+              fontSize="22px"
+              fontWeight={900}
+              color="white"
+              bg="blackAlpha.400"
+              borderRadius="9px"
+              px="10px"
+              py="3px"
+            >
+              Marketplace
+            </Text>
+          </HStack>
           <HStack gap="8px">
             <Box
               as="button"

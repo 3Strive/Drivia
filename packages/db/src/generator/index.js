@@ -99,7 +99,14 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   name: 'name',
   address: 'address',
-  phoneNumber: 'phoneNumber'
+  phoneNumber: 'phoneNumber',
+  businessName: 'businessName',
+  description: 'description',
+  carTypes: 'carTypes',
+  monthlyStock: 'monthlyStock',
+  platforms: 'platforms',
+  plan: 'plan',
+  password: 'password'
 };
 
 exports.Prisma.SortOrder = {
@@ -116,7 +123,29 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.CarTypes = exports.$Enums.CarTypes = {
+  brandNew: 'brandNew',
+  tokunbo: 'tokunbo',
+  nigerianUsed: 'nigerianUsed',
+  suvs: 'suvs',
+  saloon: 'saloon',
+  trucks: 'trucks',
+  luxury: 'luxury',
+  budget: 'budget'
+};
 
+exports.Plans = exports.$Enums.Plans = {
+  free: 'free',
+  pro: 'pro',
+  vvip: 'vvip'
+};
+
+exports.Platforms = exports.$Enums.Platforms = {
+  whatsApp: 'whatsApp',
+  facebook: 'facebook',
+  instagram: 'instagram',
+  twitter: 'twitter'
+};
 
 exports.Prisma.ModelName = {
   User: 'User'
@@ -169,8 +198,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generator\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id          String  @id @default(uuid())\n  email       String  @unique\n  name        String?\n  address     String?\n  phoneNumber String  @unique\n}\n",
-  "inlineSchemaHash": "617d11a8e878c1eab46218cbdfb8f966a97b19cc1b879a36a8b9a40c27205f72",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generator\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum CarTypes {\n  brandNew\n  tokunbo\n  nigerianUsed\n  suvs\n  saloon\n  trucks\n  luxury\n  budget\n}\n\nenum Plans {\n  free\n  pro\n  vvip\n}\n\nenum Platforms {\n  whatsApp\n  facebook\n  instagram\n  twitter\n}\n\nmodel User {\n  id           String      @id @default(uuid())\n  email        String      @unique\n  name         String?\n  address      String?\n  phoneNumber  String      @unique\n  businessName String      @unique\n  description  String?\n  carTypes     CarTypes[]\n  monthlyStock String?\n  platforms    Platforms[]\n  plan         Plans       @default(free)\n  password     String\n}\n",
+  "inlineSchemaHash": "d3895d91c907beecc595d449cecbe4f1d21418b2f2305ee2de99dd6acc506216",
   "copyEngine": true
 }
 
@@ -191,7 +220,7 @@ if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   config.isBundled = true
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"nativeType\":null,\"default\":{\"name\":\"uuid\",\"args\":[4]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"address\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"nativeType\":null,\"default\":{\"name\":\"uuid\",\"args\":[4]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"address\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"businessName\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"description\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"carTypes\",\"kind\":\"enum\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"CarTypes\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"monthlyStock\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"platforms\",\"kind\":\"enum\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Platforms\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"plan\",\"kind\":\"enum\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Plans\",\"nativeType\":null,\"default\":\"free\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"password\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{\"CarTypes\":{\"values\":[{\"name\":\"brandNew\",\"dbName\":null},{\"name\":\"tokunbo\",\"dbName\":null},{\"name\":\"nigerianUsed\",\"dbName\":null},{\"name\":\"suvs\",\"dbName\":null},{\"name\":\"saloon\",\"dbName\":null},{\"name\":\"trucks\",\"dbName\":null},{\"name\":\"luxury\",\"dbName\":null},{\"name\":\"budget\",\"dbName\":null}],\"dbName\":null},\"Plans\":{\"values\":[{\"name\":\"free\",\"dbName\":null},{\"name\":\"pro\",\"dbName\":null},{\"name\":\"vvip\",\"dbName\":null}],\"dbName\":null},\"Platforms\":{\"values\":[{\"name\":\"whatsApp\",\"dbName\":null},{\"name\":\"facebook\",\"dbName\":null},{\"name\":\"instagram\",\"dbName\":null},{\"name\":\"twitter\",\"dbName\":null}],\"dbName\":null}},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 config.compilerWasm = undefined

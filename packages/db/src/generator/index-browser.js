@@ -126,7 +126,14 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   name: 'name',
   address: 'address',
-  phoneNumber: 'phoneNumber'
+  phoneNumber: 'phoneNumber',
+  businessName: 'businessName',
+  description: 'description',
+  carTypes: 'carTypes',
+  monthlyStock: 'monthlyStock',
+  platforms: 'platforms',
+  plan: 'plan',
+  password: 'password'
 };
 
 exports.Prisma.SortOrder = {
@@ -143,7 +150,29 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.Plans = exports.$Enums.Plans = {
+  free: 'free',
+  pro: 'pro',
+  vvip: 'vvip'
+};
 
+exports.CarTypes = exports.$Enums.CarTypes = {
+  brandNew: 'brandNew',
+  tokunbo: 'tokunbo',
+  nigerianUsed: 'nigerianUsed',
+  suvs: 'suvs',
+  saloon: 'saloon',
+  trucks: 'trucks',
+  luxury: 'luxury',
+  budget: 'budget'
+};
+
+exports.Platforms = exports.$Enums.Platforms = {
+  whatsApp: 'whatsApp',
+  facebook: 'facebook',
+  instagram: 'instagram',
+  twitter: 'twitter'
+};
 
 exports.Prisma.ModelName = {
   User: 'User'

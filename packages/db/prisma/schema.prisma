@@ -8,10 +8,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum CarTypes {
+  brandNew
+  tokunbo
+  nigerianUsed
+  suvs
+  saloon
+  trucks
+  luxury
+  budget
+}
+
+enum Plans {
+  free
+  pro
+  vvip
+}
+
+enum Platforms {
+  whatsApp
+  facebook
+  instagram
+  twitter
+}
+
 model User {
-  id          String  @id @default(uuid())
-  email       String  @unique
-  name        String?
-  address     String?
-  phoneNumber String  @unique
+  id           String      @id @default(uuid())
+  email        String      @unique
+  name         String?
+  address      String?
+  phoneNumber  String      @unique
+  businessName String      @unique
+  description  String?
+  carTypes     CarTypes[]
+  monthlyStock String?
+  platforms    Platforms[]
+  plan         Plans       @default(free)
+  password     String
 }

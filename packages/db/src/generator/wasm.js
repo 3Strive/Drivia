@@ -98,7 +98,14 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   name: 'name',
   address: 'address',
-  phoneNumber: 'phoneNumber'
+  phoneNumber: 'phoneNumber',
+  businessName: 'businessName',
+  description: 'description',
+  carTypes: 'carTypes',
+  monthlyStock: 'monthlyStock',
+  platforms: 'platforms',
+  plan: 'plan',
+  password: 'password'
 };
 
 exports.Prisma.SortOrder = {
@@ -115,7 +122,29 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.CarTypes = exports.$Enums.CarTypes = {
+  brandNew: 'brandNew',
+  tokunbo: 'tokunbo',
+  nigerianUsed: 'nigerianUsed',
+  suvs: 'suvs',
+  saloon: 'saloon',
+  trucks: 'trucks',
+  luxury: 'luxury',
+  budget: 'budget'
+};
 
+exports.Plans = exports.$Enums.Plans = {
+  free: 'free',
+  pro: 'pro',
+  vvip: 'vvip'
+};
+
+exports.Platforms = exports.$Enums.Platforms = {
+  whatsApp: 'whatsApp',
+  facebook: 'facebook',
+  instagram: 'instagram',
+  twitter: 'twitter'
+};
 
 exports.Prisma.ModelName = {
   User: 'User'
@@ -168,13 +197,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generator\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id          String  @id @default(uuid())\n  email       String  @unique\n  name        String?\n  address     String?\n  phoneNumber String  @unique\n}\n",
-  "inlineSchemaHash": "617d11a8e878c1eab46218cbdfb8f966a97b19cc1b879a36a8b9a40c27205f72",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generator\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nenum CarTypes {\n  brandNew\n  tokunbo\n  nigerianUsed\n  suvs\n  saloon\n  trucks\n  luxury\n  budget\n}\n\nenum Plans {\n  free\n  pro\n  vvip\n}\n\nenum Platforms {\n  whatsApp\n  facebook\n  instagram\n  twitter\n}\n\nmodel User {\n  id           String      @id @default(uuid())\n  email        String      @unique\n  name         String?\n  address      String?\n  phoneNumber  String      @unique\n  businessName String      @unique\n  description  String?\n  carTypes     CarTypes[]\n  monthlyStock String?\n  platforms    Platforms[]\n  plan         Plans       @default(free)\n  password     String\n}\n",
+  "inlineSchemaHash": "d3895d91c907beecc595d449cecbe4f1d21418b2f2305ee2de99dd6acc506216",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"businessName\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"carTypes\",\"kind\":\"enum\",\"type\":\"CarTypes\"},{\"name\":\"monthlyStock\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"platforms\",\"kind\":\"enum\",\"type\":\"Platforms\"},{\"name\":\"plan\",\"kind\":\"enum\",\"type\":\"Plans\"},{\"name\":\"password\",\"kind\":\"scalar\",\"type\":\"String\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

@@ -20,6 +20,56 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 
 /**
+ * Enums
+ */
+export namespace $Enums {
+  export const CarTypes: {
+  brandNew: 'brandNew',
+  tokunbo: 'tokunbo',
+  nigerianUsed: 'nigerianUsed',
+  suvs: 'suvs',
+  saloon: 'saloon',
+  trucks: 'trucks',
+  luxury: 'luxury',
+  budget: 'budget'
+};
+
+export type CarTypes = (typeof CarTypes)[keyof typeof CarTypes]
+
+
+export const Plans: {
+  free: 'free',
+  pro: 'pro',
+  vvip: 'vvip'
+};
+
+export type Plans = (typeof Plans)[keyof typeof Plans]
+
+
+export const Platforms: {
+  whatsApp: 'whatsApp',
+  facebook: 'facebook',
+  instagram: 'instagram',
+  twitter: 'twitter'
+};
+
+export type Platforms = (typeof Platforms)[keyof typeof Platforms]
+
+}
+
+export type CarTypes = $Enums.CarTypes
+
+export const CarTypes: typeof $Enums.CarTypes
+
+export type Plans = $Enums.Plans
+
+export const Plans: typeof $Enums.Plans
+
+export type Platforms = $Enums.Platforms
+
+export const Platforms: typeof $Enums.Platforms
+
+/**
  * ##  Prisma Client ʲˢ
  *
  * Type-safe database client for TypeScript & Node.js
@@ -877,6 +927,11 @@ export namespace Prisma {
     name: string | null
     address: string | null
     phoneNumber: string | null
+    businessName: string | null
+    description: string | null
+    monthlyStock: string | null
+    plan: $Enums.Plans | null
+    password: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -885,6 +940,11 @@ export namespace Prisma {
     name: string | null
     address: string | null
     phoneNumber: string | null
+    businessName: string | null
+    description: string | null
+    monthlyStock: string | null
+    plan: $Enums.Plans | null
+    password: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -893,6 +953,13 @@ export namespace Prisma {
     name: number
     address: number
     phoneNumber: number
+    businessName: number
+    description: number
+    carTypes: number
+    monthlyStock: number
+    platforms: number
+    plan: number
+    password: number
     _all: number
   }
 
@@ -903,6 +970,11 @@ export namespace Prisma {
     name?: true
     address?: true
     phoneNumber?: true
+    businessName?: true
+    description?: true
+    monthlyStock?: true
+    plan?: true
+    password?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -911,6 +983,11 @@ export namespace Prisma {
     name?: true
     address?: true
     phoneNumber?: true
+    businessName?: true
+    description?: true
+    monthlyStock?: true
+    plan?: true
+    password?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -919,6 +996,13 @@ export namespace Prisma {
     name?: true
     address?: true
     phoneNumber?: true
+    businessName?: true
+    description?: true
+    carTypes?: true
+    monthlyStock?: true
+    platforms?: true
+    plan?: true
+    password?: true
     _all?: true
   }
 
@@ -1000,6 +1084,13 @@ export namespace Prisma {
     name: string | null
     address: string | null
     phoneNumber: string
+    businessName: string
+    description: string | null
+    carTypes: $Enums.CarTypes[]
+    monthlyStock: string | null
+    platforms: $Enums.Platforms[]
+    plan: $Enums.Plans
+    password: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1025,6 +1116,13 @@ export namespace Prisma {
     name?: boolean
     address?: boolean
     phoneNumber?: boolean
+    businessName?: boolean
+    description?: boolean
+    carTypes?: boolean
+    monthlyStock?: boolean
+    platforms?: boolean
+    plan?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1033,6 +1131,13 @@ export namespace Prisma {
     name?: boolean
     address?: boolean
     phoneNumber?: boolean
+    businessName?: boolean
+    description?: boolean
+    carTypes?: boolean
+    monthlyStock?: boolean
+    platforms?: boolean
+    plan?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1041,6 +1146,13 @@ export namespace Prisma {
     name?: boolean
     address?: boolean
     phoneNumber?: boolean
+    businessName?: boolean
+    description?: boolean
+    carTypes?: boolean
+    monthlyStock?: boolean
+    platforms?: boolean
+    plan?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1049,9 +1161,16 @@ export namespace Prisma {
     name?: boolean
     address?: boolean
     phoneNumber?: boolean
+    businessName?: boolean
+    description?: boolean
+    carTypes?: boolean
+    monthlyStock?: boolean
+    platforms?: boolean
+    plan?: boolean
+    password?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "address" | "phoneNumber", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "address" | "phoneNumber" | "businessName" | "description" | "carTypes" | "monthlyStock" | "platforms" | "plan" | "password", ExtArgs["result"]["user"]>
 
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
@@ -1062,6 +1181,13 @@ export namespace Prisma {
       name: string | null
       address: string | null
       phoneNumber: string
+      businessName: string
+      description: string | null
+      carTypes: $Enums.CarTypes[]
+      monthlyStock: string | null
+      platforms: $Enums.Platforms[]
+      plan: $Enums.Plans
+      password: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1490,6 +1616,13 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly address: FieldRef<"User", 'String'>
     readonly phoneNumber: FieldRef<"User", 'String'>
+    readonly businessName: FieldRef<"User", 'String'>
+    readonly description: FieldRef<"User", 'String'>
+    readonly carTypes: FieldRef<"User", 'CarTypes[]'>
+    readonly monthlyStock: FieldRef<"User", 'String'>
+    readonly platforms: FieldRef<"User", 'Platforms[]'>
+    readonly plan: FieldRef<"User", 'Plans'>
+    readonly password: FieldRef<"User", 'String'>
   }
     
 
@@ -1875,7 +2008,14 @@ export namespace Prisma {
     email: 'email',
     name: 'name',
     address: 'address',
-    phoneNumber: 'phoneNumber'
+    phoneNumber: 'phoneNumber',
+    businessName: 'businessName',
+    description: 'description',
+    carTypes: 'carTypes',
+    monthlyStock: 'monthlyStock',
+    platforms: 'platforms',
+    plan: 'plan',
+    password: 'password'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1925,6 +2065,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CarTypes[]'
+   */
+  export type ListEnumCarTypesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CarTypes[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'CarTypes'
+   */
+  export type EnumCarTypesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CarTypes'>
+    
+
+
+  /**
+   * Reference to a field of type 'Platforms[]'
+   */
+  export type ListEnumPlatformsFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Platforms[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Platforms'
+   */
+  export type EnumPlatformsFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Platforms'>
+    
+
+
+  /**
+   * Reference to a field of type 'Plans'
+   */
+  export type EnumPlansFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Plans'>
+    
+
+
+  /**
+   * Reference to a field of type 'Plans[]'
+   */
+  export type ListEnumPlansFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Plans[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1950,6 +2132,13 @@ export namespace Prisma {
     name?: StringNullableFilter<"User"> | string | null
     address?: StringNullableFilter<"User"> | string | null
     phoneNumber?: StringFilter<"User"> | string
+    businessName?: StringFilter<"User"> | string
+    description?: StringNullableFilter<"User"> | string | null
+    carTypes?: EnumCarTypesNullableListFilter<"User">
+    monthlyStock?: StringNullableFilter<"User"> | string | null
+    platforms?: EnumPlatformsNullableListFilter<"User">
+    plan?: EnumPlansFilter<"User"> | $Enums.Plans
+    password?: StringFilter<"User"> | string
   }
 
   export type UserOrderByWithRelationInput = {
@@ -1958,18 +2147,32 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     phoneNumber?: SortOrder
+    businessName?: SortOrder
+    description?: SortOrderInput | SortOrder
+    carTypes?: SortOrder
+    monthlyStock?: SortOrderInput | SortOrder
+    platforms?: SortOrder
+    plan?: SortOrder
+    password?: SortOrder
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
     phoneNumber?: string
+    businessName?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     address?: StringNullableFilter<"User"> | string | null
-  }, "id" | "email" | "phoneNumber">
+    description?: StringNullableFilter<"User"> | string | null
+    carTypes?: EnumCarTypesNullableListFilter<"User">
+    monthlyStock?: StringNullableFilter<"User"> | string | null
+    platforms?: EnumPlatformsNullableListFilter<"User">
+    plan?: EnumPlansFilter<"User"> | $Enums.Plans
+    password?: StringFilter<"User"> | string
+  }, "id" | "email" | "phoneNumber" | "businessName">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -1977,6 +2180,13 @@ export namespace Prisma {
     name?: SortOrderInput | SortOrder
     address?: SortOrderInput | SortOrder
     phoneNumber?: SortOrder
+    businessName?: SortOrder
+    description?: SortOrderInput | SortOrder
+    carTypes?: SortOrder
+    monthlyStock?: SortOrderInput | SortOrder
+    platforms?: SortOrder
+    plan?: SortOrder
+    password?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -1991,6 +2201,13 @@ export namespace Prisma {
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
     address?: StringNullableWithAggregatesFilter<"User"> | string | null
     phoneNumber?: StringWithAggregatesFilter<"User"> | string
+    businessName?: StringWithAggregatesFilter<"User"> | string
+    description?: StringNullableWithAggregatesFilter<"User"> | string | null
+    carTypes?: EnumCarTypesNullableListFilter<"User">
+    monthlyStock?: StringNullableWithAggregatesFilter<"User"> | string | null
+    platforms?: EnumPlatformsNullableListFilter<"User">
+    plan?: EnumPlansWithAggregatesFilter<"User"> | $Enums.Plans
+    password?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type UserCreateInput = {
@@ -1999,6 +2216,13 @@ export namespace Prisma {
     name?: string | null
     address?: string | null
     phoneNumber: string
+    businessName: string
+    description?: string | null
+    carTypes?: UserCreatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: string | null
+    platforms?: UserCreateplatformsInput | $Enums.Platforms[]
+    plan?: $Enums.Plans
+    password: string
   }
 
   export type UserUncheckedCreateInput = {
@@ -2007,6 +2231,13 @@ export namespace Prisma {
     name?: string | null
     address?: string | null
     phoneNumber: string
+    businessName: string
+    description?: string | null
+    carTypes?: UserCreatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: string | null
+    platforms?: UserCreateplatformsInput | $Enums.Platforms[]
+    plan?: $Enums.Plans
+    password: string
   }
 
   export type UserUpdateInput = {
@@ -2015,6 +2246,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    carTypes?: UserUpdatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: NullableStringFieldUpdateOperationsInput | string | null
+    platforms?: UserUpdateplatformsInput | $Enums.Platforms[]
+    plan?: EnumPlansFieldUpdateOperationsInput | $Enums.Plans
+    password?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateInput = {
@@ -2023,6 +2261,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    carTypes?: UserUpdatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: NullableStringFieldUpdateOperationsInput | string | null
+    platforms?: UserUpdateplatformsInput | $Enums.Platforms[]
+    plan?: EnumPlansFieldUpdateOperationsInput | $Enums.Plans
+    password?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserCreateManyInput = {
@@ -2031,6 +2276,13 @@ export namespace Prisma {
     name?: string | null
     address?: string | null
     phoneNumber: string
+    businessName: string
+    description?: string | null
+    carTypes?: UserCreatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: string | null
+    platforms?: UserCreateplatformsInput | $Enums.Platforms[]
+    plan?: $Enums.Plans
+    password: string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -2039,6 +2291,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    carTypes?: UserUpdatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: NullableStringFieldUpdateOperationsInput | string | null
+    platforms?: UserUpdateplatformsInput | $Enums.Platforms[]
+    plan?: EnumPlansFieldUpdateOperationsInput | $Enums.Plans
+    password?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -2047,6 +2306,13 @@ export namespace Prisma {
     name?: NullableStringFieldUpdateOperationsInput | string | null
     address?: NullableStringFieldUpdateOperationsInput | string | null
     phoneNumber?: StringFieldUpdateOperationsInput | string
+    businessName?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    carTypes?: UserUpdatecarTypesInput | $Enums.CarTypes[]
+    monthlyStock?: NullableStringFieldUpdateOperationsInput | string | null
+    platforms?: UserUpdateplatformsInput | $Enums.Platforms[]
+    plan?: EnumPlansFieldUpdateOperationsInput | $Enums.Plans
+    password?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2079,6 +2345,29 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type EnumCarTypesNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.CarTypes[] | ListEnumCarTypesFieldRefInput<$PrismaModel> | null
+    has?: $Enums.CarTypes | EnumCarTypesFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.CarTypes[] | ListEnumCarTypesFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.CarTypes[] | ListEnumCarTypesFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type EnumPlatformsNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.Platforms[] | ListEnumPlatformsFieldRefInput<$PrismaModel> | null
+    has?: $Enums.Platforms | EnumPlatformsFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.Platforms[] | ListEnumPlatformsFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.Platforms[] | ListEnumPlatformsFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type EnumPlansFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plans | EnumPlansFieldRefInput<$PrismaModel>
+    in?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlansFilter<$PrismaModel> | $Enums.Plans
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -2090,6 +2379,13 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrder
     phoneNumber?: SortOrder
+    businessName?: SortOrder
+    description?: SortOrder
+    carTypes?: SortOrder
+    monthlyStock?: SortOrder
+    platforms?: SortOrder
+    plan?: SortOrder
+    password?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -2098,6 +2394,11 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrder
     phoneNumber?: SortOrder
+    businessName?: SortOrder
+    description?: SortOrder
+    monthlyStock?: SortOrder
+    plan?: SortOrder
+    password?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -2106,6 +2407,11 @@ export namespace Prisma {
     name?: SortOrder
     address?: SortOrder
     phoneNumber?: SortOrder
+    businessName?: SortOrder
+    description?: SortOrder
+    monthlyStock?: SortOrder
+    plan?: SortOrder
+    password?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2144,12 +2450,44 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type EnumPlansWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plans | EnumPlansFieldRefInput<$PrismaModel>
+    in?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlansWithAggregatesFilter<$PrismaModel> | $Enums.Plans
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlansFilter<$PrismaModel>
+    _max?: NestedEnumPlansFilter<$PrismaModel>
+  }
+
+  export type UserCreatecarTypesInput = {
+    set: $Enums.CarTypes[]
+  }
+
+  export type UserCreateplatformsInput = {
+    set: $Enums.Platforms[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type UserUpdatecarTypesInput = {
+    set?: $Enums.CarTypes[]
+    push?: $Enums.CarTypes | $Enums.CarTypes[]
+  }
+
+  export type UserUpdateplatformsInput = {
+    set?: $Enums.Platforms[]
+    push?: $Enums.Platforms | $Enums.Platforms[]
+  }
+
+  export type EnumPlansFieldUpdateOperationsInput = {
+    set?: $Enums.Plans
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2178,6 +2516,13 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedEnumPlansFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plans | EnumPlansFieldRefInput<$PrismaModel>
+    in?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlansFilter<$PrismaModel> | $Enums.Plans
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2234,6 +2579,16 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumPlansWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Plans | EnumPlansFieldRefInput<$PrismaModel>
+    in?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Plans[] | ListEnumPlansFieldRefInput<$PrismaModel>
+    not?: NestedEnumPlansWithAggregatesFilter<$PrismaModel> | $Enums.Plans
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPlansFilter<$PrismaModel>
+    _max?: NestedEnumPlansFilter<$PrismaModel>
   }
 
 

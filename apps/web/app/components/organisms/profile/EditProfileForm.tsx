@@ -126,6 +126,7 @@ export const EditProfileForm = ({ initial, onSave }: EditProfileFormProps) => {
               }
               borderRadius="10px"
               fontSize="13px"
+              p={3}
               h="38px"
               border="1px solid"
               borderColor="gray.200"
@@ -143,6 +144,7 @@ export const EditProfileForm = ({ initial, onSave }: EditProfileFormProps) => {
             onChange={(e) => set('bio', e.target.value)}
             borderRadius="10px"
             fontSize="13px"
+            p={3}
             rows={3}
             border="1px solid"
             borderColor="gray.200"

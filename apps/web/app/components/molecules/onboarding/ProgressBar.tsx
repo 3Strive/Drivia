@@ -18,7 +18,9 @@ export const OnboardingProgressBar = ({ step }: { step: OnboardingStep }) => (
               borderRadius="50%"
               align="center"
               justify="center"
-              bg={done ? '#276749' : active ? COLORS.primary : 'gray.200'}
+              bg={
+                done ? COLORS.primaryDark : active ? COLORS.primary : 'gray.200'
+              }
               color={done || active ? 'white' : 'gray.400'}
               fontSize="12px"
               fontWeight="800"
@@ -28,7 +30,9 @@ export const OnboardingProgressBar = ({ step }: { step: OnboardingStep }) => (
             <Text
               fontSize="10px"
               fontWeight="600"
-              color={active ? COLORS.primary : done ? '#276749' : 'gray.400'}
+              color={
+                active ? COLORS.primary : done ? COLORS.primaryDark : 'gray.400'
+              }
             >
               {s}
             </Text>

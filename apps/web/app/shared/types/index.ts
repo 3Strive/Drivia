@@ -230,3 +230,10 @@ export interface Platform {
   connected: boolean;
   icon: JSX.Element;
 }
+
+export interface NotificationSettingsProps {
+  key: string;
+  label: string;
+  desc: string;
+  defaultOn: boolean;
+}

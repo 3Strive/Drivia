@@ -16,7 +16,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { firstValueFrom } from 'rxjs';
-import { UserModel } from '@drivia/db';
+import { User } from '@drivia/db';
 
 @ApiTags('users')
 @Controller('/user/')
@@ -26,7 +26,7 @@ export class UserController {
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() payload: CreateUser): Promise<UserModel | null> {
+  async create(@Body() payload: CreateUser): Promise<User> {
     return await firstValueFrom(this.userClient.send('create', payload));
   }
   @Put('update')

@@ -7,12 +7,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "prisma generate && tsc",
-    "generate": "prisma generate",
-    "migrate": "prisma migrate dev && prisma generate",
-    "seed": "prisma db seed",
-    "studio": "prisma studio",
-    "postinstall": "prisma generate"
+    "build": "prisma generate && tsc && cp -r src/generator dist/generator",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev && prisma generate",
+    "db:seed": "prisma db seed",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate",
+    "db:reset": "prisma migrate reset"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

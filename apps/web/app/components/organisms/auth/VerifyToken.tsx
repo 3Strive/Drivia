@@ -32,7 +32,7 @@ const VerifyToken = ({
   const onSubmit = handleSubmit((data) => {
     console.log(data, email);
     isLoading(true);
-    router.push('/dashboard');
+    router.push('/onboarding');
   });
 
   return (

@@ -62,6 +62,7 @@ export const OnboardingStep1Profile = ({ onNext }: { onNext: () => void }) => {
               value={(form as any)[f.key]}
               onChange={(e) => set(f.key, e.target.value)}
               borderRadius="10px"
+              p={3}
               fontSize="13px"
               h="40px"
               border="1px solid"

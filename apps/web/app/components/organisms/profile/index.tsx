@@ -25,6 +25,9 @@ import AppLayout from '../../template/general-layout';
 import { PageTopBar } from '../../molecules';
 import { EditProfileForm } from './EditProfileForm';
 import { PageFooter } from '../PageFooter';
+import ChangePassword from './ChangePassword';
+import { NotificationSettingsProps } from '../../../shared/types';
+import Notification from './Notification';
 
 const profileInitial = {
   businessName: 'Eko Premium Motors',
@@ -36,7 +39,7 @@ const profileInitial = {
   bio: 'Lagos-based dealership specialising in clean Tokunbo cars. Over 10 years experience. All cars thoroughly inspected before listing.',
 };
 
-const notificationSettings = [
+const notificationSettings: NotificationSettingsProps[] = [
   {
     key: 'new_lead',
     label: 'New Lead Alert',
@@ -165,114 +168,21 @@ export default function Profile() {
             initial={profileInitial}
             onSave={(data) => console.log('saved', data)}
           />
-
-          {/* Password change */}
-          <Box
-            bg="white"
-            borderRadius="16px"
-            p="22px"
-            boxShadow="0 2px 10px rgba(0,0,0,0.05)"
-          >
-            <Text fontWeight="800" fontSize="15px" color="gray.800" mb="4px">
-              Change Password
-            </Text>
-            <Text fontSize="12px" color="gray.400" mb="20px">
-              Keep your account secure
-            </Text>
-            <VStack gap="12px" align="stretch" mb="16px">
-              {[
-                {
-                  label: 'Current Password',
-                  value: currentPw,
-                  set: setCurrentPw,
-                },
-                { label: 'New Password', value: newPw, set: setNewPw },
-                {
-                  label: 'Confirm New Password',
-                  value: confirmPw,
-                  set: setConfirmPw,
-                },
-              ].map((f) => (
-                <VStack key={f.label} align="start" gap="4px">
-                  <Text fontSize="12px" fontWeight="700" color="gray.600">
-                    {f.label}
-                  </Text>
-                  <Input
-                    type="password"
-                    placeholder="••••••••"
-                    value={f.value}
-                    onChange={(e) => f.set(e.target.value)}
-                    borderRadius="10px"
-                    fontSize="13px"
-                    h="38px"
-                    border="1px solid"
-                    borderColor="gray.200"
-                    _focus={{ borderColor: COLORS.primary, boxShadow: 'none' }}
-                  />
-                </VStack>
-              ))}
-            </VStack>
-            <Button
-              bg={COLORS.primary}
-              color="white"
-              borderRadius="10px"
-              fontSize="13px"
-              fontWeight="700"
-              h="38px"
-              w="100%"
-              _hover={{ bg: COLORS.primaryDark }}
-              onClick={() => console.log('change password')}
-            >
-              Update Password
-            </Button>
-          </Box>
+          <ChangePassword
+            currentPw={currentPw}
+            setCurrentPw={setCurrentPw}
+            confirmPw={confirmPw}
+            setConfirmPw={setConfirmPw}
+            newPw={newPw}
+            setNewPw={setNewPw}
+          />
         </Grid>
 
-        {/* Notification settings */}
-        <Box
-          bg="white"
-          borderRadius="16px"
-          p="22px"
-          boxShadow="0 2px 10px rgba(0,0,0,0.05)"
-          mb="16px"
-        >
-          <Text fontWeight="800" fontSize="15px" color="gray.800" mb="4px">
-            Notifications
-          </Text>
-          <Text fontSize="12px" color="gray.400" mb="16px">
-            Choose what you want to be notified about
-          </Text>
-          <VStack gap="0" align="stretch">
-            {notificationSettings.map((n, i) => (
-              <Flex
-                key={n.key}
-                justify="space-between"
-                align="center"
-                py="14px"
-                borderBottom={
-                  i < notificationSettings.length - 1 ? '1px solid' : 'none'
-                }
-                borderColor="gray.50"
-              >
-                <Box>
-                  <Text fontSize="13px" fontWeight="700" color="gray.800">
-                    {n.label}
-                  </Text>
-                  <Text fontSize="11px" color="gray.400" mt="2px">
-                    {n.desc}
-                  </Text>
-                </Box>
-                <Switch.Root
-                  checked={notifs[n.key]}
-                  onCheckedChange={() =>
-                    setNotifs((s) => ({ ...s, [n.key]: !s[n.key] }))
-                  }
-                  colorScheme="purple"
-                />
-              </Flex>
-            ))}
-          </VStack>
-        </Box>
+        <Notification
+          notificationSettings={notificationSettings}
+          notifs={notifs}
+          setNotifs={setNotifs}
+        />
 
         {/* Danger zone */}
         <Box

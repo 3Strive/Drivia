@@ -30,6 +30,7 @@ export const OnboardingStep2Inventory = ({
             placeholder={f.placeholder}
             borderRadius="10px"
             fontSize="13px"
+            p={3}
             h="40px"
             border="1px solid"
             borderColor="gray.200"
