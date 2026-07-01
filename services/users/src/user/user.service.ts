@@ -7,7 +7,9 @@ import {
   UpdateUserDto,
   UtilsService,
 } from '@drivia/utils';
-import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { ConflictException, HttpStatus, Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class UserService {
@@ -22,10 +24,41 @@ export class UserService {
     );
   }
 
-  create(data: CreateUser): Promise<User | null> {
-    return this.utilsService.asyncRpcWrapper(() =>
-      this.prisma.user.create({ data }),
+  async create(data: CreateUser): Promise<User | null> {
+    const check = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: data.email },
+          { phoneNumber: data.phoneNumber },
+          { businessName: data.businessName },
+        ],
+      },
+    });
+
+    if (check) {
+      let conflictField: string;
+      if (check.email === data.email) {
+        conflictField = 'Email';
+      } else if (check.phoneNumber === data.phoneNumber) {
+        conflictField = 'Phone number';
+      } else {
+        conflictField = 'Business name';
+      }
+
+      throw new RpcException({
+        statusCode: HttpStatus.CONFLICT,
+        message: `${conflictField} already in use`,
+      });
+    }
+
+    const password = await bcrypt.hash(data.password, 10);
+    const userWithHash = { ...data, password };
+
+    const user = await this.utilsService.asyncRpcWrapper(() =>
+      this.prisma.user.create({ data: userWithHash }),
     );
+
+    return user;
   }
 
   update(userId: string, data: UpdateUserDto): Promise<User | null> {

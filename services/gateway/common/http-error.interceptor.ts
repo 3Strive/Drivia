@@ -18,6 +18,8 @@ export class HttpExceptionInterceptor implements ExceptionFilter {
   private readonly logger = new Logger();
 
   catch(exception: unknown, host: ArgumentsHost): CatchI {
+    console.log('RAW EXCEPTION:', JSON.stringify(exception, null, 2));
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest();
@@ -57,14 +59,24 @@ export class HttpExceptionInterceptor implements ExceptionFilter {
       error = { status, message: errorMessage };
     }
 
-    const rpcException = exception as {
-      message: string;
-      name: string;
-      status: number;
+    const rpcError = exception as {
+      message?: string;
+      error?: { message?: string; statusCode?: number };
+      status?: number;
+      statusCode?: number;
     };
-    if (rpcException.name === 'RpcException') {
-      error.status = rpcException.status || HttpStatus.INTERNAL_SERVER_ERROR;
-      error.message = rpcException.message || SOMETHING_WENT_WRONG;
+
+    const rpcMessage = rpcError?.error?.message ?? rpcError?.message;
+    const rpcStatus = Number(
+      rpcError?.error?.statusCode ?? rpcError?.statusCode,
+    );
+    if (
+      rpcMessage &&
+      Number.isInteger(rpcStatus) &&
+      rpcStatus >= 100 &&
+      rpcStatus < 600
+    ) {
+      error = { status: rpcStatus, message: rpcMessage };
     }
     this.logger.error(error.message, requestMetaData);
     if (process.env.NODE_ENV === 'development') {

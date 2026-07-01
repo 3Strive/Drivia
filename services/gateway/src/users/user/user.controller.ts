@@ -38,17 +38,17 @@ export class UserController {
     return await firstValueFrom(this.userClient.send('update', payload));
   }
 
-  @Get('getUser/:userId')
+  @Get('findOne/:userId')
   @HttpCode(HttpStatus.OK)
   async get(
     @Param('userId') userId: string,
   ): Promise<CreateUser | { [key: string]: unknown }> {
-    return await firstValueFrom(this.userClient.send('getUser', userId));
+    return await firstValueFrom(this.userClient.send('findOne', userId));
   }
 
-  @Get('getAllUsers')
+  @Get('findAll')
   @HttpCode(HttpStatus.OK)
   async getAll(): Promise<CreateUser[] | { [key: string]: unknown }> {
-    return await firstValueFrom(this.userClient.send('getAllUsers', {}));
+    return await firstValueFrom(this.userClient.send('findAll', {}));
   }
 }

@@ -4,10 +4,6 @@ import { DBModule } from '@drivia/db';
 import { UsersModule } from './user/user.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({ isGlobal: true }), // ← add this
-    DBModule,
-    UsersModule,
-  ],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), DBModule, UsersModule],
 })
 export class AppModule {}

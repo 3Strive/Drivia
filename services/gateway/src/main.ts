@@ -29,15 +29,6 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new HttpExceptionInterceptor());
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
 
-  // Fix 2 — Hybrid app so gateway can both serve HTTP and connect to RabbitMQ
-  app.connectMicroservice({
-    transport: Transport.RMQ,
-    options: {
-      urls: ['amqp://localhost:5672'],
-      queue: QUEUES.USER_QUEUE,
-      queueOptions: { durable: true },
-    },
-  });
   await app.startAllMicroservices();
 
   app.enableVersioning({

@@ -19,7 +19,7 @@ export class UserController {
     return await this.userService.findByEmail(data.email);
   }
 
-  @MessagePattern('getUser')
+  @MessagePattern('findOne')
   async get(@Payload() data: { userId: string }): Promise<User | null> {
     return await this.userService.get(data.userId);
   }
@@ -37,7 +37,7 @@ export class UserController {
     return await this.userService.update(userId, data);
   }
 
-  @MessagePattern('getAllUsers')
+  @MessagePattern('findAll')
   async getAll(data: GetUsersDto): Promise<PaginationData<Array<User>>> {
     return await this.userService.getAll(data);
   }
